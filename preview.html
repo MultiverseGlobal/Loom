@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loom AI - Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-root: #0B0C0E;
+            --bg-panel: #131519;
+            --bg-hover: #1E2026;
+            --bg-active: #262930;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-default: rgba(255, 255, 255, 0.1);
+            --border-highlight: rgba(255, 255, 255, 0.2);
+            --text-primary: #F2F2F3;
+            --text-secondary: #8A8F98;
+            --text-tertiary: #5F6570;
+            --accent-primary: #5E6AD2;
+            --accent-glow: rgba(94, 106, 210, 0.5);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-root);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 240px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            height: 48px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-primary);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            margin: 2px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background-color: var(--bg-active);
+            color: var(--text-primary);
+        }
+        
+        .nav-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+        }
+        
+        .main-content {
+            margin-left: 240px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .header {
+            position: sticky;
+            top: 0;
+            height: 48px;
+            background: rgba(11, 12, 14, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 10;
+        }
+        
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .breadcrumb span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0 0 4px 0;
+        }
+        
+        .page-header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 12px var(--accent-glow);
+            transition: opacity 0.2s;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        .project-card {
+            background: var(--bg-panel);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        
+        .project-card:hover {
+            border-color: var(--border-subtle);
+            background: var(--bg-hover);
+        }
+        
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .project-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-active);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+        
+        .badge {
+            background: var(--bg-active);
+            border: 1px solid var(--border-subtle);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .generate-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            height: calc(100vh - 140px);
+        }
+        
+        .prompt-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .prompt-textarea {
+            flex: 1;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+        }
+        
+        .prompt-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 1px var(--accent-primary);
+        }
+        
+        .code-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .code-header {
+            background: var(--bg-root);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .code-content {
+            flex: 1;
+            overflow: auto;
+            padding: 16px;
+        }
+        
+        .code-block {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon">⚡</div>
+            <span style="font-weight: 500;">Loom AI</span>
+        </div>
+        
+        <nav style="flex: 1; padding: 16px 0; overflow-y: auto;">
+            <a href="#dashboard" class="nav-item active" onclick="showPage('dashboard')">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                Dashboard
+            </a>
+            <a href="#generate" class="nav-item" onclick="showPage('generate')">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                </svg>
+                Generate
+            </a>
+            <a href="#projects" class="nav-item">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                Projects
+            </a>
+            <a href="#ingest" class="nav-item">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Ingest
+            </a>
+        </nav>
+        
+        <div style="padding: 12px; border-top: 1px solid var(--border-subtle);">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='transparent'">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #8B5CF6, #EC4899);"></div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 500;">Workspace</div>
+                    <div style="font-size: 11px; color: var(--text-secondary);">Pro Plan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="breadcrumb">
+                Loom AI / <span id="current-page">Dashboard</span>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">🔍</button>
+                <button style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">🔔</button>
+            </div>
+        </div>
+        
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="content">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px;">
+                <div class="page-header">
+                    <h1>Projects</h1>
+                    <p>Manage and monitor your AI-generated codebases.</p>
+                </div>
+                <button class="btn-primary">+ New Project</button>
+            </div>
+            
+            <div style="margin-bottom: 8px; padding: 0 12px; font-size: 12px; font-weight: 500; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 40px; gap: 16px;">
+                    <span>Name</span>
+                    <span>Framework</span>
+                    <span>Created</span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 40px; gap: 16px; width: 100%; align-items: center;">
+                    <div class="project-info">
+                        <div class="project-icon">📁</div>
+                        <span style="font-size: 13px; font-weight: 500;">My Awesome App</span>
+                    </div>
+                    <div>
+                        <span class="badge">Next.js</span>
+                    </div>
+                    <div style="font-size: 13px; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px;">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path stroke-linecap="round" stroke-width="2" d="M12 6v6l4 2"/>
+                        </svg>
+                        2 days ago
+                    </div>
+                    <div style="opacity: 0; transition: opacity 0.2s;">→</div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 40px; gap: 16px; width: 100%; align-items: center;">
+                    <div class="project-info">
+                        <div class="project-icon">📁</div>
+                        <span style="font-size: 13px; font-weight: 500;">E-commerce Platform</span>
+                    </div>
+                    <div>
+                        <span class="badge">React</span>
+                    </div>
+                    <div style="font-size: 13px; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px;">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path stroke-linecap="round" stroke-width="2" d="M12 6v6l4 2"/>
+                        </svg>
+                        1 week ago
+                    </div>
+                    <div style="opacity: 0; transition: opacity 0.2s;">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Generate Page -->
+        <div id="generate-page" class="content" style="display: none;">
+            <div class="page-header" style="margin-bottom: 24px;">
+                <h1>Generate UI</h1>
+                <p>Describe the component you want to build.</p>
+            </div>
+            
+            <div class="generate-container">
+                <div class="prompt-panel">
+                    <textarea class="prompt-textarea" placeholder="e.g. A responsive pricing table with 3 tiers, highlighted middle tier, and toggle for monthly/yearly billing..."></textarea>
+                    <button class="btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">
+                        ✨ Generate Component
+                    </button>
+                </div>
+                
+                <div class="code-panel">
+                    <div class="code-header">
+                        <div style="display: flex; gap: 16px;">
+                            <button style="background: none; border: none; border-bottom: 2px solid var(--accent-primary); color: var(--text-primary); padding: 8px 0; font-size: 13px; font-weight: 500; cursor: pointer;">
+                                💻 Code
+                            </button>
+                            <button style="background: none; border: none; color: var(--text-secondary); padding: 8px 0; font-size: 13px; font-weight: 500; cursor: pointer;">
+                                ▶️ Preview
+                            </button>
+                        </div>
+                        <button style="background: none; border: none; color: var(--text-secondary); font-size: 12px; cursor: pointer;">
+                            📋 Copy Code
+                        </button>
+                    </div>
+                    <div class="code-content">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-tertiary);">
+                            <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.2; margin-bottom: 16px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                            <p style="font-size: 14px;">Generated code will appear here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showPage(page) {
+            // Hide all pages
+            document.getElementById('dashboard-page').style.display = 'none';
+            document.getElementById('generate-page').style.display = 'none';
+            
+            // Show selected page
+            document.getElementById(page + '-page').style.display = 'block';
+            
+            // Update breadcrumb
+            document.getElementById('current-page').textContent = page.charAt(0).toUpperCase() + page.slice(1);
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+        }
+        
+        // Add hover effect to project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.querySelector('div[style*="opacity: 0"]').style.opacity = '1';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.querySelector('div[style*="opacity"]').style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>

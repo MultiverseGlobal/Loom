@@ -1,0 +1,115 @@
+{
+    "name": "hatch-dev-bridge",
+    "displayName": "Hatch Migration Extension",
+    "description": "The official bridge between Hatch and your local development environment.",
+    "version": "2.0.8",
+    "publisher": "Hatch",
+    "icon": "media/icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hatch/hatch"
+    },
+    "homepage": "https://hatch.dev",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Other"
+    ],
+    "keywords": [
+        "hatch",
+        "migration",
+        "no-code",
+        "deployment"
+    ],
+    "activationEvents": [
+        "onStartupFinished",
+        "onUri"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "loom.connect",
+                "title": "Hatch: Connect to Cloud"
+            },
+            {
+                "command": "loom.disconnect",
+                "title": "Hatch: Disconnect"
+            },
+            {
+                "command": "loom.reanalyze",
+                "title": "Hatch: Reanalyze Project"
+            },
+            {
+                "command": "loom.importProject",
+                "title": "Hatch: Import Project"
+            },
+            {
+                "command": "loom.figmaBridge",
+                "title": "Hatch: Universal Bridge (Figma/Web)"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "loom-explorer",
+                    "title": "Hatch",
+                    "icon": "media/logo.svg"
+                }
+            ]
+        },
+        "views": {
+            "loom-explorer": [
+                {
+                    "type": "webview",
+                    "id": "loom.sidebar",
+                    "name": "Hatch Assistant",
+                    "icon": "media/logo.svg"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Hatch",
+            "properties": {
+                "loom.apiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Your Hatch API key"
+                },
+                "loom.apiUrl": {
+                    "type": "string",
+                    "default": "http://localhost:4000",
+                    "description": "Hatch API URL"
+                },
+                "loom.projectsDirectory": {
+                    "type": "string",
+                    "default": "~/hatch-projects",
+                    "description": "Directory where Hatch projects will be cloned"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile",
+        "lint": "eslint src --ext ts"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "@types/vscode": "^1.80.0",
+        "@typescript-eslint/eslint-plugin": "^5.0.0",
+        "@typescript-eslint/parser": "^5.0.0",
+        "eslint": "^8.0.0",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@types/ws": "^8.18.1",
+        "axios": "^1.6.0",
+        "simple-git": "^3.20.0",
+        "ws": "^8.18.3"
+    }
+}

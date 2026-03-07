@@ -1,0 +1,43 @@
+--- ALL PROJECTS ---
+-------------------
+Projects:
+[
+  {
+    "id": "c8119f49-4594-4ba5-aff0-f0724edd2e4f",
+    "name": "Existing User Project",
+    "user_id": "0317b27c-aa56-4f9a-a893-e067ede4f638",
+    "source_url": null,
+    "source_platform": null,
+    "status": "ready"
+  },
+  {
+    "id": "f0a2c3a3-be07-45c6-9d91-752b042e503c",
+    "name": "mental-model-hub",
+    "user_id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "source_url": "https://github.com/MultiverseGlobal/mental-model-hub",
+    "source_platform": "komposo",
+    "status": "ready"
+  }
+]
+-------------------
+--- ALL INTEGRATIONS ---
+-------------------
+Integrations:
+[
+  {
+    "id": "96339ffd-abe0-46a1-b617-79078f7141f9",
+    "user_id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "provider": "github",
+    "provider_account_id": "undefined",
+    "access_token": "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",
+    "refresh_token": null,
+    "token_expires_at": null,
+    "scope": "repo,user:email",
+    "metadata": "{}",
+    "connected_at": "2025-12-28T12:37:31.952Z",
+    "last_synced_at": null,
+    "created_at": "2025-12-28T12:37:31.952Z",
+    "updated_at": "2025-12-28T13:10:23.239Z"
+  }
+]
+-------------------

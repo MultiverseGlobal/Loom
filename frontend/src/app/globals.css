@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/* Default Theme (Supabase Dark) */
+:root,
+[data-theme="dark"] {
+  /* Backgrounds - Deep blacks with subtle emerald tint */
+  --bg-root: #0a0a0a;
+  --bg-panel: #141414;
+  --bg-hover: #1a1a1a;
+  --bg-active: #1f1f1f;
+  --bg-subtle: #0f0f0f;
+
+  /* Borders - Emerald-tinted */
+  --border-subtle: rgba(16, 185, 129, 0.08);
+  --border-default: rgba(16, 185, 129, 0.15);
+  --border-highlight: rgba(16, 185, 129, 0.3);
+
+  /* Text */
+  --text-primary: #ededed;
+  --text-secondary: #a1a1a1;
+  --text-tertiary: #6b6b6b;
+
+  /* Accents - Emerald/Teal */
+  --accent-primary: #10b981;
+  --accent-secondary: #059669;
+  --accent-glow: rgba(16, 185, 129, 0.3);
+}
+
+/* Notion Light Theme */
+[data-theme="light"] {
+  /* Backgrounds - Warm off-whites */
+  --bg-root: #ffffff;
+  --bg-panel: #f7f6f3;
+  --bg-hover: #f1f0ed;
+  --bg-active: #e9e8e4;
+  --bg-subtle: #fafaf9;
+
+  /* Borders - Warm grays */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-default: rgba(0, 0, 0, 0.09);
+  --border-highlight: rgba(0, 0, 0, 0.16);
+
+  /* Text */
+  --text-primary: #37352f;
+  --text-secondary: #6b6b6b;
+  --text-tertiary: #9b9a97;
+
+  /* Accents - Rich blacks */
+  --accent-primary: #2b2b2b;
+  --accent-secondary: #505050;
+  --accent-glow: rgba(0, 0, 0, 0.1);
+}
+
+@theme inline {
+  --color-bg-root: var(--bg-root);
+  --color-bg-panel: var(--bg-panel);
+  --color-bg-hover: var(--bg-hover);
+  --color-bg-active: var(--bg-active);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-highlight: var(--border-highlight);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-glow: var(--accent-glow);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--bg-root);
+  color: var(--text-primary);
+  font-family: var(--font-inter), sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Utilities */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.glass-header {
+  background: rgba(var(--bg-root-rgb, 10, 10, 10), 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Theme-specific adjustments for light mode */
+[data-theme="light"] .glass-panel {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .glass-header {
+  background: rgba(255, 255, 255, 0.8);
+}

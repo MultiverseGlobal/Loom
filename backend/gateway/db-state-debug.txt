@@ -1,0 +1,45 @@
+--- ALL EXTENSIONS W/ STATUS ---
+-------------------
+Extensions:
+[
+  {
+    "id": "8ac5dd0b-5640-4eaa-b700-9093b459e452",
+    "created_at": "2025-12-24T17:08:43.310Z",
+    "user_id": "0317b27c-aa56-4f9a-a893-e067ede4f638",
+    "token": "058bc2ea9f9f27a74a7a7efe5c2e343d529cdc7cd564eddd12941c5e74d5f20b",
+    "machine_info": {
+      "arch": "x64",
+      "version": "1.104.0",
+      "platform": "win32"
+    },
+    "last_seen": null,
+    "calc_status": "never_seen"
+  },
+  {
+    "id": "2153c752-4f06-4f6c-8f21-2c29eb2d0f18",
+    "created_at": "2025-12-27T21:44:28.262Z",
+    "user_id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "token": "e0c50ba08c491bdaf278e5d1ec9450e861da5548bee0a4a46b3eeebd14864578",
+    "machine_info": {
+      "arch": "x64",
+      "version": "1.104.0",
+      "platform": "win32"
+    },
+    "last_seen": "2025-12-28T20:00:19.175Z",
+    "calc_status": "online"
+  },
+  {
+    "id": "a12edb45-73bb-4251-a07f-2917891212ac",
+    "created_at": "2025-12-28T19:39:30.249Z",
+    "user_id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "token": "6faaa08c441af46da37b4b42dd4c901ad90f086f9338b568c7c56a7aa4e21033",
+    "machine_info": {
+      "arch": "x64",
+      "version": "1.104.0",
+      "platform": "win32"
+    },
+    "last_seen": "2025-12-28T20:00:25.048Z",
+    "calc_status": "online"
+  }
+]
+-------------------

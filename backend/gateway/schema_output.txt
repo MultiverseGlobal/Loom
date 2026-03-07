@@ -1,0 +1,72 @@
+﻿
+--- Schema for table: projects ---
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé (index) Γöé column_name       Γöé data_type                  Γöé is_nullable Γöé column_default      Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0       Γöé 'id'              Γöé 'uuid'                     Γöé 'NO'        Γöé 'gen_random_uuid()' Γöé
+Γöé 1       Γöé 'user_id'         Γöé 'uuid'                     Γöé 'NO'        Γöé 'auth.uid()'        Γöé
+Γöé 2       Γöé 'name'            Γöé 'text'                     Γöé 'NO'        Γöé null                Γöé
+Γöé 3       Γöé 'framework'       Γöé 'text'                     Γöé 'NO'        Γöé "'nextjs'::text"    Γöé
+Γöé 4       Γöé 'status'          Γöé 'text'                     Γöé 'NO'        Γöé "'ready'::text"     Γöé
+Γöé 5       Γöé 'source_type'     Γöé 'text'                     Γöé 'YES'       Γöé null                Γöé
+Γöé 6       Γöé 'metadata'        Γöé 'jsonb'                    Γöé 'YES'       Γöé "'{}'::jsonb"       Γöé
+Γöé 7       Γöé 'github_url'      Γöé 'text'                     Γöé 'YES'       Γöé null                Γöé
+Γöé 8       Γöé 'created_at'      Γöé 'timestamp with time zone' Γöé 'YES'       Γöé 'now()'             Γöé
+Γöé 9       Γöé 'updated_at'      Γöé 'timestamp with time zone' Γöé 'YES'       Γöé 'now()'             Γöé
+Γöé 10      Γöé 'source_platform' Γöé 'text'                     Γöé 'YES'       Γöé null                Γöé
+Γöé 11      Γöé 'origin_meta'     Γöé 'jsonb'                    Γöé 'YES'       Γöé "'{}'::jsonb"       Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+
+--- Schema for table: users ---
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé (index) Γöé column_name                   Γöé data_type                  Γöé is_nullable Γöé column_default            Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0       Γöé 'id'                          Γöé 'uuid'                     Γöé 'NO'        Γöé null                      Γöé
+Γöé 1       Γöé 'instance_id'                 Γöé 'uuid'                     Γöé 'YES'       Γöé null                      Γöé
+Γöé 2       Γöé 'email'                       Γöé 'text'                     Γöé 'NO'        Γöé null                      Γöé
+Γöé 3       Γöé 'id'                          Γöé 'uuid'                     Γöé 'NO'        Γöé null                      Γöé
+Γöé 4       Γöé 'aud'                         Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 5       Γöé 'full_name'                   Γöé 'text'                     Γöé 'YES'       Γöé null                      Γöé
+Γöé 6       Γöé 'role'                        Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 7       Γöé 'avatar_url'                  Γöé 'text'                     Γöé 'YES'       Γöé null                      Γöé
+Γöé 8       Γöé 'email'                       Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 9       Γöé 'created_at'                  Γöé 'timestamp with time zone' Γöé 'YES'       Γöé 'now()'                   Γöé
+Γöé 10      Γöé 'encrypted_password'          Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 11      Γöé 'updated_at'                  Γöé 'timestamp with time zone' Γöé 'YES'       Γöé 'now()'                   Γöé
+Γöé 12      Γöé 'email_confirmed_at'          Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 13      Γöé 'invited_at'                  Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 14      Γöé 'confirmation_token'          Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 15      Γöé 'confirmation_sent_at'        Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 16      Γöé 'recovery_token'              Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 17      Γöé 'recovery_sent_at'            Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 18      Γöé 'email_change_token_new'      Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 19      Γöé 'email_change'                Γöé 'character varying'        Γöé 'YES'       Γöé null                      Γöé
+Γöé 20      Γöé 'email_change_sent_at'        Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 21      Γöé 'last_sign_in_at'             Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 22      Γöé 'raw_app_meta_data'           Γöé 'jsonb'                    Γöé 'YES'       Γöé null                      Γöé
+Γöé 23      Γöé 'raw_user_meta_data'          Γöé 'jsonb'                    Γöé 'YES'       Γöé null                      Γöé
+Γöé 24      Γöé 'is_super_admin'              Γöé 'boolean'                  Γöé 'YES'       Γöé null                      Γöé
+Γöé 25      Γöé 'created_at'                  Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 26      Γöé 'updated_at'                  Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 27      Γöé 'phone'                       Γöé 'text'                     Γöé 'YES'       Γöé 'NULL::character varying' Γöé
+Γöé 28      Γöé 'phone_confirmed_at'          Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 29      Γöé 'phone_change'                Γöé 'text'                     Γöé 'YES'       Γöé "''::character varying"   Γöé
+Γöé 30      Γöé 'phone_change_token'          Γöé 'character varying'        Γöé 'YES'       Γöé "''::character varying"   Γöé
+Γöé 31      Γöé 'phone_change_sent_at'        Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 32      Γöé 'confirmed_at'                Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 33      Γöé 'email_change_token_current'  Γöé 'character varying'        Γöé 'YES'       Γöé "''::character varying"   Γöé
+Γöé 34      Γöé 'email_change_confirm_status' Γöé 'smallint'                 Γöé 'YES'       Γöé '0'                       Γöé
+Γöé 35      Γöé 'banned_until'                Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 36      Γöé 'reauthentication_token'      Γöé 'character varying'        Γöé 'YES'       Γöé "''::character varying"   Γöé
+Γöé 37      Γöé 'reauthentication_sent_at'    Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 38      Γöé 'is_sso_user'                 Γöé 'boolean'                  Γöé 'NO'        Γöé 'false'                   Γöé
+Γöé 39      Γöé 'deleted_at'                  Γöé 'timestamp with time zone' Γöé 'YES'       Γöé null                      Γöé
+Γöé 40      Γöé 'is_anonymous'                Γöé 'boolean'                  Γöé 'NO'        Γöé 'false'                   Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+
+--- Foreign Keys ---
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé (index) Γöé constraint_name    Γöé table_name Γöé column_name Γöé foreign_table_name Γöé foreign_column_name Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0       Γöé 'fk_projects_user' Γöé 'projects' Γöé 'user_id'   Γöé 'users'            Γöé 'id'                Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ

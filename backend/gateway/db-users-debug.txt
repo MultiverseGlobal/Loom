@@ -1,0 +1,10 @@
+[
+  {
+    "id": "0317b27c-aa56-4f9a-a893-e067ede4f638",
+    "email": "multiverseglobals@gmail.com"
+  },
+  {
+    "id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "email": "bytemge@gmail.com"
+  }
+]

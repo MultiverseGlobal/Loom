@@ -1,0 +1,28 @@
+[
+  {
+    "id": "a12edb45-73bb-4251-a07f-2917891212ac",
+    "created_at": "2025-12-28T19:39:30.249Z",
+    "user_id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "token": "6faaa08c441af46da37b4b42dd4c901ad90f086f9338b568c7c56a7aa4e21033",
+    "machine_info": {
+      "arch": "x64",
+      "version": "1.104.0",
+      "platform": "win32"
+    },
+    "last_seen": "2025-12-28T19:59:30.046Z",
+    "status": "online"
+  },
+  {
+    "id": "2153c752-4f06-4f6c-8f21-2c29eb2d0f18",
+    "created_at": "2025-12-27T21:44:28.262Z",
+    "user_id": "3f3e183a-b144-4882-9014-ea5aa1a2d585",
+    "token": "e0c50ba08c491bdaf278e5d1ec9450e861da5548bee0a4a46b3eeebd14864578",
+    "machine_info": {
+      "arch": "x64",
+      "version": "1.104.0",
+      "platform": "win32"
+    },
+    "last_seen": "2025-12-28T19:55:19.114Z",
+    "status": "offline"
+  }
+]

@@ -1,0 +1,39 @@
+
+import { BridgeAdapter, LoomBlueprint } from './types';
+import { FigmaAdapter } from './FigmaAdapter';
+import { LovableAdapter } from './LovableAdapter';
+import { ScraperAdapter } from './ScraperAdapter';
+
+class AdaptersRegistry {
+    private adapters: BridgeAdapter[] = [];
+
+    constructor() {
+        // Register adapters in order of priority (specific first, then generic)
+        this.adapters.push(new FigmaAdapter());
+        this.adapters.push(new LovableAdapter());
+        // Scraper is the fallback
+        this.adapters.push(new ScraperAdapter());
+    }
+
+    /**
+     * Find the adapter that can handle the given URL
+     */
+    getAdapterFor(url: string): BridgeAdapter | null {
+        return this.adapters.find(a => a.canHandle(url)) || null;
+    }
+
+    /**
+     * Universal bridge call
+     */
+    async getBlueprint(url: string, options: Record<string, any>): Promise<LoomBlueprint | null> {
+        const adapter = this.getAdapterFor(url);
+        if (!adapter) {
+            console.warn(`[Registry] No adapter found for URL: ${url}`);
+            return null;
+        }
+        console.log(`[Registry] Using adapter: ${adapter.id} for URL: ${url}`);
+        return adapter.getBlueprint(url, options);
+    }
+}
+
+export const adaptersRegistry = new AdaptersRegistry();

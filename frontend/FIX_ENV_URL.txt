@@ -1,0 +1,11 @@
+IMPORTANT: The Supabase URL in your .env.local file needs to be corrected.
+
+CURRENT (WRONG):
+NEXT_PUBLIC_SUPABASE_URL=https://lefzsvorhlarfuzxijk.supabase.co
+
+CORRECT (from your screenshot):
+NEXT_PUBLIC_SUPABASE_URL=https://lefzsvorhlarfuzxi.supabase.co
+
+Notice: "lefzsvorhlarfuzxi" NOT "lefzsvorhlarfuzxijk"
+
+Please update your .env.local file with the correct URL above, then restart the server.

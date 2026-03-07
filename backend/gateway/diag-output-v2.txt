@@ -1,0 +1,61 @@
+[ENV] dotenv.config() called
+[ENV] dotenv result: SUCCESS
+[ENV] SUPABASE_URL set: true
+[ENV] SUPABASE_URL value: https://letfzsvorhlarfuzxijk.s...
+[ENV] SUPABASE_ANON_KEY set: true
+[CONFIG] Building config object...
+[CONFIG] process.env.SUPABASE_URL: https://letfzsvorhlarfuzxijk.s...
+[CONFIG] process.env.SUPABASE_ANON_KEY: SET
+--- TABLE SCHEMAS ---
+┌─────────┬────────────────────┬───────────────────┬────────────────────────────┐
+│ (index) │ table_name         │ column_name       │ data_type                  │
+├─────────┼────────────────────┼───────────────────┼────────────────────────────┤
+│ 0       │ 'commands'         │ 'id'              │ 'uuid'                     │
+│ 1       │ 'commands'         │ 'user_id'         │ 'uuid'                     │
+│ 2       │ 'commands'         │ 'device_id'       │ 'uuid'                     │
+│ 3       │ 'commands'         │ 'project_id'      │ 'uuid'                     │
+│ 4       │ 'commands'         │ 'command_type'    │ 'text'                     │
+│ 5       │ 'commands'         │ 'payload'         │ 'jsonb'                    │
+│ 6       │ 'commands'         │ 'status'          │ 'text'                     │
+│ 7       │ 'commands'         │ 'priority'        │ 'integer'                  │
+│ 8       │ 'commands'         │ 'result'          │ 'jsonb'                    │
+│ 9       │ 'commands'         │ 'error_message'   │ 'text'                     │
+│ 10      │ 'commands'         │ 'created_at'      │ 'timestamp with time zone' │
+│ 11      │ 'commands'         │ 'started_at'      │ 'timestamp with time zone' │
+│ 12      │ 'commands'         │ 'completed_at'    │ 'timestamp with time zone' │
+│ 13      │ 'commands'         │ 'expires_at'      │ 'timestamp with time zone' │
+│ 14      │ 'extensions'       │ 'id'              │ 'uuid'                     │
+│ 15      │ 'extensions'       │ 'created_at'      │ 'timestamp with time zone' │
+│ 16      │ 'extensions'       │ 'user_id'         │ 'uuid'                     │
+│ 17      │ 'extensions'       │ 'token'           │ 'text'                     │
+│ 18      │ 'extensions'       │ 'machine_info'    │ 'jsonb'                    │
+│ 19      │ 'extensions'       │ 'last_seen'       │ 'timestamp with time zone' │
+│ 20      │ 'pairing_sessions' │ 'id'              │ 'uuid'                     │
+│ 21      │ 'pairing_sessions' │ 'device_id'       │ 'text'                     │
+│ 22      │ 'pairing_sessions' │ 'machine_info'    │ 'jsonb'                    │
+│ 23      │ 'pairing_sessions' │ 'status'          │ 'USER-DEFINED'             │
+│ 24      │ 'pairing_sessions' │ 'user_id'         │ 'uuid'                     │
+│ 25      │ 'pairing_sessions' │ 'extension_token' │ 'text'                     │
+│ 26      │ 'pairing_sessions' │ 'created_at'      │ 'timestamp with time zone' │
+│ 27      │ 'pairing_sessions' │ 'expires_at'      │ 'timestamp with time zone' │
+└─────────┴────────────────────┴───────────────────┴────────────────────────────┘
+
+--- RECENT PAIRING SESSIONS ---
+┌─────────┬────────────────────────────────────────┬────────────────────────────────────────┬──────────────┬────────────────────────────────────────┬──────────────────────────┐
+│ (index) │ id                                     │ device_id                              │ status       │ user_id                                │ created_at               │
+├─────────┼────────────────────────────────────────┼────────────────────────────────────────┼──────────────┼────────────────────────────────────────┼──────────────────────────┤
+│ 0       │ 'f7112a37-dd25-41db-b175-4735b619307b' │ 'd16aff67-d058-4ed7-b0b0-29be3eaf5a00' │ 'authorized' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-28T20:20:13.041Z │
+│ 1       │ '595b3226-deee-48c1-98db-1a2376f06602' │ 'e432bd17-6657-4ae4-a497-1679b1097b03' │ 'authorized' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-28T20:17:10.057Z │
+│ 2       │ '2ff99a49-77f4-442c-85fc-7dcfa5e7b635' │ 'f4e6450e-4de1-4a1b-99cc-44d509851612' │ 'authorized' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-28T19:39:20.056Z │
+│ 3       │ '41296fc6-92cd-468e-b64b-4ad0ef74e4f9' │ '944a38ca-a4c1-48be-82e8-2e84844567fe' │ 'authorized' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-27T21:44:22.559Z │
+│ 4       │ '81507920-c281-4b54-8cf2-94230e3ac592' │ 'ffdd52b6-e818-4c83-b234-5694286f6726' │ 'authorized' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-27T21:11:31.910Z │
+└─────────┴────────────────────────────────────────┴────────────────────────────────────────┴──────────────┴────────────────────────────────────────┴──────────────────────────┘
+
+--- RECENT EXTENSIONS ---
+┌─────────┬────────────────────────────────────────┬────────────────────────────────────────┬──────────────────────────┐
+│ (index) │ id                                     │ user_id                                │ last_seen                │
+├─────────┼────────────────────────────────────────┼────────────────────────────────────────┼──────────────────────────┤
+│ 0       │ '8ac5dd0b-5640-4eaa-b700-9093b459e452' │ '0317b27c-aa56-4f9a-a893-e067ede4f638' │ null                     │
+│ 1       │ '4440879d-60be-48b0-abac-00b05fa09894' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-28T21:03:30.264Z │
+│ 2       │ '3a07385d-1704-4e28-954d-6062d40f7d6b' │ '3f3e183a-b144-4882-9014-ea5aa1a2d585' │ 2025-12-28T21:02:58.269Z │
+└─────────┴────────────────────────────────────────┴────────────────────────────────────────┴──────────────────────────┘

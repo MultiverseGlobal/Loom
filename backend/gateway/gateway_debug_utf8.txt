@@ -1,0 +1,1000 @@
+﻿      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+{"level":30,"time":1766957832753,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-19","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61713},"msg":"incoming request"}
+{"level":30,"time":1766957832754,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1a","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61714},"msg":"incoming request"}
+{"level":30,"time":1766957836104,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-19","res":{"statusCode":200},"responseTime":3351.388900011778,"msg":"request completed"}
+{"level":30,"time":1766957836719,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1b","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61722},"msg":"incoming request"}
+{"level":30,"time":1766957837754,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1c","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61724},"msg":"incoming request"}
+{"level":30,"time":1766957837755,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1d","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61725},"msg":"incoming request"}
+{"level":30,"time":1766957839167,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1c","res":{"statusCode":200},"responseTime":1412.3149000108242,"msg":"request completed"}
+{"level":30,"time":1766957841726,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1e","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61730},"msg":"incoming request"}
+{"level":30,"time":1766957842760,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1f","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61733},"msg":"incoming request"}
+{"level":30,"time":1766957842761,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1g","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61734},"msg":"incoming request"}
+{"level":30,"time":1766957844667,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1f","res":{"statusCode":200},"responseTime":1907.33069999516,"msg":"request completed"}
+{"level":30,"time":1766957846729,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1h","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61743},"msg":"incoming request"}
+{"level":30,"time":1766957847771,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1i","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61746},"msg":"incoming request"}
+{"level":30,"time":1766957847772,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1j","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61747},"msg":"incoming request"}
+{"level":30,"time":1766957849733,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1i","res":{"statusCode":200},"responseTime":1962.1125999987125,"msg":"request completed"}
+{"level":30,"time":1766957851730,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1k","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61754},"msg":"incoming request"}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+{"level":30,"time":1766957852783,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1l","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61768},"msg":"incoming request"}
+{"level":30,"time":1766957852784,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1m","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61769},"msg":"incoming request"}
+{"level":30,"time":1766957855850,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1l","res":{"statusCode":200},"responseTime":3066.8535999953747,"msg":"request completed"}
+{"level":30,"time":1766957856742,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1n","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61777},"msg":"incoming request"}
+{"level":30,"time":1766957857787,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1o","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61781},"msg":"incoming request"}
+{"level":30,"time":1766957857789,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1p","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61782},"msg":"incoming request"}
+{"level":30,"time":1766957859157,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1o","res":{"statusCode":200},"responseTime":1369.8672000020742,"msg":"request completed"}
+{"level":30,"time":1766957861747,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1q","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61787},"msg":"incoming request"}
+{"level":30,"time":1766957862799,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1r","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61789},"msg":"incoming request"}
+{"level":30,"time":1766957862800,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1s","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61790},"msg":"incoming request"}
+{"level":30,"time":1766957864641,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1r","res":{"statusCode":200},"responseTime":1841.6674000024796,"msg":"request completed"}
+{"level":30,"time":1766957866748,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1t","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61797},"msg":"incoming request"}
+{"level":30,"time":1766957867810,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1u","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61803},"msg":"incoming request"}
+{"level":30,"time":1766957867811,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1v","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61804},"msg":"incoming request"}
+{"level":30,"time":1766957869859,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1u","res":{"statusCode":200},"responseTime":2049.141599997878,"msg":"request completed"}
+{"level":30,"time":1766957871750,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1w","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61810},"msg":"incoming request"}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+{"level":30,"time":1766957872820,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1x","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61824},"msg":"incoming request"}
+{"level":30,"time":1766957872821,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1y","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61825},"msg":"incoming request"}
+{"level":30,"time":1766957876759,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1z","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61831},"msg":"incoming request"}
+{"level":30,"time":1766957877235,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-1x","res":{"statusCode":200},"responseTime":4414.507499992847,"msg":"request completed"}
+{"level":30,"time":1766957877494,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-20","req":{"method":"POST","url":"/api/extensions/analysis","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61833},"msg":"incoming request"}
+{"level":30,"time":1766957877819,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-21","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61834},"msg":"incoming request"}
+{"level":30,"time":1766957877820,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-22","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61835},"msg":"incoming request"}
+{"level":50,"time":1766957878332,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-20","req":{"method":"POST","url":"/api/extensions/analysis","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61833},"res":{"statusCode":500},"err":{"type":"ReferenceError","message":"userId is not defined","stack":"ReferenceError: userId is not defined\n    at Object.<anonymous> (C:\\Users\\LENOVO\\Documents\\Loom\\backend\\gateway\\src\\routes\\extensions.ts:136:96)\n    at preHandlerCallbackInner (C:\\Users\\LENOVO\\Documents\\Loom\\backend\\gateway\\node_modules\\fastify\\lib\\handle-request.js:157:24)\n    at preHandlerCallback (C:\\Users\\LENOVO\\Documents\\Loom\\backend\\gateway\\node_modules\\fastify\\lib\\handle-request.js:125:5)\n    at next (C:\\Users\\LENOVO\\Documents\\Loom\\backend\\gateway\\node_modules\\fastify\\lib\\hooks.js:236:9)\n    at handleResolve (C:\\Users\\LENOVO\\Documents\\Loom\\backend\\gateway\\node_modules\\fastify\\lib\\hooks.js:253:7)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"},"msg":"userId is not defined"}
+{"level":30,"time":1766957878344,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-20","res":{"statusCode":500},"responseTime":849.8348999917507,"msg":"request completed"}
+{"level":30,"time":1766957879646,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-21","res":{"statusCode":200},"responseTime":1826.2444999963045,"msg":"request completed"}
+{"level":30,"time":1766957881758,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-23","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61844},"msg":"incoming request"}
+{"level":30,"time":1766957882832,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-24","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61847},"msg":"incoming request"}
+{"level":30,"time":1766957882832,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-25","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61846},"msg":"incoming request"}
+{"level":30,"time":1766957885295,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-25","res":{"statusCode":200},"responseTime":2462.993900001049,"msg":"request completed"}
+{"level":30,"time":1766957886766,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-26","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61854},"msg":"incoming request"}
+{"level":30,"time":1766957887838,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-27","req":{"method":"GET","url":"/api/extensions/jobs","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61856},"msg":"incoming request"}
+{"level":30,"time":1766957887839,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-28","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61857},"msg":"incoming request"}
+{"level":30,"time":1766957889350,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-27","res":{"statusCode":200},"responseTime":1511.5247000008821,"msg":"request completed"}
+{"level":30,"time":1766957891770,"pid":17628,"hostname":"DESKTOP-U6H86RJ","reqId":"req-29","req":{"method":"GET","url":"/ws","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":61871},"msg":"incoming request"}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}
+AggregateError 
+[ECONNREFUSED]: 
+    at 
+internalConnectMultiple 
+(node:net:1134:18)
+    at 
+afterConnectMultiple 
+(node:net:1715:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect 
+ECONNREFUSED ::1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 6379
+    },
+    Error: connect 
+ECONNREFUSED 
+127.0.0.1:6379
+        at 
+createConnectionError 
+(node:net:1678:14)
+        at 
+afterConnectMultiple 
+(node:net:1708:16) {
+      errno: -4078,
+      code: 
+'ECONNREFUSED',
+      syscall: 'connect',
+      address: 
+'127.0.0.1',
+      port: 6379
+    }
+  ]
+}

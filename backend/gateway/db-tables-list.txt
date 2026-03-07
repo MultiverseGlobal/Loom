@@ -1,0 +1,22 @@
+[
+  "users",
+  "deltas",
+  "jobs",
+  "exports",
+  "patches",
+  "extensions",
+  "pairing_codes",
+  "api_keys",
+  "project_integrations",
+  "pairing_sessions",
+  "project_deltas",
+  "integrations",
+  "analyses",
+  "import_tasks",
+  "job_failures",
+  "stream_subscriptions",
+  "github_accounts",
+  "project_github_links",
+  "projects",
+  "activity_logs"
+]
