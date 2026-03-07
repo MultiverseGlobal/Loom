@@ -17,7 +17,7 @@ import {
     Search,
     User
 } from "lucide-react";
-import { LoomLogo } from "@/components/brand/LoomLogo";
+import { HatchLogo } from "@/components/brand/HatchLogo";
 import clsx from "clsx";
 import { socketService } from "@/services/socket";
 

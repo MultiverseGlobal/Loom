@@ -142,7 +142,7 @@ export default function LandingPage() {
                                         </div>
                                         <div className="flex justify-between">
                                             <span>GitHub Repo:</span>
-                                            <span className="text-blue-400 underline decoration-blue-400/30">loom-ai/dashboard-v2</span>
+                                            <span className="text-blue-400 underline decoration-blue-400/30">hatch-engine/migration-demo</span>
                                         </div>
                                     </div>
                                 </div>

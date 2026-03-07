@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setMounted(true);
         // Load stored theme or default to system
-        const stored = localStorage.getItem('loom-theme') as Theme;
+        const stored = localStorage.getItem('hatch-theme') as Theme;
         if (stored) setTheme(stored);
     }, []);
 
@@ -35,7 +35,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             root.setAttribute('data-theme', theme);
         }
 
-        localStorage.setItem('loom-theme', theme);
+        localStorage.setItem('hatch-theme', theme);
     }, [theme, mounted]);
 
     // Prevent hydration mismatch
