@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth.service';
-import { LoomLogo } from '@/components/brand/LoomLogo';
+import { HatchLogo } from '@/components/brand/HatchLogo';
 import { PageTransition } from '@/components/ui/PageTransition';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
@@ -77,8 +77,8 @@ export default function SignupPage() {
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="flex items-center justify-center gap-3 mb-8">
-                        <LoomLogo size={40} />
-                        <span className="text-2xl font-medium text-[var(--text-primary)]">Loom AI</span>
+                        <HatchLogo size={40} />
+                        <span className="text-2xl font-medium text-[var(--text-primary)]">Hatch</span>
                     </div>
 
                     {/* Signup Form */}

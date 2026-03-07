@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase";
-import { LoomLogo } from "@/components/brand/LoomLogo";
+import { HatchLogo } from "@/components/brand/HatchLogo";
 import { Terminal, Laptop, CheckCircle2, AlertCircle } from "lucide-react";
 
 function ConnectPageContent() {
@@ -89,7 +89,7 @@ function ConnectPageContent() {
                     </div>
                     <h1 className="text-2xl font-bold text-white mb-2">Connected Successfully!</h1>
                     <p className="text-[var(--text-secondary)] mb-8">
-                        Your IDE is now paired with Loom. You can close this tab and return to VS Code.
+                        Your IDE is now paired with Hatch. You can close this tab and return to VS Code.
                     </p>
                     <button
                         onClick={() => router.push('/dashboard')}
@@ -111,8 +111,8 @@ function ConnectPageContent() {
 
             <div className="relative z-10 w-full max-w-md">
                 <div className="flex items-center justify-center gap-3 mb-10">
-                    <LoomLogo size={48} />
-                    <span className="text-3xl font-semibold tracking-tight text-[var(--text-primary)]">Loom AI</span>
+                    <HatchLogo size={48} />
+                    <span className="text-3xl font-semibold tracking-tight text-[var(--text-primary)]">Hatch</span>
                 </div>
 
                 <div className="bg-[var(--bg-panel)]/80 backdrop-blur-xl border border-[var(--border-subtle)] rounded-2xl shadow-2xl p-8">
@@ -149,7 +149,7 @@ function ConnectPageContent() {
                                 </div>
                             </div>
                             <p className="text-[var(--text-secondary)] text-sm mb-8">
-                                By connecting, this IDE will have access to your Loom projects and AI configuration.
+                                By connecting, this IDE will have access to your Hatch projects and AI configuration.
                             </p>
                             <div className="flex flex-col gap-3">
                                 <button
@@ -181,7 +181,7 @@ function ConnectPageContent() {
                             </div>
                             <h2 className="text-xl font-semibold text-white mb-4">Connect from VS Code</h2>
                             <p className="text-[var(--text-secondary)] text-sm mb-8">
-                                Open the <strong>Loom AI</strong> extension in VS Code and click <strong>"Connect Workspace"</strong> to start the pairing process.
+                                Open the <strong>Hatch</strong> extension in VS Code and click <strong>"Connect Workspace"</strong> to start the pairing process.
                             </p>
                             <button
                                 onClick={() => router.push('/dashboard')}
