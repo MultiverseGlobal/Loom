@@ -44,15 +44,15 @@ export function Header() {
         <header className="glass-header sticky top-0 z-10 flex h-12 items-center justify-between px-4">
             {/* Left: Breadcrumbs (Mock) */}
             <div className="flex items-center gap-2 text-[13px]">
-                <span className="text-[var(--text-secondary)]">Hatch</span>
+                <span className="text-[var(--text-secondary)]">Shift</span>
                 <span className="text-[var(--text-tertiary)]">/</span>
                 <span className="text-[var(--text-primary)] font-medium">Dashboard</span>
             </div>
 
             {/* Center: AI Status Indicator */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[12px] font-medium text-[var(--text-secondary)]">Hatch Engine: <span className="text-[var(--text-primary)]">Idle</span></span>
+                <div className="h-1.5 w-1.5 rounded-full bg-[var(--accent-primary)] animate-pulse" />
+                <span className="text-[12px] font-medium text-[var(--text-secondary)]">Shift Engine: <span className="text-[var(--text-primary)]">Idle</span></span>
             </div>
 
             {/* Right: Actions */}

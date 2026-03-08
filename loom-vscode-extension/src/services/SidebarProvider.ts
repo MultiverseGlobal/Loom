@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { AuthManager } from './authManager';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
-    public static readonly viewType = 'loom.sidebar';
+    public static readonly viewType = 'shift.sidebar';
     private _view?: vscode.WebviewView;
 
     constructor(
@@ -41,13 +41,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         webviewView.webview.onDidReceiveMessage(async (data) => {
             switch (data.type) {
                 case 'connect':
-                    vscode.commands.executeCommand('loom.connect');
+                    vscode.commands.executeCommand('shift.connect');
                     break;
                 case 'disconnect':
-                    vscode.commands.executeCommand('loom.disconnect');
+                    vscode.commands.executeCommand('shift.disconnect');
                     break;
                 case 'bridge':
-                    vscode.commands.executeCommand('loom.figmaBridge');
+                    vscode.commands.executeCommand('shift.figmaBridge');
                     break;
                 case 'onInfo':
                     if (data.value) vscode.window.showInformationMessage(data.value);
@@ -67,7 +67,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             console.error('[Loom] Failed to check connection state:', e);
         }
 
-        const extensionVersion = vscode.extensions.getExtension('LoomAI.loom-dev-bridge')?.packageJSON.version || '0.1.0';
+        const extensionVersion = vscode.extensions.getExtension('ShiftAI.shift-dev-bridge')?.packageJSON.version || '0.1.0';
 
         return `<!DOCTYPE html>
             <html lang="en">
@@ -81,7 +81,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                     * { margin: 0; padding: 0; box-sizing: border-box; }
                     
                     :root {
-                        --emerald: #10b981;
+                        --accent: #6366f1;
+                        --accent-soft: rgba(99, 102, 241, 0.1);
                         --bg-root: var(--vscode-sideBar-background);
                         --bg-card: var(--vscode-editor-background);
                         --border-default: var(--vscode-sideBar-border);
@@ -102,17 +103,17 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                     .identity { padding: 20px 16px; border-bottom: 1px solid var(--border-default); }
                     .identity-title { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 6px; }
                     .identity-status { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-                    .status-indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); }
+                    .status-indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
                     .status-indicator.disconnected { background: var(--text-tertiary); }
                     
                     .card { margin: 16px 12px; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: 12px; padding: 20px; text-align: center; }
                     .title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
                     .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
                     
-                    .btn { background: var(--emerald); color: #0a0a0a; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; transition: opacity 0.2s; }
+                    .btn { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; transition: opacity 0.2s; }
                     .btn:hover { opacity: 0.9; }
                     .btn-secondary { background: transparent; border: 1px solid var(--border-default); color: var(--text-secondary); }
-                    .link { display: inline-block; color: var(--emerald); text-decoration: none; margin-top: 16px; font-size: 12px; }
+                    .link { display: inline-block; color: var(--accent); text-decoration: none; margin-top: 16px; font-size: 12px; }
                     
                     .hidden { display: none; }
                 </style>
@@ -121,12 +122,17 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                 <div class="identity">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                         <svg width="20" height="20" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M32 16 L32 96 L96 96" stroke="#10b981" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M48 40 L48 80 L80 80" stroke="#10b981" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.6" />
-                            <circle cx="96" cy="96" r="8" fill="#10b981" />
-                            <circle cx="80" cy="80" r="6" fill="#10b981" opacity="0.6" />
+                            <rect width="128" height="128" rx="24" fill="url(#grad)" />
+                            <defs>
+                                <linearGradient id="grad" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#6366f1" />
+                                    <stop offset="1" stop-color="#a855f7" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M40 80C40 80 45 45 64 45C83 45 88 83 88 83" stroke="white" stroke-width="12" stroke-linecap="round"/>
+                            <path d="M40 45C40 45 45 83 64 83C83 83 88 45 88 45" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.6"/>
                         </svg>
-                        <div class="identity-title" style="margin-bottom: 0;">LOOM <span style="color: var(--emerald); font-size: 8px; opacity: 0.5;">V${extensionVersion}</span></div>
+                        <div class="identity-title" style="margin-bottom: 0;">SHIFT AI <span style="color: var(--accent); font-size: 8px; opacity: 0.5;">V${extensionVersion}</span></div>
                     </div>
                     <div class="identity-status">
                         <span class="status-indicator ${isConnected ? '' : 'disconnected'}" id="status-indicator"></span>
@@ -136,16 +142,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
                 <div id="nc-view" class="${isConnected ? 'hidden' : ''}">
                     <div class="card">
-                        <div class="title">Connect to Loom</div>
-                        <p class="subtitle">Bridge your local project with Loom AI to enable automated analysis.</p>
-                        <button class="btn" onclick="send('connect')">Connect to Loom</button>
-                        <p class="link" style="opacity: 0.5;">No API Key required</p>
+                        <div class="title">Connect to Shift AI</div>
+                        <p class="subtitle">Bridge your local project with Shift AI to enable automated analysis.</p>
+                        <button class="btn" onclick="send('connect')">Connect Workspace</button>
+                        <p class="link" style="opacity: 0.5;">Secure Pairing</p>
                     </div>
                 </div>
 
                 <div id="c-view" class="${isConnected ? '' : 'hidden'}">
-                    <div class="card" style="border-color: rgba(16,185,129,0.2);">
-                        <div class="title">Loom is Active</div>
+                    <div class="card" style="border-color: rgba(99,102,241,0.2);">
+                        <div class="title">Shift AI is Active</div>
                         <p class="subtitle" id="agent-msg">Ready to analyze your project.</p>
                     </div>
 

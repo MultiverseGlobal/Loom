@@ -1,36 +1,11 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Interwoven threads forming an abstract "L" -->
-    <rect width="32" height="32" fill="white"/>
-    
-    <path
-        d="M8 4 L8 24 L24 24"
-        stroke="url(#loom-gradient)"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-    />
-    <path
-        d="M12 8 L12 20 L20 20"
-        stroke="url(#loom-gradient-light)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        opacity="0.6"
-    />
-    <circle cx="24" cy="24" r="2" fill="url(#loom-gradient)" />
-    <circle cx="20" cy="20" r="1.5" fill="url(#loom-gradient-light)" opacity="0.6" />
-
-    <!-- Gradients -->
+    <rect width="32" height="32" rx="8" fill="url(#shift-grad)" />
     <defs>
-        <linearGradient id="loom-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="100%" stopColor="#059669" />
-        </linearGradient>
-        <linearGradient id="loom-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#34d399" />
-            <stop offset="100%" stopColor="#10b981" />
+        <linearGradient id="shift-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1" />
+            <stop offset="1" stop-color="#a855f7" />
         </linearGradient>
     </defs>
+    <path d="M10 20C10 20 11.25 11.25 16 11.25C20.75 11.25 22 20.75 22 20.75" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <path d="M10 11.25C10 11.25 11.25 20.75 16 20.75C20.75 20.75 22 11.25 22 11.25" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
 </svg>

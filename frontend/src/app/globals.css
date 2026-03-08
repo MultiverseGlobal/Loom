@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
-/* Default Theme (Supabase Dark) */
+/* Default Theme (Shift AI - Indigo/Violet) */
 :root,
 [data-theme="dark"] {
+  /* Backgrounds - Deep blacks with subtle violet tint */
+  --bg-root: #050507;
+  --bg-panel: #0d0d12;
+  --bg-hover: #16161f;
+  --bg-active: #1c1c2b;
+  --bg-subtle: #09090e;
+
+  /* Borders - Indigo-tinted */
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-default: rgba(99, 102, 241, 0.15);
+  --border-highlight: rgba(139, 92, 246, 0.3);
+
+  /* Text */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+
+  /* Accents - Indigo/Violet */
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-glow: rgba(99, 102, 241, 0.3);
+}
+
+/* Emerald Legacy Theme */
+[data-theme="emerald"] {
   /* Backgrounds - Deep blacks with subtle emerald tint */
   --bg-root: #0a0a0a;
   --bg-panel: #141414;
@@ -26,29 +51,29 @@
   --accent-glow: rgba(16, 185, 129, 0.3);
 }
 
-/* Notion Light Theme */
+/* Notion Light Theme (Updated for Shift) */
 [data-theme="light"] {
-  /* Backgrounds - Warm off-whites */
+  /* Backgrounds - Clean whites */
   --bg-root: #ffffff;
-  --bg-panel: #f7f6f3;
-  --bg-hover: #f1f0ed;
-  --bg-active: #e9e8e4;
-  --bg-subtle: #fafaf9;
+  --bg-panel: #fcfcfd;
+  --bg-hover: #f4f4f5;
+  --bg-active: #e4e4e7;
+  --bg-subtle: #f9fafb;
 
-  /* Borders - Warm grays */
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-default: rgba(0, 0, 0, 0.09);
-  --border-highlight: rgba(0, 0, 0, 0.16);
+  /* Borders - Indigo hints */
+  --border-subtle: rgba(99, 102, 241, 0.06);
+  --border-default: rgba(99, 102, 241, 0.1);
+  --border-highlight: rgba(99, 102, 241, 0.2);
 
   /* Text */
-  --text-primary: #37352f;
-  --text-secondary: #6b6b6b;
-  --text-tertiary: #9b9a97;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
 
-  /* Accents - Rich blacks */
-  --accent-primary: #2b2b2b;
-  --accent-secondary: #505050;
-  --accent-glow: rgba(0, 0, 0, 0.1);
+  /* Accents - Indigo */
+  --accent-primary: #4f46e5;
+  --accent-secondary: #7c3aed;
+  --accent-glow: rgba(79, 70, 229, 0.1);
 }
 
 @theme inline {

@@ -16,7 +16,7 @@ export const config = {
   host: process.env.HOST ?? "0.0.0.0",
   corsOrigin: process.env.CORS_ORIGIN ?? "*",
   redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
-  databaseUrl: process.env.DATABASE_URL || "postgres://hatch:hatch_dev_password@localhost:5432/hatch_db",
+  databaseUrl: process.env.DATABASE_URL || "postgres://shift:shift_dev_password@localhost:5432/shift_db",
   analyzerUrl: process.env.ANALYZER_URL || "http://127.0.0.1:8000",
   jwtSecret: process.env.JWT_SECRET || 'dev-secret-key-123',
   openaiApiKey: process.env.OPENAI_API_KEY,

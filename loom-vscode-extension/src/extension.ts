@@ -13,7 +13,7 @@ let sidebarProvider: SidebarProvider;
 let authManager: AuthManager;
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Loom AI Command Extension is now active!');
+    console.log('Shift AI Bridge extension is now active!');
 
     // Initialize AuthManager
     authManager = new AuthManager(context);
@@ -24,43 +24,40 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Create status bar item
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    statusBarItem.text = "$(sync~spin) Loom: Connecting...";
+    statusBarItem.text = "$(sync~spin) Shift AI: Connecting...";
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
     // Initial check for connection
     authManager.getApiKey().then(apiKey => {
         if (apiKey) {
-            statusBarItem.text = "$(cloud) Loom";
-            statusBarItem.tooltip = "Loom: Connected";
+            statusBarItem.text = "$(cloud) Shift AI";
+            statusBarItem.tooltip = "Shift AI: Connected";
             statusBarItem.command = undefined;
             startCommandPolling(apiKey);
             startSyncService(apiKey);
             startPeriodicAnalysis(apiKey);
         } else {
-            statusBarItem.text = "$(cloud-offline) Loom: Not Connected";
-            statusBarItem.tooltip = "Click to connect with Loom API Key";
-            statusBarItem.command = 'loom.connect';
+            statusBarItem.text = "$(cloud-offline) Shift AI: Offline";
+            statusBarItem.tooltip = "Click to connect with Shift AI";
+            statusBarItem.command = 'shift.connect';
         }
     });
 
     // Register commands
-    const connectCommand = vscode.commands.registerCommand('loom.connect', async () => {
+    const connectCommand = vscode.commands.registerCommand('shift.connect', async () => {
         await startConnection();
     });
 
-    const reanalyzeCommand = vscode.commands.registerCommand('loom.reanalyze', async () => {
+    const reanalyzeCommand = vscode.commands.registerCommand('shift.reanalyze', async () => {
         const apiKey = await authManager.getApiKey();
         if (!apiKey) {
-            vscode.window.showErrorMessage('Loom AI: Not connected.');
-            return;
-        }
-        vscode.window.showInformationMessage('Loom AI: Starting manual analysis...');
-        await runAndReportAnalysis(apiKey);
-    });
+            vscode.window.showInformationMessage('Shift AI: Starting manual analysis...');
+            await runAndReportAnalysis(apiKey);
+        });
 
-    const disconnectCommand = vscode.commands.registerCommand('loom.disconnect', async () => {
-        const confirm = await vscode.window.showWarningMessage('Are you sure you want to disconnect Loom?', 'Yes', 'No');
+    const disconnectCommand = vscode.commands.registerCommand('shift.disconnect', async () => {
+        const confirm = await vscode.window.showWarningMessage('Are you sure you want to disconnect Shift AI?', 'Yes', 'No');
         if (confirm === 'Yes') {
             const apiKey = await authManager.getApiKey();
             if (apiKey) {
@@ -74,18 +71,18 @@ export function activate(context: vscode.ExtensionContext) {
                 }
             }
             await authManager.deleteApiKey();
-            vscode.window.showInformationMessage('Loom AI: Disconnected.');
+            vscode.window.showInformationMessage('Shift AI: Disconnected.');
             // Stop services
             if (pollInterval) clearInterval(pollInterval);
-            statusBarItem.text = "$(cloud-offline) Loom: Not Connected";
-            statusBarItem.command = 'loom.connect';
-            statusBarItem.tooltip = "Click to connect with Loom API Key";
+            statusBarItem.text = "$(cloud-offline) Shift AI: Offline";
+            statusBarItem.command = 'shift.connect';
+            statusBarItem.tooltip = "Click to connect with Shift AI";
             // Notify sidebar
             sidebarProvider.notifyConnectionStateChanged(false);
         }
     });
 
-    const importProjectCommand = vscode.commands.registerCommand('loom.importProject', async () => {
+    const importProjectCommand = vscode.commands.registerCommand('shift.importProject', async () => {
         const executor = new CommandExecutor();
         // Since this is manual, we might need to ask for project ID or list them
         // For now, let's just trigger the flow
@@ -93,10 +90,10 @@ export function activate(context: vscode.ExtensionContext) {
         // This command is primarily used via jobs, but we register it just in case
     });
 
-    const figmaBridgeCommand = vscode.commands.registerCommand('loom.figmaBridge', async () => {
+    const figmaBridgeCommand = vscode.commands.registerCommand('shift.figmaBridge', async () => {
         const apiKey = await authManager.getApiKey();
         if (!apiKey) {
-            vscode.window.showErrorMessage('Loom AI: Please connect to Loom first.');
+            vscode.window.showErrorMessage('Shift AI: Please connect to Shift AI first.');
             return;
         }
 
@@ -186,7 +183,7 @@ export function activate(context: vscode.ExtensionContext) {
                 const queryParams = new URLSearchParams(uri.query);
                 const pairingId = queryParams.get('pairing_id');
                 if (pairingId) {
-                    vscode.window.showInformationMessage('Loom: Connection request received from browser.');
+                    vscode.window.showInformationMessage('Shift AI: Connection request received from browser.');
                     pollForConnection(pairingId);
                 }
             }
@@ -370,10 +367,10 @@ async function pollAndExecuteJobs(apiKey: string): Promise<void> {
             console.log('Loom: Session invalidated, logging out...');
             await authManager.deleteApiKey();
             if (pollInterval) clearInterval(pollInterval);
-            statusBarItem.text = "$(cloud-offline) Loom: Not Connected";
-            statusBarItem.command = 'loom.connect';
+            statusBarItem.text = "$(cloud-offline) Shift AI: Offline";
+            statusBarItem.command = 'shift.connect';
             sidebarProvider.notifyConnectionStateChanged(false);
-            vscode.window.showWarningMessage('Loom: Session expired or disconnected from web.');
+            vscode.window.showWarningMessage('Shift AI: Session expired or disconnected from web.');
         }
     }
 }
@@ -448,7 +445,7 @@ async function runAndReportAnalysis(apiKey: string) {
 }
 
 function getConfig() {
-    const config = vscode.workspace.getConfiguration('loom');
+    const config = vscode.workspace.getConfiguration('shift');
     return {
         apiUrl: config.get<string>('apiUrl') || 'http://localhost:4000'
     };

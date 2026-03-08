@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth.service';
-import { HatchLogo } from '@/components/brand/HatchLogo';
+import { ShiftLogo } from '@/components/brand/ShiftLogo';
 import { PageTransition } from '@/components/ui/PageTransition';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
@@ -77,8 +77,8 @@ export default function SignupPage() {
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="flex items-center justify-center gap-3 mb-8">
-                        <HatchLogo size={40} />
-                        <span className="text-2xl font-medium text-[var(--text-primary)]">Hatch</span>
+                        <ShiftLogo size={40} />
+                        <span className="text-2xl font-medium text-[var(--text-primary)]">Shift AI</span>
                     </div>
 
                     {/* Signup Form */}

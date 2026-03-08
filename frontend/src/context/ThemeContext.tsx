@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'dark' | 'light' | 'system';
+type Theme = 'dark' | 'light' | 'system' | 'emerald';
 
 interface ThemeContextType {
     theme: Theme;
@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setMounted(true);
         // Load stored theme or default to system
-        const stored = localStorage.getItem('hatch-theme') as Theme;
+        const stored = localStorage.getItem('shift-theme') as Theme;
         if (stored) setTheme(stored);
     }, []);
 
@@ -26,16 +26,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         if (!mounted) return;
 
         const root = window.document.documentElement;
-        root.classList.remove('light', 'dark');
+        root.classList.remove('light', 'dark', 'emerald');
 
         if (theme === 'system') {
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             root.setAttribute('data-theme', systemTheme);
         } else {
             root.setAttribute('data-theme', theme);
+            if (theme !== 'system') {
+                root.classList.add(theme);
+            }
         }
 
-        localStorage.setItem('hatch-theme', theme);
+        localStorage.setItem('shift-theme', theme);
     }, [theme, mounted]);
 
     // Prevent hydration mismatch

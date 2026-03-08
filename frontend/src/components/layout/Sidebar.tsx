@@ -17,7 +17,7 @@ import {
     Search,
     User
 } from "lucide-react";
-import { HatchLogo } from "@/components/brand/HatchLogo";
+import { ShiftLogo } from "@/components/brand/ShiftLogo";
 import clsx from "clsx";
 import { socketService } from "@/services/socket";
 
@@ -115,11 +115,11 @@ export function Sidebar() {
                     !isExpanded && "justify-center w-full"
                 )}>
                     <div className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border-subtle)] shadow-sm">
-                        <div className="w-3 h-3 bg-[var(--text-primary)] rounded-sm" />
+                        <ShiftLogo size={20} />
                     </div>
                     {isExpanded && (
                         <div className="flex flex-col animate-fadeIn">
-                            <span className="text-[var(--text-primary)] text-[15px] leading-none">Hatch</span>
+                            <span className="text-[var(--text-primary)] text-[15px] leading-none">Shift AI</span>
                             <span className="text-[var(--text-tertiary)] text-[11px] font-medium mt-0.5">Workspace</span>
                         </div>
                     )}
@@ -144,12 +144,12 @@ export function Sidebar() {
                     !isExpanded && "p-0 bg-transparent border-0 justify-center h-10 w-10 mx-auto"
                 )}>
                     <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-[var(--accent-secondary)] flex items-center justify-center text-[10px] text-white font-bold shrink-0">
-                        L
+                        S
                     </div>
                     {isExpanded && (
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                                <span className="text-[13px] font-medium text-[var(--text-primary)] truncate">Hatch Environment</span>
+                                <span className="text-[13px] font-medium text-[var(--text-primary)] truncate">Shift Environment</span>
                             </div>
                             <div className="text-[11px] text-[var(--text-secondary)] truncate">Pro Plan</div>
                         </div>

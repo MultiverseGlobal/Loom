@@ -50,7 +50,7 @@ export default function LandingPage() {
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="text-[20px] text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto leading-relaxed"
                         >
-                            When you outgrow visual builders like Webflow, Bubble, or Glide, Hatch helps you migrate your project to an IDE cleanly — with developer-ready code you can actually maintain.
+                            When you outgrow visual builders like Webflow, Bubble, or Glide, Shift AI helps you migrate your project to an IDE cleanly — with developer-ready code you can actually maintain.
                         </motion.p>
 
                         <motion.div
@@ -93,21 +93,21 @@ export default function LandingPage() {
                                 </div>
                                 <div className="ml-4 flex items-center gap-2 px-3 py-1 rounded bg-[var(--bg-root)] border border-[var(--border-subtle)] text-[11px] text-[var(--text-secondary)] font-mono">
                                     <Terminal size={10} />
-                                    <span>hatch-cli.ts</span>
+                                    <span>shift-cli.ts</span>
                                 </div>
                             </div>
                             <div className="p-8 font-mono text-[13px] text-left overflow-hidden">
                                 <div className="space-y-1">
                                     <div className="flex gap-4">
                                         <span className="text-[var(--text-tertiary)] w-6 text-right select-none">1</span>
-                                        <span className="text-blue-400">import</span> <span className="text-[var(--text-primary)]">{`{ Migration }`}</span> <span className="text-blue-400">from</span> <span className="text-green-400">'@hatch/engine'</span>;
+                                        <span className="text-blue-400">import</span> <span className="text-[var(--text-primary)]">{`{ Migration }`}</span> <span className="text-blue-400">from</span> <span className="text-green-400">'@shift/engine'</span>;
                                     </div>
                                     <div className="flex gap-4">
                                         <span className="text-[var(--text-tertiary)] w-6 text-right select-none">2</span>
                                     </div>
                                     <div className="flex gap-4">
                                         <span className="text-[var(--text-tertiary)] w-6 text-right select-none">3</span>
-                                        <span className="text-purple-400">const</span> <span className="text-yellow-400">initHatch</span> <span className="text-[var(--text-primary)]">=</span> <span className="text-purple-400">async</span> () <span className="text-purple-400">={'>'}</span> {`{`}
+                                        <span className="text-purple-400">const</span> <span className="text-yellow-400">initShift</span> <span className="text-[var(--text-primary)]">=</span> <span className="text-purple-400">async</span> () <span className="text-purple-400">={'>'}</span> {`{`}
                                     </div>
                                     <div className="flex gap-4">
                                         <span className="text-[var(--text-tertiary)] w-6 text-right select-none">4</span>
@@ -142,7 +142,7 @@ export default function LandingPage() {
                                         </div>
                                         <div className="flex justify-between">
                                             <span>GitHub Repo:</span>
-                                            <span className="text-blue-400 underline decoration-blue-400/30">hatch-engine/migration-demo</span>
+                                            <span className="text-blue-400 underline decoration-blue-400/30">shift-engine/migration-demo</span>
                                         </div>
                                     </div>
                                 </div>
@@ -220,9 +220,9 @@ export default function LandingPage() {
                             <div className="col-span-2">
                                 <Link href="/" className="flex items-center gap-2 mb-6">
                                     <div className="w-8 h-8 rounded-lg bg-[var(--accent-primary)]/10 flex items-center justify-center">
-                                        <Zap size={18} className="text-[var(--accent-primary)]" />
+                                        <ShiftLogo size={18} />
                                     </div>
-                                    <span className="text-[18px] font-bold text-[var(--text-primary)] tracking-tight">Hatch</span>
+                                    <span className="text-[18px] font-bold text-[var(--text-primary)] tracking-tight">Shift AI</span>
                                 </Link>
                                 <p className="text-[14px] text-[var(--text-secondary)] mb-6 max-w-xs">
                                     Bridging the gap between visual builders and real engineering environments.
@@ -278,7 +278,7 @@ export default function LandingPage() {
                         </div>
 
                         <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col md:flex-row items-center justify-between gap-4 text-[13px] text-[var(--text-tertiary)]">
-                            <div>© 2026 Hatch Inc. All rights reserved.</div>
+                            <div>© 2026 Shift AI Inc. All rights reserved.</div>
                             <div className="flex items-center gap-6">
                                 <span>Made by developers for developers</span>
                             </div>

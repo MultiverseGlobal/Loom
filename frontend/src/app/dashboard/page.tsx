@@ -203,7 +203,7 @@ export default function DashboardPage() {
                     <div className="hidden group-hover/device:flex items-center gap-2 mt-0.5 animate-fadeIn">
                       {connectedDevices[0].status !== 'online' && (
                         <button
-                          onClick={() => window.location.href = `vscode://LoomAI.loom-dev-bridge/connect?pairing_id=${connectedDevices[0].id}`}
+                          onClick={() => window.location.href = `vscode://ShiftAI.shift-dev-bridge/connect?pairing_id=${connectedDevices[0].id}`}
                           className="text-[10px] text-[var(--accent-primary)] hover:underline"
                         >
                           Open IDE
@@ -282,7 +282,7 @@ export default function DashboardPage() {
             </div>
             <h3 className="text-[15px] font-medium text-[var(--text-primary)] mb-1">Generate App</h3>
             <p className="text-[13px] text-[var(--text-secondary)]">
-              Describe your idea and let Hatch build the architecture.
+              Describe your idea and let Shift AI build the architecture.
             </p>
           </div>
 

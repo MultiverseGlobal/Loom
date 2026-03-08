@@ -1,15 +1,15 @@
 {
-    "name": "hatch-dev-bridge",
-    "displayName": "Hatch Migration Extension",
-    "description": "The official bridge between Hatch and your local development environment.",
+    "name": "shift-dev-bridge",
+    "displayName": "Shift AI Bridge",
+    "description": "The official bridge between Shift AI and your local development environment.",
     "version": "2.0.8",
-    "publisher": "Hatch",
+    "publisher": "ShiftAI",
     "icon": "media/icon.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/hatch/hatch"
     },
-    "homepage": "https://hatch.dev",
+    "homepage": "https://shiftai.dev",
     "engines": {
         "vscode": "^1.80.0"
     },
@@ -61,11 +61,11 @@
             ]
         },
         "views": {
-            "loom-explorer": [
+            "shift-explorer": [
                 {
                     "type": "webview",
-                    "id": "loom.sidebar",
-                    "name": "Hatch Assistant",
+                    "id": "shift.sidebar",
+                    "name": "Shift Assistant",
                     "icon": "media/logo.svg"
                 }
             ]

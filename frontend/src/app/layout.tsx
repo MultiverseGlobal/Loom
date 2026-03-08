@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hatch | Convert no-code projects into developer-ready code",
+  title: "Shift AI | Convert no-code projects into developer-ready code",
   description:
     "Import from Webflow, Bubble, or Glide. Get a clean, developer-ready codebase instantly.",
   icons: {

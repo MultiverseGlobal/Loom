@@ -1,4 +1,4 @@
-# Loom AI - Setup Guide
+# Shift AI - Setup Guide
 
 ## Prerequisites
 
@@ -99,7 +99,6 @@ RUN_WORKER=true node dist/server.js
 - `/analyzer/refactor` - Refactoring suggestions
 
 ✅ **Frontend:**
-- Beautiful dashboard UI
 - All MVP pages rendered
 - Static data (needs API integration)
 
