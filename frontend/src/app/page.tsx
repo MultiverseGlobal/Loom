@@ -1,6 +1,7 @@
 "use client";
 
 import { LandingNav } from '@/components/landing/LandingNav';
+import { ShiftLogo } from '@/components/brand/ShiftLogo';
 import Link from 'next/link';
 import { ArrowRight, Zap, Code, Github, Terminal, CheckCircle2, Sparkles, FileCode, Layers, Info } from 'lucide-react';
 import { PageTransition } from '@/components/ui/PageTransition';

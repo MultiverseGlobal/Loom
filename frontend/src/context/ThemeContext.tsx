@@ -33,9 +33,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             root.setAttribute('data-theme', systemTheme);
         } else {
             root.setAttribute('data-theme', theme);
-            if (theme !== 'system') {
-                root.classList.add(theme);
-            }
+            root.classList.add(theme);
         }
 
         localStorage.setItem('shift-theme', theme);

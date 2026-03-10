@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { HatchLogo } from '@/components/brand/HatchLogo';
+import { ShiftLogo } from '@/components/brand/ShiftLogo';
 import { motion } from 'framer-motion';
 
 export function LandingNav() {
@@ -14,10 +14,10 @@ export function LandingNav() {
                         whileHover={{ rotate: 180 }}
                         transition={{ duration: 0.5, ease: "easeInOut" }}
                     >
-                        <HatchLogo size={32} />
+                        <ShiftLogo size={32} />
                     </motion.div>
                     <span className="text-[16px] font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
-                        Hatch
+                        Shift AI
                     </span>
                 </Link>
 

@@ -39,7 +39,7 @@ function SettingsContent() {
 
     useEffect(() => {
         const loadUser = async () => {
-            const u = await authService.getUser();
+            const u = (await authService.getUser()) as any;
             if (u) {
                 setUser(u);
                 setDisplayName(u.user_metadata?.full_name || "");
@@ -52,7 +52,7 @@ function SettingsContent() {
     const handleSaveProfile = async () => {
         setIsSaving(true);
         // Simulate API call delay
-        await new Promise(r => setTimeout(r, 800));
+        await new Promise<void>(resolve => setTimeout(resolve, 800));
 
         // In a real app, we'd call supabase.auth.updateUser({ data: { full_name: displayName, avatar_url: avatarUrl } })
         // For MVP, we'll just mock the success state locally since we might not have the update logic in authService yet.
@@ -74,7 +74,7 @@ function SettingsContent() {
 
     // Group tabs by section
     const sections = ["Personal", "Development", "Workspace"];
-    const groupedTabs = sections.reduce((acc, section) => {
+    const groupedTabs = sections.reduce((acc: Record<string, typeof tabs>, section) => {
         acc[section] = tabs.filter(tab => tab.section === section);
         return acc;
     }, {} as Record<string, typeof tabs>);
@@ -311,7 +311,7 @@ function AIEngineSettings() {
             const { fetchAPI } = await import("@/utils/api");
             const data = await fetchAPI<any>('/settings');
             setSettings(data);
-        } catch (e) {
+        } catch (e: any) {
             console.error("Failed to load AI settings", e);
         } finally {
             setIsLoading(false);
@@ -331,7 +331,7 @@ function AIEngineSettings() {
                 body: JSON.stringify(updates)
             });
             setSettings(data);
-        } catch (e) {
+        } catch (e: any) {
             console.error("Failed to update AI settings", e);
         } finally {
             setIsSaving(false);
@@ -389,7 +389,7 @@ function AIEngineSettings() {
                 </p>
                 <textarea
                     value={settings?.custom_instructions || ""}
-                    onChange={(e) => setSettings({ ...settings, custom_instructions: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSettings({ ...settings, custom_instructions: e.target.value })}
                     onBlur={() => handleUpdate({ custom_instructions: settings.custom_instructions })}
                     placeholder="e.g. Always use TypeScript, keep explanations concise, focus on performance..."
                     className="w-full h-32 px-3 py-2 rounded-lg bg-[var(--bg-root)] border border-[var(--border-default)] text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-primary)] resize-none"

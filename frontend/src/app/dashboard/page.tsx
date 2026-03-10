@@ -79,7 +79,7 @@ export default function DashboardPage() {
       const { data: { session } } = await createClient().auth.getSession();
       if (!session) return;
 
-      const data = await fetchAPI('/extensions/devices', {
+      const data = await fetchAPI<any[]>('/extensions/devices', {
         headers: {
           'Authorization': `Bearer ${session.access_token}`
         }
