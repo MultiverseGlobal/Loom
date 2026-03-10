@@ -6,7 +6,7 @@ import { authService } from '@/services/auth.service';
 import { ShiftLogo } from '@/components/brand/ShiftLogo';
 import { PageTransition } from '@/components/ui/PageTransition';
 import Link from 'next/link';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Github } from 'lucide-react';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -33,6 +33,16 @@ export default function LoginPage() {
         }
     };
 
+    const handleGithubLogin = async () => {
+        setLoading(true);
+        setError('');
+        const { error: githubError } = await authService.signInWithGithub();
+        if (githubError) {
+            setError(githubError.message);
+            setLoading(false);
+        }
+    };
+
     return (
         <PageTransition>
             <div className="min-h-screen bg-[var(--bg-root)] flex items-center justify-center p-4">
@@ -54,6 +64,24 @@ export default function LoginPage() {
                                 {error}
                             </div>
                         )}
+
+                        <button
+                            onClick={handleGithubLogin}
+                            disabled={loading}
+                            className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[var(--bg-root)] border border-[var(--border-default)] hover:border-[var(--border-highlight)] text-[var(--text-primary)] font-medium rounded-lg transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <Github size={20} />
+                            Continue with GitHub
+                        </button>
+
+                        <div className="relative mb-6">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-[var(--border-subtle)]"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-[var(--bg-panel)] text-[var(--text-tertiary)]">Or continue with email</span>
+                            </div>
+                        </div>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
