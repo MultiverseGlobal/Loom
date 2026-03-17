@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase-server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
     if (code) {
         console.log(`[AUTH CALLBACK] Exchanging code: ${code.substring(0, 5)}...`);
-        const supabase = createClient();
+        const supabase = await createClient();
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (error) {
             console.error('[AUTH CALLBACK] Exchange failed:', error);
