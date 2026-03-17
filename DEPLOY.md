@@ -35,7 +35,26 @@ We will deploy the backend first so we have the API URL for the frontend.
 
 ---
 
-## Part 2: Frontend Deployment (Vercel)
+---
+
+## Part 2: Analyzer Deployment (Render)
+
+The Analyzer is a Python service that needs its own hosting.
+
+1.  **Deploy on Render.com**
+    - Click **New +** -> **Web Service**.
+    - Connect your GitHub repository.
+    - **Root Directory**: `backend/analyzer`
+    - **Runtime**: `Docker` (Render will automatically detect the Dockerfile)
+    - **Environment Variables**:
+        - `OPENAI_API_KEY`: (Copy from your .env)
+        - `GEMINI_API_KEY`: (Copy from your .env)
+        - `ANTHROPIC_API_KEY`: (Copy from your .env)
+        - `PORT`: `8000`
+
+---
+
+## Part 3: Frontend Deployment (Vercel)
 
 1.  **Deploy on Vercel**
     - Sign up/Login to [Vercel](https://vercel.com).
@@ -46,18 +65,26 @@ We will deploy the backend first so we have the API URL for the frontend.
     - **Environment Variables**:
         - `NEXT_PUBLIC_SUPABASE_URL`: (Copy from .env.local)
         - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: (Copy from .env.local)
-        - `NEXT_PUBLIC_API_URL`: **(The URL from Render, e.g. `https://loom-gateway.onrender.com`)**
-
-2.  **Update Backend CORS**
-    - Once Vercel deploys, you will get a URL (e.g., `https://loom-frontend-xyz.vercel.app`).
-    - Go back to **Render Dashboard** -> **Environment**.
-    - Add/Update `CORS_ORIGIN` to your Vercel URL.
+        - `NEXT_PUBLIC_API_URL`: **(The URL from Render Gateway, e.g. `https://loom-gateway.onrender.com`)**
 
 ---
 
-## Part 3: Verify
+## Part 4: Final Linkage
+
+1.  **Link Gateway to Analyzer**
+    - Go back to your **Backend (Gateway)** on Render.
+    - Add/Update the following environment variable:
+        - `ANALYZER_URL`: **(The URL from Render Analyzer, e.g. `https://loom-analyzer.onrender.com`)**
+
+2.  **Update Backend CORS**
+    - Go to **Backend (Gateway)** -> **Environment**.
+    - Add/Update `CORS_ORIGIN`: `https://shiftai-three.vercel.app` (or your actual Vercel URL).
+
+---
+
+## Part 5: Verify
 
 1.  Open your Vercel URL.
 2.  Login with Supabase Auth.
 3.  Check if Dashboard loads.
-4.  Try creating a project (this hits the Backend).
+4.  Try creating a project and running an analysis.
