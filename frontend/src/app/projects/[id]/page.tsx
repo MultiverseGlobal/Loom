@@ -39,7 +39,10 @@ export default function ProjectDetailPage() {
 
                 // Set initial code from latest analysis/file if available
                 if (analysesData.length > 0) {
-                    setCurrentCode(analysesData[0].result_json.code || "");
+                    const latest = analysesData[0].result_json;
+                    // Try to find code, fall back to blueprint JSON if needed
+                    const code = latest.analysis?.code || latest.code || (latest.blueprint ? JSON.stringify(latest.blueprint, null, 2) : "");
+                    setCurrentCode(code);
                 }
             } catch (err) {
                 console.error("Load project data error:", err);
@@ -136,11 +139,15 @@ export default function ProjectDetailPage() {
                         <div className="p-6 rounded-2xl bg-[#8b5cf6]/5 border border-[#8b5cf6]/10 space-y-4">
                             <h3 className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest">Health Score</h3>
                             <div className="flex items-end gap-2">
-                                <span className="text-4xl font-bold text-[#8b5cf6]">94</span>
+                                <span className="text-4xl font-bold text-[#8b5cf6]">
+                                    {analyses.length > 0 ? (analyses[0].result_json.analysis?.score || 100) : 100}
+                                </span>
                                 <span className="text-xs text-[#8b5cf6]/60 mb-1">/ 100</span>
                             </div>
                             <p className="text-[11px] text-[#8b5cf6]/80 leading-relaxed">
-                                Architecture is optimal. AI has corrected 4 syntax drifts in the latest generation cycle.
+                                {analyses.length > 0 
+                                    ? (analyses[0].result_json.analysis?.summary || "Architecture is optimal. AI-ready for production.")
+                                    : "Architecture is optimal. AI-ready for production."}
                             </p>
                         </div>
                     </div>
@@ -156,11 +163,13 @@ export default function ProjectDetailPage() {
 
                 {/* Healing Panel (Sidebar) */}
                 <HealingPanel 
-                    events={[
-                        { id: '1', type: 'fix', message: 'Cleaned Webflow ID', detail: 'Removed data-wf-page attribute to prevent React hydration errors.', timestamp: new Date() },
-                        { id: '2', type: 'optimization', message: 'Tailwind Conversion', detail: 'Mapped 14 custom CSS classes to native Tailwind utilities.', timestamp: new Date(Date.now() - 50000) },
-                        { id: '3', type: 'info', message: 'Semantic Header', detail: 'Converted div.header to semantic <header> element.', timestamp: new Date(Date.now() - 120000) }
-                    ]}
+                    events={analyses.flatMap(analysis => (analysis.result_json.analysis?.issues || []).map((issue: any, index: number) => ({
+                        id: `${analysis.id}-${index}`,
+                        type: issue.type === 'error' || issue.type === 'warning' ? 'fix' : (issue.type === 'info' ? 'info' : 'optimization'),
+                        message: issue.message,
+                        detail: issue.detail,
+                        timestamp: new Date(analysis.created_at)
+                    })))}
                 />
             </div>
         </div>
