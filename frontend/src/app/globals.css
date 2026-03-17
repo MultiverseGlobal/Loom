@@ -3,6 +3,7 @@
 /* Default Theme (Shift AI - Indigo/Violet) - NOW LIGHT BY DEFAULT */
 :root,
 [data-theme="light"] {
+  color-scheme: light;
   /* Backgrounds - Clean whites */
   --bg-root: #ffffff;
   --bg-panel: #fcfcfd;
@@ -27,6 +28,7 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
   /* Backgrounds - Deep blacks with subtle violet tint */
   --bg-root: #050507;
   --bg-panel: #0d0d12;

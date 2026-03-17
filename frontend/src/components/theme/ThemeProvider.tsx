@@ -12,13 +12,13 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState<Theme>('dark');
+    const [theme, setTheme] = useState<Theme>('light');
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
         // Load theme from localStorage
-        const savedTheme = localStorage.getItem('loom-theme') as Theme;
+        const savedTheme = localStorage.getItem('shift-theme-v3') as Theme;
         if (savedTheme) {
             setTheme(savedTheme);
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -28,7 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
-        localStorage.setItem('loom-theme', newTheme);
+        localStorage.setItem('shift-theme-v3', newTheme);
         document.documentElement.setAttribute('data-theme', newTheme);
     };
 

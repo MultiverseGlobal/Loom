@@ -17,8 +17,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         setMounted(true);
-        // Load stored theme or default to system
-        const stored = localStorage.getItem('shift-theme') as Theme;
+        // Load stored theme or default to light
+        const stored = localStorage.getItem('shift-theme-v3') as Theme;
         if (stored) setTheme(stored);
     }, []);
 
@@ -36,7 +36,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             root.classList.add(theme);
         }
 
-        localStorage.setItem('shift-theme', theme);
+        localStorage.setItem('shift-theme-v3', theme);
     }, [theme, mounted]);
 
     // Prevent hydration mismatch
