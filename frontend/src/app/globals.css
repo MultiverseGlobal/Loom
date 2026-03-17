@@ -1,7 +1,31 @@
 @import "tailwindcss";
 
-/* Default Theme (Shift AI - Indigo/Violet) */
+/* Default Theme (Shift AI - Indigo/Violet) - NOW LIGHT BY DEFAULT */
 :root,
+[data-theme="light"] {
+  /* Backgrounds - Clean whites */
+  --bg-root: #ffffff;
+  --bg-panel: #fcfcfd;
+  --bg-hover: #f4f4f5;
+  --bg-active: #e4e4e7;
+  --bg-subtle: #f9fafb;
+
+  /* Borders - Indigo hints */
+  --border-subtle: rgba(99, 102, 241, 0.06);
+  --border-default: rgba(99, 102, 241, 0.1);
+  --border-highlight: rgba(99, 102, 241, 0.2);
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+
+  /* Accents - Indigo */
+  --accent-primary: #4f46e5;
+  --accent-secondary: #7c3aed;
+  --accent-glow: rgba(79, 70, 229, 0.1);
+}
+
 [data-theme="dark"] {
   /* Backgrounds - Deep blacks with subtle violet tint */
   --bg-root: #050507;
@@ -51,30 +75,6 @@
   --accent-glow: rgba(16, 185, 129, 0.3);
 }
 
-/* Notion Light Theme (Updated for Shift) */
-[data-theme="light"] {
-  /* Backgrounds - Clean whites */
-  --bg-root: #ffffff;
-  --bg-panel: #fcfcfd;
-  --bg-hover: #f4f4f5;
-  --bg-active: #e4e4e7;
-  --bg-subtle: #f9fafb;
-
-  /* Borders - Indigo hints */
-  --border-subtle: rgba(99, 102, 241, 0.06);
-  --border-default: rgba(99, 102, 241, 0.1);
-  --border-highlight: rgba(99, 102, 241, 0.2);
-
-  /* Text */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
-
-  /* Accents - Indigo */
-  --accent-primary: #4f46e5;
-  --accent-secondary: #7c3aed;
-  --accent-glow: rgba(79, 70, 229, 0.1);
-}
 
 @theme inline {
   --color-bg-root: var(--bg-root);
