@@ -27,7 +27,8 @@ export async function registerPatchRoutes(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const jobId = await enqueuePatchJob({ deltaId: request.body.deltaId });
+      const body = request.body as any;
+      const jobId = await enqueuePatchJob({ deltaId: body.deltaId });
       return reply.code(202).send({ jobId, status: "queued" });
     },
   );
@@ -43,7 +44,8 @@ export async function registerPatchRoutes(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const patch = await getPatch(request.params.id);
+      const params = request.params as any;
+      const patch = await getPatch(params.id);
       if (!patch) {
         return reply.notFound("Patch not found");
       }

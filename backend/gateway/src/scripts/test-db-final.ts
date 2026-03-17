@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import postgres from 'postgres';
-import { config } from './config.js';
+import { config } from '../config.js';
 
 async function testConnection() {
     console.error('Testing connection to:', config.databaseUrl.replace(/:[^:]+@/, ':****@'));

@@ -73,7 +73,7 @@ export async function registerCommandRoutes(app: FastifyInstance) {
 
             const body = request.body as z.infer<typeof registerDeviceSchema>;
 
-            const device = await commandService.registerDevice(
+            const device = await (commandService as any).registerDevice(
                 userId,
                 body.device_id,
                 body.ide_type,
@@ -82,7 +82,7 @@ export async function registerCommandRoutes(app: FastifyInstance) {
                 body.metadata
             );
 
-            return { device: { id: device.id, device_id: device.device_id, status: device.status } };
+            return { device: { id: device.id, device_id: (device as any).device_id, status: device.status } };
         }
     );
 

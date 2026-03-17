@@ -34,7 +34,7 @@ export async function registerRefactorRoutes(app: FastifyInstance) {
       },
     },
     async (request) => {
-      return requestRefactorSuggestions(request.body);
+      return requestRefactorSuggestions(request.body as any);
     },
   );
 }

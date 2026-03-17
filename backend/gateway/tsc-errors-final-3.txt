@@ -1,0 +1,2 @@
+﻿src/routes/projects.ts(85,27): error TS2345: Argument of type '500' is not assignable to parameter of type '200 | 400 | 404'.
+src/routes/projects.ts(258,27): error TS2345: Argument of type '500' is not assignable to parameter of type '201'.

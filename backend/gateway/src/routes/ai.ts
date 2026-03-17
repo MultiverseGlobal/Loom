@@ -38,7 +38,9 @@ export async function registerAiRoutes(app: FastifyInstance) {
             preHandler: [requireAuth],
         },
         async (request) => {
-            return listUserConversations(request.userId!);
+            const userId = (request as any).userId;
+            const convos = await listUserConversations(userId);
+            return convos as any;
         }
     );
 
@@ -57,7 +59,8 @@ export async function registerAiRoutes(app: FastifyInstance) {
         },
         async (request, reply) => {
             const { projectId, title } = request.body;
-            const id = await createConversation(request.userId!, projectId, title);
+            const userId = (request as any).userId;
+            const id = await createConversation(userId, projectId, title);
             return reply.code(201).send({ id });
         }
     );
@@ -73,7 +76,9 @@ export async function registerAiRoutes(app: FastifyInstance) {
             preHandler: [requireAuth],
         },
         async (request) => {
-            return getConversationHistory(request.params.id);
+            const params = request.params as any;
+            const history = await getConversationHistory(params.id);
+            return history as any;
         }
     );
 
@@ -93,8 +98,9 @@ export async function registerAiRoutes(app: FastifyInstance) {
             preHandler: [requireAuth],
         },
         async (request, reply) => {
+            const params = request.params as any;
             const { role, content, metadata } = request.body;
-            await addMessage(request.params.id, role, content, metadata);
+            await addMessage(params.id, role, content, metadata);
             return reply.code(201).send({ success: true });
         }
     );

@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
-import { config } from '../config';
+import { config } from '../config.js';
 import crypto from 'crypto';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
@@ -302,6 +302,8 @@ Return a JSON object with:
                     creditsUsed: modelConfig.cost
                 };
             }
+
+            throw new Error(`Model ${selectedModel} is not supported`);
 
         } catch (error: any) {
             console.error(`Fix generation failed with ${selectedModel}:`, error);

@@ -118,29 +118,114 @@ export class GithubService {
     }
 
     /**
-     * Fetch content of a specific file
+     * Push multiple files to a repository in a single commit
      */
-    async getFileContent(owner: string, repo: string, path: string): Promise<string> {
+    async pushFiles(owner: string, repo: string, files: Array<{ path: string; content: string }>, message: string, branch = 'main'): Promise<string> {
         try {
-            const response = await this.octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-                owner,
-                repo,
-                path,
-                headers: {
-                    'X-GitHub-Api-Version': '2022-11-28'
-                }
-            });
+            // 1. Get the latest commit SHA of the branch
+            let baseTreeSha: string | undefined;
+            let parentCommitSha: string | undefined;
 
-            // Content is base64 encoded
-            if (Array.isArray(response.data) || !response.data.content) {
-                throw new Error("Path is a directory, not a file");
+            try {
+                const refResponse = await this.octokit.request('GET /repos/{owner}/{repo}/git/ref/heads/{ref}', {
+                    owner,
+                    repo,
+                    ref: branch,
+                    headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+                });
+                parentCommitSha = refResponse.data.object.sha;
+
+                const commitResponse = await this.octokit.request('GET /repos/{owner}/{repo}/git/commits/{commit_sha}', {
+                    owner,
+                    repo,
+                    commit_sha: parentCommitSha!,
+                    headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+                });
+                baseTreeSha = commitResponse.data.tree.sha;
+            } catch (err: any) {
+                // If branch doesn't exist, we might be on an empty repo
+                console.warn(`[GithubService] Branch ${branch} not found or repo empty, starting fresh.`);
             }
 
-            const buffer = Buffer.from(response.data.content, 'base64');
-            return buffer.toString('utf-8');
+            // 2. Create the tree
+            const treeData = files.map(f => ({
+                path: f.path,
+                mode: '100644' as const,
+                type: 'blob' as const,
+                content: f.content
+            }));
 
+            const treeResponse = await this.octokit.request('POST /repos/{owner}/{repo}/git/trees', {
+                owner,
+                repo,
+                base_tree: baseTreeSha,
+                tree: treeData,
+                headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+            });
+
+            // 3. Create the commit
+            const commitResponse = await this.octokit.request('POST /repos/{owner}/{repo}/git/commits', {
+                owner,
+                repo,
+                message,
+                tree: treeResponse.data.sha,
+                parents: parentCommitSha ? [parentCommitSha] : [],
+                headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+            });
+
+            const newCommitSha = commitResponse.data.sha;
+
+            // 4. Update the reference
+            if (parentCommitSha) {
+                await this.octokit.request('PATCH /repos/{owner}/{repo}/git/refs/heads/{ref}', {
+                    owner,
+                    repo,
+                    ref: branch,
+                    sha: newCommitSha,
+                    headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+                });
+            } else {
+                // Create the ref if it didn't exist
+                await this.octokit.request('POST /repos/{owner}/{repo}/git/refs', {
+                    owner,
+                    repo,
+                    ref: `refs/heads/${branch}`,
+                    sha: newCommitSha,
+                    headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+                });
+            }
+
+            return newCommitSha;
         } catch (error) {
-            console.error(`[GithubService] Failed to fetch content for ${path}:`, error);
+            console.error(`[GithubService] Failed to push files to ${owner}/${repo}:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Create a new repository
+     */
+    async createRepo(name: string, isPrivate = true): Promise<GithubRepo> {
+        try {
+            const response = await this.octokit.request('POST /user/repos', {
+                name,
+                private: isPrivate,
+                auto_init: true, // Initialize with a README to create the default branch
+                headers: { 'X-GitHub-Api-Version': '2022-11-28' }
+            });
+
+            return {
+                id: response.data.id,
+                name: response.data.name,
+                full_name: response.data.full_name,
+                private: response.data.private,
+                html_url: response.data.html_url,
+                description: response.data.description,
+                updated_at: response.data.updated_at,
+                language: response.data.language
+            };
+        } catch (error) {
+            console.error(`[GithubService] Failed to create repo ${name}:`, error);
             throw error;
         }
     }

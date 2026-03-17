@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { figmaService } from '../services/figmaService';
-import { requireAuth } from '../middleware/supabase-auth';
+import { figmaService } from '../services/figmaService.js';
+import { requireAuth } from '../middleware/supabase-auth.js';
 
 export async function registerFigmaRoutes(server: FastifyInstance) {
 
@@ -31,7 +31,7 @@ export async function registerFigmaRoutes(server: FastifyInstance) {
         }
 
         const fileKey = match[1];
-        const fileData = await figmaService.getFileHelper(fileKey, token);
+        const fileData = await (figmaService as any).getFileHelper(fileKey, token);
 
         if (!fileData) {
             return reply.status(404).send({ error: "Figma file not found or access denied" });

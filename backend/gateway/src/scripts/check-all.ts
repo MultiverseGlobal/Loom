@@ -1,7 +1,7 @@
 import '../env.js';
-import { db } from './db/client.js';
+import { db } from '../db/client.js';
 import { createClient } from '@supabase/supabase-js';
-import { config } from './config.js';
+import { config } from '../config.js';
 
 async function runCheck() {
     console.error('--- DIAGNOSTIC START ---');
@@ -34,7 +34,7 @@ async function runCheck() {
             FROM information_schema.tables 
             WHERE table_schema = 'public'
         `;
-        console.error('   Tables found:', tables.map(t => (t as any).table_name).join(', '));
+        console.error('   Tables found:', tables.map((t: any) => (t as any).table_name).join(', '));
     } catch (err: any) {
         console.error('   FAILED: Table check error:', err.message);
     }

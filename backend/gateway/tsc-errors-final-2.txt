@@ -1,0 +1,17 @@
+﻿src/adapters/vscode.ts(8,5): error TS2300: Duplicate identifier 'UPGProp'.
+src/adapters/vscode.ts(9,5): error TS2300: Duplicate identifier 'UPGProp'.
+src/routes/projects.ts(85,29): error TS2345: Argument of type '500' is not assignable to parameter of type '200 | 400 | 404'.
+src/routes/projects.ts(258,27): error TS2345: Argument of type '500' is not assignable to parameter of type '201'.
+src/scripts/check-all.ts(2,20): error TS2307: Cannot find module './db/client.js' or its corresponding type declarations.
+src/scripts/check-all.ts(4,24): error TS2307: Cannot find module './config.js' or its corresponding type declarations.
+src/scripts/check-all.ts(37,54): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/scripts/test-db-final.ts(3,24): error TS2307: Cannot find module './config.js' or its corresponding type declarations.
+src/services/adapters/FigmaAdapter.ts(1,29): error TS2307: Cannot find module '../core/BaseAdapter.js' or its corresponding type declarations.
+src/services/adapters/FigmaAdapter.ts(2,40): error TS2305: Module '"./types.js"' has no exported member 'AdapterConfig'.
+src/services/adapters/FigmaAdapter.ts(2,55): error TS2305: Module '"./types.js"' has no exported member 'SourceProject'.
+src/services/adapters/FigmaAdapter.ts(21,36): error TS2304: Cannot find name 'axios'.
+src/services/adapters/FigmaAdapter.ts(51,44): error TS2304: Cannot find name 'BlueprintNode'.
+src/services/adapters/FigmaAdapter.ts(62,30): error TS2304: Cannot find name 'BlueprintNode'.
+src/services/adapters/ScraperAdapter.ts(3,40): error TS2305: Module '"./types.js"' has no exported member 'AdapterConfig'.
+src/services/adapters/ScraperAdapter.ts(3,55): error TS2305: Module '"./types.js"' has no exported member 'SourceProject'.
+src/services/adapters/ScraperAdapter.ts(4,23): error TS2307: Cannot find module 'puppeteer' or its corresponding type declarations.

@@ -1,5 +1,6 @@
+import { GithubService } from "../services/githubService.js";
+import { BaseIntegration, IntegrationEvent, IntegrationResponse } from "./base.js";
 import axios from "axios";
-import { BaseIntegration, type IntegrationEvent, type IntegrationResponse } from "./base";
 
 export class GitHubIntegration extends BaseIntegration {
   constructor(config: { enabled: boolean; apiKey?: string; webhookUrl?: string }) {
@@ -12,37 +13,52 @@ export class GitHubIntegration extends BaseIntegration {
     }
 
     if (event.type === "export") {
-      const { repoUrl, branch, files } = event.payload as {
-        repoUrl?: string;
+      const { repoUrl, branch, files, createRepo, repoName, isPrivate } = event.payload as {
+        repoUrl?: string; // e.g. "owner/repo"
         branch?: string;
         files?: Array<{ path: string; content: string }>;
+        createRepo?: boolean;
+        repoName?: string;
+        isPrivate?: boolean;
       };
 
-      if (!repoUrl || !files) {
-        return { success: false, error: "Missing repoUrl or files" };
+      if (!this.config.apiKey) {
+        return { success: false, error: "GitHub integration not configured (Missing API Key)" };
       }
 
+      const githubService = new GithubService(this.config.apiKey);
+
       try {
-        const response = await axios.post(
-          `https://api.github.com/repos/${repoUrl}/contents`,
-          {
-            message: `Loom AI export: ${new Date().toISOString()}`,
-            branch: branch ?? "main",
-            files,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${this.config.apiKey}`,
-              Accept: "application/vnd.github.v3+json",
-            },
-          },
+        let targetRepo = repoUrl;
+
+        // Create repo if requested
+        if (createRepo && repoName) {
+          const newRepo = await githubService.createRepo(repoName, isPrivate ?? true);
+          targetRepo = newRepo.full_name;
+        }
+
+        if (!targetRepo || !files) {
+          return { success: false, error: "Missing target repository or files to push" };
+        }
+
+        const [owner, repo] = targetRepo.split("/");
+        if (!owner || !repo) {
+          return { success: false, error: "Invalid repository format. Expected 'owner/repo'" };
+        }
+
+        const commitSha = await githubService.pushFiles(
+          owner,
+          repo,
+          files,
+          `Shift AI Migration: ${new Date().toISOString()}`,
+          branch ?? "main"
         );
 
-        return { success: true, data: { commitSha: response.data.commit?.sha } };
-      } catch (err) {
+        return { success: true, data: { commitSha, repoUrl: targetRepo } };
+      } catch (err: any) {
         return {
           success: false,
-          error: err instanceof Error ? err.message : "GitHub API error",
+          error: err.message || "GitHub integration error",
         };
       }
     }

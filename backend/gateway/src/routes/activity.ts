@@ -15,14 +15,16 @@ export async function registerActivityRoutes(app: FastifyInstance) {
         },
         preHandler: [requireAuth]
     }, async (request) => {
-        const { limit } = request.query;
+        const queryParams = request.query as { limit?: number };
+        const limit = queryParams.limit || 10;
+        const userId = (request as any).userId;
 
         let logs: any[] = [];
         try {
             logs = await db`
                 SELECT id, action, metadata, created_at
                 FROM activity_logs
-                WHERE user_id = ${request.userId}
+                WHERE user_id = ${userId}
                 ORDER BY created_at DESC
                 LIMIT ${limit}
             `;

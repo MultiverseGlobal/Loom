@@ -1,8 +1,8 @@
 
-import { BridgeAdapter, LoomBlueprint } from './types';
-import { FigmaAdapter } from './FigmaAdapter';
-import { LovableAdapter } from './LovableAdapter';
-import { ScraperAdapter } from './ScraperAdapter';
+import { BridgeAdapter, LoomBlueprint } from './types.js';
+import { FigmaAdapter } from './FigmaAdapter.js';
+import { LovableAdapter } from './LovableAdapter.js';
+import { ScraperAdapter } from './ScraperAdapter.js';
 
 class AdaptersRegistry {
     private adapters: BridgeAdapter[] = [];

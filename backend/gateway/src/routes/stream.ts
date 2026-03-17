@@ -10,30 +10,30 @@ export async function registerStreamRoutes(app: FastifyInstance) {
         const token = (req.query as { token?: string })?.token;
 
         if (!token) {
-          connection.socket.close(1008, "Missing token");
+          connection.close(1008, "Missing token");
           return;
         }
 
         validateSubscription(token).then((sub) => {
           if (!sub) {
-            connection.socket.close(1008, "Invalid or expired token");
+            connection.close(1008, "Invalid or expired token");
             return;
           }
 
           registerConnection(token, connection);
 
-          connection.socket.on("message", (message) => {
+          connection.on("message", (message: any) => {
             try {
               const data = JSON.parse(message.toString());
               if (data.type === "ping") {
-                connection.socket.send(JSON.stringify({ type: "pong", timestamp: new Date().toISOString() }));
+                connection.send(JSON.stringify({ type: "pong", timestamp: new Date().toISOString() }));
               }
             } catch (err) {
               console.error("Error handling WebSocket message:", err);
             }
           });
 
-          connection.socket.send(
+          connection.send(
             JSON.stringify({
               type: "connected",
               projectId: sub.projectId,

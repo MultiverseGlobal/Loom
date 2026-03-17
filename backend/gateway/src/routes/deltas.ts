@@ -35,7 +35,7 @@ export async function registerDeltaRoutes(app: FastifyInstance) {
       },
     },
     async (request) => {
-      const query = request.query;
+      const query = request.query as { projectId?: string };
       return listDeltas(query.projectId);
     },
   );
@@ -49,7 +49,8 @@ export async function registerDeltaRoutes(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const delta = await getDelta(request.params.id);
+      const params = request.params as { id: string };
+      const delta = await getDelta(params.id);
       if (!delta) {
         return reply.notFound("Delta not found");
       }
@@ -68,7 +69,8 @@ export async function registerDeltaRoutes(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const jobId = await enqueueDeltaScanJob(request.body);
+      const body = request.body as any;
+      const jobId = await enqueueDeltaScanJob(body);
       return reply.code(202).send({ jobId, status: "queued" });
     },
   );

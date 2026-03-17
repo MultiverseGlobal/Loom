@@ -6,7 +6,7 @@ export const db = postgres(config.databaseUrl, {
   prepare: false, // Disable prepared statements for Supabase PgBouncer (fixes XX000)
   max: 10,
   idle_timeout: 20,
-  connect_timeout: 10,
+  connect_timeout: 30,
   onnotice: () => { }, // Suppress notices
   transform: {
     undefined: null,

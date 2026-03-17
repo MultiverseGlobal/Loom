@@ -48,8 +48,8 @@ export async function createDelta(input: DeltaInput) {
   const id = randomUUID();
   await db`
     INSERT INTO project_deltas (id, project_id, source, title, impact, action, payload)
-    VALUES (${id}, ${input.projectId}, ${input.source}, ${input.title}, ${input.impact}, ${input.action}, ${db.json(
-    input.payload ?? {},
+    VALUES (${id}, ${input.projectId}, ${input.source}, ${input.title}, ${input.impact ?? null}, ${input.action ?? null}, ${db.json(
+    (input.payload as any) ?? {},
   )})
   `;
   return id;

@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { config } from '../config';
+import { config } from '../config.js';
 
 // Initialize OpenAI client
 // We allow it to fail silently if key is missing, but methods will throw

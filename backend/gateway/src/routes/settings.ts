@@ -11,9 +11,10 @@ export async function registerSettingsRoutes(app: FastifyInstance) {
     typedApp.get("/settings", {
         preHandler: [requireAuth]
     }, async (request) => {
+        const userId = (request as any).userId;
         const [settings] = await db`
 SELECT * FROM user_settings
-            WHERE user_id = ${request.userId}
+            WHERE user_id = ${userId}
 `;
 
         // If no settings exist yet, the trigger should have created them, 
@@ -40,13 +41,14 @@ SELECT * FROM user_settings
         },
         preHandler: [requireAuth]
     }, async (request) => {
-        const updates = request.body;
+        const updates = request.body as any;
+        const userId = (request as any).userId;
 
         const [updated] = await db`
             INSERT INTO user_settings(user_id, ${db(updates)})
-VALUES(${request.userId}, ${db(updates)})
+VALUES(${userId}, ${db(updates as any)})
             ON CONFLICT(user_id) DO UPDATE
-            SET ${db(updates)}, updated_at = NOW()
+            SET ${db(updates as any)}, updated_at = NOW()
 RETURNING *
     `;
 

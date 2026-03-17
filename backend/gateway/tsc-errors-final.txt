@@ -1,0 +1,48 @@
+﻿src/adapters/vscode.ts(10,5): error TS2305: Module '"../upg/schema.js"' has no exported member 'UPGSchema'.
+src/adapters/vscode.ts(11,10): error TS2305: Module '"../upg/schema.js"' has no exported member 'UPGFile'.
+src/bridge/engine.ts(1,10): error TS2305: Module '"../upg/schema.js"' has no exported member 'UpgFileNode'.
+src/bridge/engine.ts(1,23): error TS2305: Module '"../upg/schema.js"' has no exported member 'UpgGraph'.
+src/bridge/engine.ts(2,10): error TS2724: '"../adapters/vscode.js"' has no exported member named 'VsCodeAdapter'. Did you mean 'VSCodeAdapter'?
+src/bridge/engine.ts(3,10): error TS2724: '"../adapters/loveable.js"' has no exported member named 'LovableAdapter'. Did you mean 'LoveableAdapter'?
+src/bridge/engine.ts(20,11): error TS2304: Cannot find name 'UniversalProjectGraph'.
+src/bridge/engine.ts(31,28): error TS2304: Cannot find name 'VSCodeAdapter'.
+src/bridge/engine.ts(32,30): error TS2304: Cannot find name 'LoveableAdapter'.
+src/bridge/engine.ts(35,34): error TS2304: Cannot find name 'VSCodeAdapter'.
+src/bridge/engine.ts(36,36): error TS2304: Cannot find name 'LoveableAdapter'.
+src/bridge/engine.ts(49,22): error TS2304: Cannot find name 'UniversalProjectGraph'.
+src/bridge/engine.ts(130,75): error TS2304: Cannot find name 'UniversalProjectGraph'.
+src/bridge/engine.ts(147,57): error TS2304: Cannot find name 'UniversalProjectGraph'.
+src/bridge/engine.ts(173,30): error TS2304: Cannot find name 'UniversalProjectGraph'.
+src/routes/commands.ts(80,17): error TS2554: Expected 3 arguments, but got 6.
+src/routes/commands.ts(85,65): error TS2339: Property 'device_id' does not exist on type 'IdeDevice'.
+src/routes/figma.ts(34,45): error TS2339: Property 'getFileHelper' does not exist on type '{ validateToken(token: string): Promise<boolean>; getBlueprint(fileKey: string, nodeId: string, token: string): Promise<any>; convertToBlueprint(node: any): any; mapLayout(node: any): any; mapStyle(node: any): any; }'.
+src/routes/healing.ts(19,38): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'JobFailure'.
+src/routes/projects.ts(85,29): error TS2345: Argument of type '500' is not assignable to parameter of type '200 | 400 | 404'.
+src/routes/projects.ts(258,27): error TS2345: Argument of type '500' is not assignable to parameter of type '201'.
+src/routes/refactor.ts(37,41): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'RefactorRequest'.
+src/routes/stream.ts(13,22): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(19,24): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(25,22): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(25,44): error TS7006: Parameter 'message' implicitly has an 'any' type.
+src/routes/stream.ts(29,28): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(36,22): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/scripts/check-all.ts(2,20): error TS2307: Cannot find module './db/client.js' or its corresponding type declarations.
+src/scripts/check-all.ts(4,24): error TS2307: Cannot find module './config.js' or its corresponding type declarations.
+src/scripts/check-all.ts(37,54): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/scripts/test-db-final.ts(3,24): error TS2307: Cannot find module './config.js' or its corresponding type declarations.
+src/services/adapters/FigmaAdapter.ts(1,29): error TS2307: Cannot find module '../core/BaseAdapter.js' or its corresponding type declarations.
+src/services/adapters/FigmaAdapter.ts(2,40): error TS2305: Module '"./types.js"' has no exported member 'AdapterConfig'.
+src/services/adapters/FigmaAdapter.ts(2,55): error TS2305: Module '"./types.js"' has no exported member 'SourceProject'.
+src/services/adapters/FigmaAdapter.ts(21,36): error TS2304: Cannot find name 'axios'.
+src/services/adapters/FigmaAdapter.ts(51,44): error TS2304: Cannot find name 'BlueprintNode'.
+src/services/adapters/FigmaAdapter.ts(62,30): error TS2304: Cannot find name 'BlueprintNode'.
+src/services/adapters/ScraperAdapter.ts(3,40): error TS2305: Module '"./types.js"' has no exported member 'AdapterConfig'.
+src/services/adapters/ScraperAdapter.ts(3,55): error TS2305: Module '"./types.js"' has no exported member 'SourceProject'.
+src/services/adapters/ScraperAdapter.ts(4,23): error TS2307: Cannot find module 'puppeteer' or its corresponding type declarations.
+src/services/ai-engine.ts(3,10): error TS2305: Module '"../config.js"' has no exported member 'ENV'.
+src/services/ai-engine.ts(10,13): error TS2304: Cannot find name 'config'.
+src/services/ai-engine.ts(14,13): error TS2304: Cannot find name 'config'.
+src/services/ai-engine.ts(17,38): error TS2304: Cannot find name 'config'.
+src/services/ai-engine.ts(229,8): error TS2366: Function lacks ending return statement and return type does not include 'undefined'.
+src/services/ai-engine.ts(335,50): error TS2304: Cannot find name 'config'.
+src/services/ai-engine.ts(361,50): error TS2304: Cannot find name 'config'.

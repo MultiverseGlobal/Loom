@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
+import type { MultipartFile } from "@fastify/multipart";
 import fs from "node:fs";
 import { z } from "zod";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
@@ -29,7 +30,7 @@ const projectResponse = z.object({
 function mapProject(p: any) {
   return {
     ...p,
-    platform: p.source_platform || 'komposo',
+    platform: p.source_platform || 'loom',
     status: p.status || 'ready'
   };
 }
@@ -39,6 +40,242 @@ export async function registerProjectRoutes(app: FastifyInstance) {
 
   // ... (GET /, GET /:id, POST /) ...
 
+
+  typedApp.post(
+    "/:id/upload-webflow",
+    {
+      schema: {
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          200: z.object({ success: z.boolean(), message: z.string() }),
+          400: z.object({ error: z.string() }),
+          404: z.object({ error: z.string() }),
+        },
+      },
+      preHandler: [requireAuth],
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const userId = request.userId!;
+      
+      const project = await getProject(id);
+      if (!project || project.user_id !== userId) {
+        return reply.notFound("Project not found");
+      }
+
+      const data = await request.file();
+      if (!data) {
+        return reply.badRequest("No file uploaded");
+      }
+
+      if (!data.filename.endsWith('.zip')) {
+        return reply.badRequest("Only .zip files are supported for Webflow imports");
+      }
+
+      try {
+        const buffer = await data.toBuffer();
+        console.log(`[WebflowUpload] Received ${data.filename} (${buffer.length} bytes) for project ${id}`);
+
+        const { WebflowParserService } = await import('../services/webflowParserService.js');
+        await WebflowParserService.processZipUpload(id, buffer, data.filename);
+
+        return { success: true, message: "Webflow project uploaded and parsing started" };
+      } catch (error: any) {
+        request.log.error(error);
+        return (reply as any).code(500).send({ error: "Failed to process Webflow file" });
+      }
+    }
+  );
+
+  typedApp.post(
+    "/:id/import",
+    {
+      schema: {
+        params: z.object({ id: z.string().uuid() }),
+        body: z.object({
+          sourceUrl: z.string().url(),
+          options: z.record(z.any()).optional()
+        }),
+        response: {
+          200: z.object({ success: z.boolean(), message: z.string() }),
+          404: z.object({ error: z.string() }),
+          400: z.object({ error: z.string() }),
+          500: z.object({ error: z.string() }),
+        },
+      },
+      preHandler: [requireAuth],
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const userId = request.userId!;
+      const { sourceUrl, options = {} } = request.body as any;
+
+      const project = await getProject(id);
+      if (!project || project.user_id !== userId) {
+        return reply.notFound("Project not found");
+      }
+
+      try {
+        const { bridgeService } = await import('../services/bridgeService.js');
+        const { projectFileService } = await import('../services/projectFileService.js');
+
+        // 1. Get code from the bridge (extractor + AI)
+        const result = await bridgeService.bridgeFromSource({
+          sourceUrl,
+          options,
+          userId
+        });
+
+        // 2. Determine a good filename
+        const componentName = result.blueprint.root.name.replace(/\s+/g, '') || "ImportedComponent";
+        const filename = `${componentName}.tsx`;
+
+        // 3. Save results
+        await projectFileService.saveGeneratedFile(id, filename, result.code, 'component');
+
+        return { 
+          success: true, 
+          message: `Successfully imported from ${result.blueprint.source.type}` 
+        };
+      } catch (error: any) {
+        request.log.error(error);
+        return reply.status(500).send({ error: error.message || "Import failed" });
+      }
+    }
+  );
+
+  typedApp.post(
+    "/:id/push-to-github",
+    {
+      schema: {
+        params: z.object({ id: z.string().uuid() }),
+        body: z.object({
+          repoUrl: z.string().optional(), // "owner/repo"
+          createRepo: z.boolean().optional(),
+          repoName: z.string().optional(),
+          isPrivate: z.boolean().optional(),
+          branch: z.string().optional(),
+        }),
+        response: {
+          200: z.object({ success: z.boolean(), repoUrl: z.string(), commitSha: z.string() }),
+          404: z.object({ error: z.string() }),
+          400: z.object({ error: z.string() }),
+          500: z.object({ error: z.string() }),
+        },
+      },
+      preHandler: [requireAuth],
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const userId = request.userId!;
+      const { repoUrl, createRepo, repoName, isPrivate, branch } = request.body as any;
+
+      const project = await getProject(id);
+      if (!project || project.user_id !== userId) {
+        return reply.notFound("Project not found");
+      }
+
+      // 1. Get the GitHub integration
+      const { integrationService } = await import('../services/integrationService.js');
+      const integration = await integrationService.getUserIntegrationByProvider(userId, 'github');
+      
+      if (!integration) {
+        return reply.badRequest("GitHub account not connected. Please connect your GitHub account in settings.");
+      }
+
+      // 2. Fetch latest files from analysis (UPG)
+      const { data: latestAnalysis } = await supabase
+        .from('analyses')
+        .select('result_json')
+        .eq('project_id', project.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const upg = latestAnalysis?.result_json?.blueprint || latestAnalysis?.result_json?.upg;
+      if (!upg || Object.keys(upg).length === 0) {
+        return reply.badRequest("No generated code found for this project. Please generate code first.");
+      }
+
+      // Convert UPG map to files array for the integration
+      const filesArr = Object.entries(upg).map(([path, file]: [string, any]) => ({
+        path,
+        content: typeof file === 'string' ? file : file.content
+      }));
+
+      // 3. Resolve target repo
+      let targetRepoUrl = repoUrl;
+      if (!targetRepoUrl && !createRepo) {
+        // Fallback to linked repo
+        const projectIntegrations = await integrationService.getProjectIntegrations(project.id);
+        const repoLink = projectIntegrations.find(i => i.integration.provider === 'github' && i.resource_type === 'repository');
+        if (repoLink) {
+          targetRepoUrl = repoLink.resource_id;
+        }
+      }
+
+      if (!targetRepoUrl && !createRepo) {
+        return reply.badRequest("No repository specified and no default linked repository found.");
+      }
+
+      // 4. Invoke GitHub Integration
+      try {
+        const { getIntegration } = await import('../integrations/registry.js');
+        const githubAdapter = getIntegration('github');
+        
+        if (!githubAdapter) {
+          throw new Error("GitHub integration adapter not registered");
+        }
+
+        // Initialize with user's token (important override if global isn't set)
+        await githubAdapter.initialize({ 
+          enabled: true, 
+          apiKey: integration.access_token 
+        });
+
+        const result = await githubAdapter.processEvent({
+          type: 'export',
+          projectId: project.id,
+          payload: {
+            repoUrl: targetRepoUrl,
+            branch: branch || 'main',
+            files: filesArr,
+            createRepo,
+            repoName,
+            isPrivate
+          }
+        });
+
+        if (!result.success) {
+          return reply.status(500).send({ error: result.error || "Failed to push to GitHub" });
+        }
+
+        const data = result.data as any;
+
+        // 5. If a link was created or updated, ensure the project integration is recorded
+        if (createRepo && data.repoUrl) {
+          await integrationService.linkProjectToIntegration({
+            project_id: project.id,
+            integration_id: integration.id,
+            resource_type: 'repository',
+            resource_id: data.repoUrl,
+            resource_name: repoName || data.repoUrl.split('/')[1],
+            sync_config: { branch: branch || 'main' }
+          });
+        }
+
+        return { 
+          success: true, 
+          repoUrl: data.repoUrl || targetRepoUrl, 
+          commitSha: data.commitSha 
+        };
+
+      } catch (err: any) {
+        request.log.error(err);
+        return reply.status(500).send({ error: err.message || "Internal server error during GitHub push" });
+      }
+    }
+  );
 
   typedApp.post(
     "/:id/push-to-ide",
@@ -188,7 +425,7 @@ export async function registerProjectRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       try {
-        const { name, framework, source_platform, source_url, origin_meta } = request.body;
+        const { name, framework, source_platform, source_url, origin_meta } = request.body as any;
 
         const id = await createProject(
           request.userId!,
@@ -201,16 +438,15 @@ export async function registerProjectRoutes(app: FastifyInstance) {
         console.log('✅ [CREATE PROJECT] Created ID:', id);
 
         const project = await getProject(id);
+        if (!project) { throw new Error("Could not fetch created project") }
         return reply.code(201).send(mapProject(project));
       } catch (error: any) {
         console.error('❌ [PROJECTS] Error creating project:', error);
         console.error('Error detail:', error.detail);
         console.error('Error hint:', error.hint);
         console.error('Error code:', error.code);
-        return reply.status(500).send({
-          error: "Internal Server Error",
-          message: error.message,
-          detail: error.detail
+        return (reply as any).code(500).send({
+          error: "Internal Server Error"
         });
       }
     }

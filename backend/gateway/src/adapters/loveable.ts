@@ -6,7 +6,7 @@ import {
     UPGText,
     UPGProp,
     UPGImport
-} from "../upg/schema";
+} from "../upg/schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -163,11 +163,11 @@ export class LoveableAdapter {
         }
 
         // Convert imports back
-        const imports = rootComponent.imports.map(imp => ({
+        const imports = rootComponent.imports.map((imp: UPGImport) => ({
             module: imp.module,
             items: [
                 ...(imp.default ? [imp.default] : []),
-                ...(imp.named || []).map(n => `{ ${n} }`)
+                ...(imp.named || []).map((n: string) => `{ ${n} }`)
             ]
         }));
 
@@ -199,7 +199,7 @@ export class LoveableAdapter {
         if (node.type === 'element') {
             const el = node as UPGElement;
             const children = el.children
-                .map(childId => this.generateLoveableNode(childId, nodes))
+                .map((childId: string) => this.generateLoveableNode(childId, nodes))
                 .filter(Boolean) as LoveableNode[];
 
             return {

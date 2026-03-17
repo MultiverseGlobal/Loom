@@ -16,8 +16,9 @@ export function CreateProjectDialog({ isOpen, onClose, onSuccess }: CreateProjec
     const router = useRouter();
     const [name, setName] = useState("");
     const [framework, setFramework] = useState("nextjs");
-    const [sourceType, setSourceType] = useState<"blank" | "github" | "lovable">("blank");
+    const [sourceType, setSourceType] = useState<"blank" | "github" | "lovable" | "webflow">("blank");
     const [githubUrl, setGithubUrl] = useState("");
+    const [webflowFile, setWebflowFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -69,7 +70,7 @@ export function CreateProjectDialog({ isOpen, onClose, onSuccess }: CreateProjec
             const project = await projectService.createProject({
                 name,
                 framework,
-                platform: sourceType === 'lovable' ? 'loveable' : 'komposo',
+                platform: sourceType === 'lovable' ? 'loveable' : (sourceType === 'webflow' ? 'webflow' : 'komposo'),
                 source_url: githubUrl || undefined
             });
 
@@ -90,6 +91,27 @@ export function CreateProjectDialog({ isOpen, onClose, onSuccess }: CreateProjec
                             repo: repoBase
                         })
                     });
+                }
+            }
+
+            // Handle Webflow ZIP upload
+            if (sourceType === 'webflow' && webflowFile) {
+                const formData = new FormData();
+                formData.append('file', webflowFile);
+
+                const { fetchAPI } = await import('@/utils/api');
+                try {
+                    toast.loading(`Uploading constraints for ${name}...`, { id: 'upload' });
+                    await fetchAPI(`/projects/${project.id}/upload-webflow`, {
+                        method: 'POST',
+                        body: formData,
+                        // Don't set Content-Type header so browser sets it correctly with boundary
+                        headers: {} 
+                    });
+                    toast.success("Webflow ZIP uploaded successfully!", { id: 'upload' });
+                } catch (err: any) {
+                    toast.error(`Failed to upload Webflow ZIP: ${err.message}`, { id: 'upload' });
+                    // We don't throw here, so the project creation still succeeds
                 }
             }
 
@@ -162,6 +184,13 @@ export function CreateProjectDialog({ isOpen, onClose, onSuccess }: CreateProjec
                             >
                                 Lovable
                             </button>
+                            <button
+                                type="button"
+                                onClick={() => setSourceType("webflow")}
+                                className={`flex-1 text-[13px] font-medium py-1.5 rounded-sm transition-all ${sourceType === "webflow" ? "bg-[var(--bg-panel)] text-[var(--text-primary)] shadow-sm" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}
+                            >
+                                Webflow
+                            </button>
                         </div>
                     </div>
 
@@ -230,6 +259,34 @@ export function CreateProjectDialog({ isOpen, onClose, onSuccess }: CreateProjec
                             <p className="mt-1.5 text-[11px] text-[var(--text-tertiary)]">
                                 We will attempt to sync the project structure from Lovable.
                             </p>
+                        </div>
+                    ) : sourceType === "webflow" ? (
+                        <div className="animate-in fade-in slide-in-from-top-1 duration-200">
+                            <label className="block text-[12px] font-medium text-[var(--text-secondary)] mb-1.5">Upload Webflow ZIP</label>
+                            <div className="relative border-2 border-dashed border-[var(--border-default)] rounded-xl p-6 hover:border-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5 transition-all group group-hover:cursor-pointer flex flex-col items-center justify-center text-center">
+                                <input 
+                                    type="file" 
+                                    accept=".zip"
+                                    onChange={(e) => {
+                                        if (e.target.files && e.target.files[0]) {
+                                            setWebflowFile(e.target.files[0]);
+                                        }
+                                    }}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                />
+                                <div className="p-3 bg-[var(--bg-root)] border border-[var(--border-subtle)] rounded-full mb-3 group-hover:scale-110 shadow-sm transition-transform">
+                                    <svg className="w-6 h-6 text-[var(--text-secondary)]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 4V20M12 4L8 8M12 4L16 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M4 20H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h3 className="text-sm font-medium text-[var(--text-primary)] mb-1">
+                                    {webflowFile ? webflowFile.name : "Click to browse or drag ZIP here"}
+                                </h3>
+                                <p className="text-xs text-[var(--text-tertiary)] max-w-[200px]">
+                                    {webflowFile ? `${(webflowFile.size / 1024 / 1024).toFixed(2)} MB` : "Export your Webflow project as a .zip file."}
+                                </p>
+                            </div>
                         </div>
                     ) : (
                         <div className="animate-in fade-in slide-in-from-top-1 duration-200">

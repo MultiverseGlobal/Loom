@@ -1,6 +1,6 @@
-
+import { LoomBlueprint, BridgeAdapter, BlueprintNode } from './types.js';
+import { figmaService } from '../../services/figmaService.js';
 import axios from 'axios';
-import { BridgeAdapter, LoomBlueprint, BlueprintNode } from './types';
 
 export class FigmaAdapter implements BridgeAdapter {
     id = 'figma';

@@ -95,8 +95,8 @@ export async function registerConnectRoutes(app: FastifyInstance) {
         },
         preHandler: [requireAuth]
     }, async (request, reply) => {
-        const userId = request.userId;
-        const { session_id } = request.body;
+        const userId = (request as any).userId;
+        const { session_id } = request.body as any;
 
         // 1. Verify session exists and is pending
         const { data: session, error: fetchError } = await supabase

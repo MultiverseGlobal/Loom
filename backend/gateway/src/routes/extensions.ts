@@ -198,7 +198,7 @@ export async function registerExtensionRoutes(app: FastifyInstance) {
                         name: body.name,
                         framework: body.summary.framework,
                         status: 'ready',
-                        source_type: 'loom-ext', // Corrected column name from schema.ts
+                        source_platform: 'loom-ext',
                     });
             }
         }

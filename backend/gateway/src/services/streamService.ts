@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
 import { db } from "../db/client.js";
-import type { Server as WebSocketServer } from "@fastify/websocket";
 
 export interface StreamEvent {
   type: "job" | "delta" | "refactor" | "patch" | "healing" | "export";

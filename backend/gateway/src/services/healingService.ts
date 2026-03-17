@@ -2,7 +2,6 @@ import { randomUUID } from "node:crypto";
 import { db } from "../db/client.js";
 import { enqueueIngestJob, enqueuePatchJob } from "./queue.js";
 import { requestStructureAnalysis } from "./analyzerClient.js";
-import type { IngestJobPayload } from "./queue.js";
 
 export interface JobFailure {
   jobId: string;
@@ -17,7 +16,7 @@ export async function recordFailure(failure: JobFailure) {
   const id = randomUUID();
   await db`
     INSERT INTO job_failures (id, job_id, job_type, project_id, error_message, error_stack, payload)
-    VALUES (${id}, ${failure.jobId}, ${failure.jobType}, ${failure.projectId ?? null}, ${failure.errorMessage}, ${failure.errorStack ?? null}, ${db.json(failure.payload)})
+    VALUES (${id}, ${failure.jobId}, ${failure.jobType}, ${failure.projectId ?? null}, ${failure.errorMessage}, ${failure.errorStack ?? null}, ${db.json(failure.payload as any)})
   `;
   return id;
 }
@@ -38,7 +37,7 @@ export async function attemptAutoHeal(failureId: string) {
 
   try {
     if (failure.job_type === "ingest") {
-      const payload = failure.payload as unknown as IngestJobPayload;
+      const payload = failure.payload as any;
       const newJobId = await enqueueIngestJob({
         ...payload,
         projectId,

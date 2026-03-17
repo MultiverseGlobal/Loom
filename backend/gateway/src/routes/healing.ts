@@ -16,7 +16,7 @@ export async function registerHealingRoutes(app: FastifyInstance) {
     "/record",
     { schema: { body: recordBody } },
     async (request, reply) => {
-      const id = await recordFailure(request.body);
+      const id = await recordFailure(request.body as any);
       return reply.code(201).send({ failureId: id });
     },
   );

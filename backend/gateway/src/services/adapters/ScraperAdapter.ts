@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { BridgeAdapter, LoomBlueprint, BlueprintNode } from './types';
+import { LoomBlueprint, BridgeAdapter } from './types.js';
 
 export class ScraperAdapter implements BridgeAdapter {
     id = 'scraper';

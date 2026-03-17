@@ -1,7 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { db } from '../db/memory';
+import { requireAuth } from '../middleware/supabase-auth.js';
+import { db } from '../db/memory.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'loom_dev_secret_change_in_production';
 

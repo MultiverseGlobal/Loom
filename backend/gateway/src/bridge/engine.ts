@@ -1,6 +1,6 @@
-import { UniversalProjectGraph } from "../upg/schema";
-import { VSCodeAdapter } from "../adapters/vscode";
-import { LoveableAdapter } from "../adapters/loveable";
+import { UniversalProjectGraph } from '../upg/schema.js';
+import { VSCodeAdapter } from '../adapters/vscode.js';
+import { LoveableAdapter } from '../adapters/loveable.js';
 
 export type SourcePlatform = 'vscode' | 'loveable' | 'figma';
 export type TargetPlatform = 'vscode' | 'loveable' | 'figma' | 'github';
@@ -185,7 +185,7 @@ export class SyncEngine {
         }
 
         // Check all nodes have valid parent references (except root)
-        Object.entries(upg.nodes).forEach(([id, node]) => {
+        Object.entries(upg.nodes).forEach(([id, node]: [string, any]) => {
             if (id !== upg.rootComponentId && node.parent) {
                 if (!upg.nodes[node.parent]) {
                     warnings.push(`Node ${id} references non-existent parent ${node.parent}`);
@@ -193,7 +193,7 @@ export class SyncEngine {
             }
 
             // Check all children exist
-            node.children.forEach(childId => {
+            node.children.forEach((childId: string) => {
                 if (!upg.nodes[childId]) {
                     warnings.push(`Node ${id} references non-existent child ${childId}`);
                 }

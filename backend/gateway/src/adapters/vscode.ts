@@ -7,7 +7,7 @@ import {
     UPGText,
     UPGProp,
     UPGImport
-} from "../upg/schema";
+} from "../upg/schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
 export class VSCodeAdapter {
@@ -228,7 +228,7 @@ export class VSCodeAdapter {
         const sourceFile = this.project.createSourceFile("Generated.tsx", "", { overwrite: true });
 
         // 1. Add Imports
-        rootComponent.imports.forEach(imp => {
+        rootComponent.imports.forEach((imp: UPGImport) => {
             sourceFile.addImportDeclaration({
                 moduleSpecifier: imp.module,
                 defaultImport: imp.default,
@@ -276,7 +276,7 @@ export class VSCodeAdapter {
                 return `${openTag} />`;
             }
 
-            const childrenJsx = el.children.map(childId => this.generateJsx(childId, nodes)).join("");
+            const childrenJsx = el.children.map((childId: string) => this.generateJsx(childId, nodes)).join("");
             return `${openTag}>${childrenJsx}</${el.tag}>`;
         }
         else if (node.type === 'text') {

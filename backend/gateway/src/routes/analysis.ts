@@ -1,8 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { requireAuth, type AuthenticatedRequest } from "../middleware/supabase-auth";
-import { supabase } from "../lib/supabase";
-import { aiEngine, type AIModel } from "../services/ai-engine";
+import { requireAuth, type AuthenticatedRequest } from "../middleware/supabase-auth.js";
+import { supabase } from "../lib/supabase.js";
+import { aiEngine, type AIModel } from "../services/ai-engine.js";
 
 const analyzeSchema = z.object({
     projectId: z.string().optional(),

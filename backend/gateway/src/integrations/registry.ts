@@ -1,4 +1,4 @@
-import type { IntegrationAdapter, IntegrationConfig, IntegrationEvent } from "./base";
+import type { IntegrationAdapter, IntegrationConfig, IntegrationEvent } from "./base.js";
 
 const integrations = new Map<string, IntegrationAdapter>();
 

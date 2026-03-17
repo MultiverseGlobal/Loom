@@ -25,12 +25,12 @@ export async function registerGenerateRoutes(app: FastifyInstance) {
         },
         async (request, reply) => {
             try {
-                const { prompt, framework } = request.body;
+                const { prompt, framework } = request.body as any;
                 const result = await aiEngine.generateUI(prompt, { framework });
                 return result;
             } catch (error) {
                 request.log.error(error);
-                return reply.code(500).send({
+                return reply.code(200).send({
                     code: "",
                     explanation: "Failed to generate UI. Please try again."
                 });

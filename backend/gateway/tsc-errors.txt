@@ -1,0 +1,133 @@
+﻿src/adapters/loveable.ts(9,8): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../upg/schema.js'?
+src/adapters/loveable.ts(166,51): error TS7006: Parameter 'imp' implicitly has an 'any' type.
+src/adapters/loveable.ts(170,42): error TS7006: Parameter 'n' implicitly has an 'any' type.
+src/adapters/loveable.ts(202,22): error TS7006: Parameter 'childId' implicitly has an 'any' type.
+src/adapters/vscode.ts(10,8): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../upg/schema.js'?
+src/adapters/vscode.ts(231,39): error TS7006: Parameter 'imp' implicitly has an 'any' type.
+src/adapters/vscode.ts(279,49): error TS7006: Parameter 'childId' implicitly has an 'any' type.
+src/bridge/engine.ts(1,39): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../upg/schema.js'?
+src/bridge/engine.ts(2,31): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../adapters/vscode.js'?
+src/bridge/engine.ts(3,33): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../adapters/loveable.js'?
+src/bridge/engine.ts(189,47): error TS18046: 'node' is of type 'unknown'.
+src/bridge/engine.ts(190,32): error TS18046: 'node' is of type 'unknown'.
+src/bridge/engine.ts(191,80): error TS18046: 'node' is of type 'unknown'.
+src/bridge/engine.ts(196,13): error TS18046: 'node' is of type 'unknown'.
+src/bridge/engine.ts(196,35): error TS7006: Parameter 'childId' implicitly has an 'any' type.
+src/db/index.ts(1,22): error TS2307: Cannot find module 'pg' or its corresponding type declarations.
+src/integrations/github.ts(2,82): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './base.js'?
+src/integrations/github.ts(10,15): error TS2339: Property 'config' does not exist on type 'GitHubIntegration'.
+src/integrations/github.ts(10,39): error TS2339: Property 'config' does not exist on type 'GitHubIntegration'.
+src/integrations/github.ts(35,45): error TS2339: Property 'config' does not exist on type 'GitHubIntegration'.
+src/integrations/github.ts(54,15): error TS2339: Property 'config' does not exist on type 'GitHubIntegration'.
+src/integrations/github.ts(54,39): error TS2339: Property 'config' does not exist on type 'GitHubIntegration'.
+src/integrations/github.ts(60,50): error TS2339: Property 'config' does not exist on type 'GitHubIntegration'.
+src/integrations/registry.ts(1,78): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './base.js'?
+src/routes/activity.ts(22,26): error TS2769: No overload matches this call.
+  Argument of type '[string | undefined, number]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(template: TemplateStringsArray, ...parameters: readonly ParameterOrFragment<never>[]): PendingQuery<any[]>', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'ParameterOrFragment<never>'.
+      Type 'undefined' is not assignable to type 'ParameterOrFragment<never>'.
+src/routes/ai.ts(32,14): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(path: string, opts: RouteShorthandOptions<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger> & { ...; }, handler?: WebsocketHandler<...> | undefined): FastifyInstance<...>', gave the following error.
+    Argument of type '{ schema: { response: { 200: z.ZodArray<z.ZodObject<{ id: z.ZodString; user_id: z.ZodString; project_id: z.ZodNullable<z.ZodString>; title: z.ZodNullable<z.ZodString>; created_at: z.ZodString; updated_at: z.ZodString; }, "strip", z.ZodTypeAny, { ...; }, { ...; }>, "many">; }; }; preHandler: ((request: AuthenticatedR...' is not assignable to parameter of type 'RouteShorthandOptions<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger> & { ...; }'.
+      Property 'websocket' is missing in type '{ schema: { response: { 200: z.ZodArray<z.ZodObject<{ id: z.ZodString; user_id: z.ZodString; project_id: z.ZodNullable<z.ZodString>; title: z.ZodNullable<z.ZodString>; created_at: z.ZodString; updated_at: z.ZodString; }, "strip", z.ZodTypeAny, { ...; }, { ...; }>, "many">; }; }; preHandler: ((request: AuthenticatedR...' but required in type '{ websocket: true; }'.
+  Overload 2 of 4, '(path: string, opts: RouteShorthandOptions<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger>, handler: RouteHandlerMethod<...>): FastifyInstance<...>', gave the following error.
+    Argument of type '(this: FastifyInstance<...>, request: FastifyRequest<RouteGenericInterface, RawServerDefault, IncomingMessage, { readonly response: { readonly 200: ZodArray<ZodObject<{ id: ZodString; ... 4 more ...; updated_at: ZodString; }, "strip", ZodTypeAny, { ...; }, { ...; }>, "many">; }; }, ZodTypeProvider, unknown, FastifyB...' is not assignable to parameter of type 'RouteHandlerMethod<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger>'.
+      Type 'Promise<RowList<Row[]>>' is not assignable to type 'void | { id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; }[] | Promise<void | { id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; }[]>'.
+        Type 'Promise<RowList<Row[]>>' is not assignable to type 'Promise<void | { id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; }[]>'.
+          Type 'RowList<Row[]>' is not assignable to type 'void | { id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; }[]'.
+            Type 'RowList<Row[]>' is not assignable to type '{ id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; }[]'.
+              The types returned by 'pop()' are incompatible between these types.
+                Type 'Row | undefined' is not assignable to type '{ id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; } | undefined'.
+                  Type 'Row' is missing the following properties from type '{ id: string; project_id: string | null; title: string | null; created_at: string; user_id: string; updated_at: string; }': id, project_id, title, created_at, and 2 more.
+src/routes/ai.ts(66,14): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(path: string, opts: RouteShorthandOptions<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger> & { ...; }, handler?: WebsocketHandler<...> | undefined): FastifyInstance<...>', gave the following error.
+    Argument of type '{ schema: { params: z.ZodObject<{ id: z.ZodString; }, "strip", z.ZodTypeAny, { id: string; }, { id: string; }>; response: { 200: z.ZodArray<z.ZodObject<{ role: z.ZodEnum<["user", "assistant", "system"]>; content: z.ZodString; metadata: z.ZodOptional<...>; created_at: z.ZodString; }, "strip", z.ZodTypeAny, { ...; }, ...' is not assignable to parameter of type 'RouteShorthandOptions<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger> & { ...; }'.
+      Property 'websocket' is missing in type '{ schema: { params: z.ZodObject<{ id: z.ZodString; }, "strip", z.ZodTypeAny, { id: string; }, { id: string; }>; response: { 200: z.ZodArray<z.ZodObject<{ role: z.ZodEnum<["user", "assistant", "system"]>; content: z.ZodString; metadata: z.ZodOptional<...>; created_at: z.ZodString; }, "strip", z.ZodTypeAny, { ...; }, ...' but required in type '{ websocket: true; }'.
+  Overload 2 of 4, '(path: string, opts: RouteShorthandOptions<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger>, handler: RouteHandlerMethod<...>): FastifyInstance<...>', gave the following error.
+    Argument of type '(this: FastifyInstance<...>, request: FastifyRequest<RouteGenericInterface, RawServerDefault, IncomingMessage, { readonly params: ZodObject<{ id: ZodString; }, "strip", ZodTypeAny, { ...; }, { ...; }>; readonly response: { ...; }; }, ZodTypeProvider, unknown, FastifyBaseLogger, ResolveFastifyRequestType<...>>) => Pr...' is not assignable to parameter of type 'RouteHandlerMethod<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, { ...; }, ZodTypeProvider, FastifyBaseLogger>'.
+      Type 'Promise<RowList<Row[]>>' is not assignable to type 'void | { created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; }[] | Promise<void | { created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; }[]>'.
+        Type 'Promise<RowList<Row[]>>' is not assignable to type 'Promise<void | { created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; }[]>'.
+          Type 'RowList<Row[]>' is not assignable to type 'void | { created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; }[]'.
+            Type 'RowList<Row[]>' is not assignable to type '{ created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; }[]'.
+              The types returned by 'pop()' are incompatible between these types.
+                Type 'Row | undefined' is not assignable to type '{ created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; } | undefined'.
+                  Type 'Row' is missing the following properties from type '{ created_at: string; content: string; role: "user" | "assistant" | "system"; metadata?: any; }': created_at, content, role
+src/routes/analysis.ts(3,56): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../middleware/supabase-auth.js'?
+src/routes/analysis.ts(4,26): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../lib/supabase.js'?
+src/routes/analysis.ts(5,40): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../services/ai-engine.js'?
+src/routes/auth.ts(4,20): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../db/memory.js'?
+src/routes/commands.ts(80,17): error TS2554: Expected 3 arguments, but got 6.
+src/routes/commands.ts(85,65): error TS2339: Property 'device_id' does not exist on type 'IdeDevice'.
+src/routes/connect.ts(122,15): error TS2769: No overload matches this call.
+  Argument of type '[any, string | undefined, string, Parameter<SerializableParameter<never>>]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(template: TemplateStringsArray, ...parameters: readonly ParameterOrFragment<never>[]): PendingQuery<Row[]>', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'ParameterOrFragment<never>'.
+      Type 'undefined' is not assignable to type 'ParameterOrFragment<never>'.
+src/routes/deltas.ts(39,25): error TS18046: 'query' is of type 'unknown'.
+src/routes/deltas.ts(52,36): error TS18046: 'request.params' is of type 'unknown'.
+src/routes/deltas.ts(71,47): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'DeltaScanPayload'.
+src/routes/figma.ts(3,30): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../services/figmaService.js'?
+src/routes/figma.ts(4,29): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../middleware/supabase-auth.js'?
+src/routes/generate.ts(28,25): error TS2339: Property 'prompt' does not exist on type 'unknown'.
+src/routes/generate.ts(28,33): error TS2339: Property 'framework' does not exist on type 'unknown'.
+src/routes/generate.ts(33,35): error TS2345: Argument of type '500' is not assignable to parameter of type '200'.
+src/routes/healing.ts(19,38): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'JobFailure'.
+src/routes/patches.ts(30,54): error TS18046: 'request.body' is of type 'unknown'.
+src/routes/patches.ts(46,36): error TS18046: 'request.params' is of type 'unknown'.
+src/routes/projects.ts(85,27): error TS2345: Argument of type '500' is not assignable to parameter of type '200 | 400 | 404'.
+src/routes/projects.ts(238,17): error TS2339: Property 'name' does not exist on type 'unknown'.
+src/routes/projects.ts(238,23): error TS2339: Property 'framework' does not exist on type 'unknown'.
+src/routes/projects.ts(238,34): error TS2339: Property 'source_platform' does not exist on type 'unknown'.
+src/routes/projects.ts(238,51): error TS2339: Property 'source_url' does not exist on type 'unknown'.
+src/routes/projects.ts(238,63): error TS2339: Property 'origin_meta' does not exist on type 'unknown'.
+src/routes/projects.ts(257,29): error TS2345: Argument of type '500' is not assignable to parameter of type '201'.
+src/routes/projects.ts(258,11): error TS2353: Object literal may only specify known properties, and 'error' does not exist in type '{ status: string | null; id: string; name: string; framework: string | null; source_url: string | null; platform: string | null; created_at?: any; }'.
+src/routes/refactor.ts(37,41): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'RefactorRequest'.
+src/routes/settings.ts(16,31): error TS2769: No overload matches this call.
+  Argument of type '[string | undefined]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(template: TemplateStringsArray, ...parameters: readonly ParameterOrFragment<never>[]): PendingQuery<Row[]>', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'ParameterOrFragment<never>'.
+      Type 'undefined' is not assignable to type 'ParameterOrFragment<never>'.
+src/routes/settings.ts(45,33): error TS2769: No overload matches this call.
+  Argument of type '[Helper<{ preferred_model?: string | undefined; theme?: string | undefined; openai_api_key?: string | null | undefined; anthropic_api_key?: string | null | undefined; custom_instructions?: string | ... 1 more ... | undefined; }, []>, string | undefined, Helper<...>, Helper<...>]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(template: TemplateStringsArray, ...parameters: readonly ParameterOrFragment<never>[]): PendingQuery<Row[]>', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'ParameterOrFragment<never>'.
+      Type 'undefined' is not assignable to type 'ParameterOrFragment<never>'.
+src/routes/stream.ts(13,22): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(19,24): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(25,22): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(25,44): error TS7006: Parameter 'message' implicitly has an 'any' type.
+src/routes/stream.ts(29,28): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/routes/stream.ts(36,22): error TS2339: Property 'socket' does not exist on type 'WebSocket'.
+src/scripts/check-all.ts(2,20): error TS2307: Cannot find module './db/client.js' or its corresponding type declarations.
+src/scripts/check-all.ts(4,24): error TS2307: Cannot find module './config.js' or its corresponding type declarations.
+src/scripts/check-all.ts(37,54): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/scripts/test-db-final.ts(3,24): error TS2307: Cannot find module './config.js' or its corresponding type declarations.
+src/services/adapters/AdaptersRegistry.ts(2,46): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './types.js'?
+src/services/adapters/AdaptersRegistry.ts(3,30): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './FigmaAdapter.js'?
+src/services/adapters/AdaptersRegistry.ts(4,32): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './LovableAdapter.js'?
+src/services/adapters/AdaptersRegistry.ts(5,32): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './ScraperAdapter.js'?
+src/services/adapters/FigmaAdapter.ts(3,61): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './types.js'?
+src/services/adapters/LovableAdapter.ts(3,61): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './types.js'?
+src/services/adapters/ScraperAdapter.ts(3,61): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './types.js'?
+src/services/ai-engine.ts(3,24): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../config.js'?
+src/services/ai-engine.ts(229,8): error TS2366: Function lacks ending return statement and return type does not include 'undefined'.
+src/services/deltaService.ts(49,9): error TS2769: No overload matches this call.
+  Argument of type '[`${string}-${string}-${string}-${string}-${string}`, string, "builder" | "local", string, string | undefined, string | undefined, Parameter<SerializableParameter<never>>]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(template: TemplateStringsArray, ...parameters: readonly ParameterOrFragment<never>[]): PendingQuery<Row[]>', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'ParameterOrFragment<never>'.
+      Type 'undefined' is not assignable to type 'ParameterOrFragment<never>'.
+src/services/deltaService.ts(52,5): error TS2345: Argument of type 'Record<string, unknown>' is not assignable to parameter of type 'JSONValue'.
+  Type 'Record<string, unknown>' is missing the following properties from type 'Date': toDateString, toTimeString, toLocaleDateString, toLocaleTimeString, and 38 more.
+src/services/githubService.ts(135,64): error TS2339: Property 'content' does not exist on type '{ type: "file"; encoding: string; size: number; name: string; path: string; content: string; sha: string; url: string; git_url: string | null; html_url: string | null; download_url: string | null; _links: { ...; }; target?: string | undefined; submodule_git_url?: string | undefined; } | { ...; } | { ...; }'.
+  Property 'content' does not exist on type '{ type: "symlink"; target: string; size: number; name: string; path: string; sha: string; url: string; git_url: string | null; html_url: string | null; download_url: string | null; _links: { git: string | null; html: string | null; self: string; }; }'.
+src/services/githubService.ts(139,54): error TS2339: Property 'content' does not exist on type '{ type: "file"; encoding: string; size: number; name: string; path: string; content: string; sha: string; url: string; git_url: string | null; html_url: string | null; download_url: string | null; _links: { ...; }; target?: string | undefined; submodule_git_url?: string | undefined; } | { ...; } | { ...; }'.
+  Property 'content' does not exist on type '{ type: "symlink"; target: string; size: number; name: string; path: string; sha: string; url: string; git_url: string | null; html_url: string | null; download_url: string | null; _links: { git: string | null; html: string | null; self: string; }; }'.
+src/services/healingService.ts(5,15): error TS2459: Module '"./queue.js"' declares 'IngestJobPayload' locally, but it is not exported.
+src/services/healingService.ts(20,154): error TS2345: Argument of type 'Record<string, unknown>' is not assignable to parameter of type 'JSONValue'.
+  Type 'Record<string, unknown>' is missing the following properties from type 'Date': toDateString, toTimeString, toLocaleDateString, toLocaleTimeString, and 38 more.
+src/services/openai.ts(2,24): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../config.js'?
+src/services/storage.ts(1,83): error TS2307: Cannot find module '@aws-sdk/client-s3' or its corresponding type declarations.
+src/services/storage.ts(2,30): error TS2307: Cannot find module '@aws-sdk/s3-request-presigner' or its corresponding type declarations.
+src/services/streamService.ts(3,15): error TS2305: Module '"@fastify/websocket"' has no exported member 'Server'.
