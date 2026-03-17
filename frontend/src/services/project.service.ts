@@ -6,7 +6,7 @@ export interface Project {
     created_at: string;
     name: string;
     description?: string;
-    platform: 'loveable' | 'figma' | 'komposo';
+    platform: 'loveable' | 'figma' | 'komposo' | 'webflow';
     source_url?: string;
     status: 'processing' | 'ready' | 'failed';
     user_id: string;
@@ -17,7 +17,7 @@ export interface Project {
 export interface CreateProjectInput {
     name: string;
     description?: string;
-    platform?: 'loveable' | 'figma' | 'komposo'; // Made optional as we default to 'komposo' or specific logic
+    platform?: 'loveable' | 'figma' | 'komposo' | 'webflow'; // Made optional as we default to 'komposo' or specific logic
     framework?: string; // Added framework
     source_url?: string;
 }
