@@ -54,12 +54,12 @@ export function WorkspaceControls({
   return (
     <div className="flex items-center justify-between gap-4 p-4 bg-[var(--bg-panel)] border-b border-[var(--border-default)]">
       <div className="flex items-center gap-3">
-        <div className="p-2 rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border border-[var(--accent-primary)]/20">
+        <div className="p-2 rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border border-[var(--accent-primary)]/20 shadow-[0_0_15px_var(--accent-glow)]">
           <Box size={18} />
         </div>
         <div>
           <h1 className="text-sm font-semibold text-[var(--text-primary)]">{projectName}</h1>
-          <p className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider font-bold">Migration Workspace</p>
+          <p className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-[0.2em] font-bold">Migration Workspace</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@ export function WorkspaceControls({
         <button
           onClick={onLaunchExtension}
           disabled={isLaunching}
-          className="flex items-center gap-2 px-3 py-1.5 bg-[#8b5cf6]/10 text-[#8b5cf6] border border-[#8b5cf6]/20 rounded-md hover:bg-[#8b5cf6]/20 transition-all text-xs font-medium disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border border-[var(--accent-primary)]/20 rounded-md hover:bg-[var(--accent-primary)]/20 hover:border-[var(--accent-primary)]/40 transition-all text-xs font-bold uppercase tracking-wider disabled:opacity-50"
         >
           {isLaunching ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} fill="currentColor" />}
           Open IDE
@@ -76,11 +76,13 @@ export function WorkspaceControls({
         <button
           onClick={handlePushToGithub}
           disabled={isPushingGithub}
-          className="flex items-center gap-2 px-3 py-1.5 bg-[var(--text-primary)] text-[var(--bg-root)] rounded-md hover:bg-[var(--text-primary)]/90 transition-all text-xs font-medium disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 bg-[var(--text-primary)] text-[var(--bg-root)] border border-transparent rounded-md hover:opacity-90 transition-all text-xs font-bold uppercase tracking-wider disabled:opacity-50 shadow-[0_0_20px_rgba(255,255,255,0.05)]"
         >
           {isPushingGithub ? <Loader2 size={14} className="animate-spin" /> : <Github size={14} />}
           Push to GitHub
         </button>
+
+        <div className="w-px h-6 bg-[var(--border-default)] mx-1" />
 
         <button
           className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-md transition-all"

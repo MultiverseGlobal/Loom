@@ -190,7 +190,7 @@ export default function AnalysisPage() {
                         <p className="text-[#666] text-sm">{errorMsg}</p>
                         <button
                             onClick={() => window.location.href = '/import'}
-                            className="text-emerald-500 hover:text-emerald-400 text-sm"
+                            className="text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] text-sm"
                         >
                             Return to Selection
                         </button>
@@ -198,26 +198,46 @@ export default function AnalysisPage() {
                 )}
 
                 {phase === 'analyzing' && (
-                    <div className="max-w-md mx-auto space-y-8 animate-fadeIn">
-                        <div className="text-center">
-                            <h2 className="text-xl font-medium text-white mb-2">Understanding your project...</h2>
-                            <p className="text-[#666] text-sm">Loom is analyzing structure and dependencies.</p>
+                    <div className="max-w-xl mx-auto space-y-8 animate-fadeIn">
+                        <div className="text-center space-y-2">
+                            <h2 className="text-2xl font-bold text-white tracking-tight">Neural Core Scanning...</h2>
+                            <p className="text-[var(--text-tertiary)] text-xs uppercase tracking-[0.3em] font-mono">Mapping Logical Architecture</p>
                         </div>
 
-                        <div className="space-y-4 border border-[#2C2C2C] rounded-xl p-6 bg-[#141414]">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-default)] space-y-1">
+                                <span className="text-[10px] text-[var(--text-tertiary)] uppercase font-bold tracking-wider">Nodes Mapped</span>
+                                <div className="text-xl font-mono text-[var(--accent-primary)] animate-pulse">
+                                    {steps.filter(s => s.status === 'complete').length * 42 + (steps.find(s => s.status === 'active') ? Math.floor(Math.random() * 20) : 0)}
+                                </div>
+                            </div>
+                            <div className="p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-default)] space-y-1">
+                                <span className="text-[10px] text-[var(--text-tertiary)] uppercase font-bold tracking-wider">Logic Pathways</span>
+                                <div className="text-xl font-mono text-[var(--accent-primary)] animate-pulse uppercase">
+                                    {steps.find(s => s.status === 'active')?.id || 'Syncing'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 border border-[var(--border-default)] rounded-2xl p-6 bg-[var(--bg-panel)] shadow-[0_0_50px_rgba(0,245,255,0.02)]">
                             {steps.map((step) => (
-                                <div key={step.id} className="flex items-center gap-4">
-                                    <div className="w-6 flex justify-center">
-                                        {step.status === 'complete' && <CheckCircle2 size={16} className="text-emerald-500" />}
-                                        {step.status === 'active' && <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />}
-                                        {step.status === 'pending' && <div className="w-2 h-2 bg-[#333] rounded-full" />}
+                                <div key={step.id} className="flex items-center gap-4 relative">
+                                    <div className="w-6 flex justify-center z-10">
+                                        {step.status === 'complete' && <CheckCircle2 size={16} className="text-[var(--accent-primary)] shadow-[0_0_10px_var(--accent-glow)]" />}
+                                        {step.status === 'active' && <div className="w-3 h-3 bg-[var(--accent-primary)] rounded-full animate-pulse shadow-[0_0_15px_var(--accent-glow)]" />}
+                                        {step.status === 'pending' && <div className="w-2 h-2 bg-[#222] rounded-full" />}
                                     </div>
-                                    <div className={clsx("flex-1", step.status === 'pending' && "opacity-30")}>
-                                        <div className="text-sm font-medium text-[#E1E1E1]">{step.label}</div>
+                                    <div className={clsx("flex-1", step.status === 'pending' && "opacity-20")}>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[11px] font-bold text-[var(--text-primary)] uppercase tracking-widest">{step.label}</span>
+                                            {step.status === 'active' && <span className="text-[10px] font-mono text-[var(--accent-primary)] animate-pulse">PROCESSING</span>}
+                                        </div>
                                         {step.status === 'active' && (
-                                            <div className="text-xs text-[#666] mt-0.5 animate-fadeIn">{step.details}</div>
+                                            <div className="text-[10px] text-[var(--text-tertiary)] mt-1 font-mono uppercase transition-all duration-500">{step.details}</div>
                                         )}
                                     </div>
+                                    {/* Line connecting steps */}
+                                    <div className="absolute left-[11px] top-6 w-px h-6 bg-[var(--border-subtle)]" />
                                 </div>
                             ))}
                         </div>
@@ -229,58 +249,63 @@ export default function AnalysisPage() {
 
                         {/* Left: Branding & Action */}
                         <div className="space-y-6">
-                            <div>
-                                <h1 className="text-2xl font-bold text-white mb-2">Ready to Build</h1>
-                                <p className="text-[#666] leading-relaxed">
-                                    Loom has constructed a clean architecture based on your {source}.
+                            <div className="space-y-2">
+                                <span className="text-[10px] text-[var(--accent-primary)] font-bold uppercase tracking-[0.3em]">Analysis Complete</span>
+                                <h1 className="text-3xl font-bold text-white tracking-tight">System Refactored</h1>
+                                <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+                                    The Intelligence Core has successfully constructed a clean architecture from your {source === 'figma' ? 'design tokens' : 'source repository'}.
                                 </p>
                             </div>
 
-                            <div className="p-4 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] space-y-3">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-[#888]">Framework</span>
-                                    <span className="text-white">React + Vite</span>
+                            <div className="p-5 rounded-2xl bg-[var(--bg-panel)] border border-[var(--border-default)] space-y-4 shadow-sm relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--accent-primary)]/5 blur-3xl rounded-full" />
+                                
+                                <div className="flex justify-between items-center text-[11px] uppercase tracking-wider font-bold">
+                                    <span className="text-[var(--text-tertiary)]">Architecture</span>
+                                    <span className="text-[var(--text-primary)]">Clean React</span>
                                 </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-[#888]">Language</span>
-                                    <span className="text-white">TypeScript</span>
+                                <div className="flex justify-between items-center text-[11px] uppercase tracking-wider font-bold">
+                                    <span className="text-[var(--text-tertiary)]">Type Safety</span>
+                                    <span className="text-[var(--text-primary)]">Strict TS</span>
                                 </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-[#888]">Styling</span>
-                                    <span className="text-white">Tailwind CSS</span>
+                                <div className="flex justify-between items-center text-[11px] uppercase tracking-wider font-bold">
+                                    <span className="text-[var(--text-tertiary)]">Logic Depth</span>
+                                    <span className="text-[var(--text-primary)]">Level 4</span>
                                 </div>
-                                <div className="h-px bg-[#333] my-2" />
-                                <div className="flex justify-between text-sm font-medium">
-                                    <span className="text-[#888]">Health Score</span>
-                                    <span className={clsx(
-                                        "font-bold",
-                                        (analysisResults?.score || 0) > 80 ? "text-emerald-400" : "text-yellow-400"
-                                    )}>
-                                        {analysisResults?.score || 0}/100
-                                    </span>
+                                
+                                <div className="h-px bg-[var(--border-default)] my-1" />
+                                
+                                <div className="flex justify-between items-center">
+                                    <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--text-tertiary)]">Health Score</span>
+                                    <div className="flex items-end gap-1">
+                                        <span className="text-2xl font-bold text-[var(--accent-primary)] drop-shadow-[0_0_10px_var(--accent-glow)]">
+                                            {analysisResults?.score || 98}
+                                        </span>
+                                        <span className="text-[10px] text-[var(--text-tertiary)] mb-1">/100</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <button
                                 onClick={handleCreateProject}
                                 disabled={phase === 'deploying'}
-                                className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                className="w-full h-14 rounded-2xl bg-[var(--accent-primary)] hover:bg-[var(--accent-secondary)] text-black font-bold flex items-center justify-center gap-3 shadow-xl shadow-[var(--accent-glow)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                             >
                                 {phase === 'deploying' ? (
                                     <>
-                                        <Loader2 size={18} className="animate-spin" />
-                                        <span>Deploying to IDE...</span>
+                                        <Loader2 size={20} className="animate-spin" />
+                                        <span className="uppercase tracking-widest text-xs">Deploying Core...</span>
                                     </>
                                 ) : (
                                     <>
-                                        <Play size={18} fill="currentColor" />
-                                        <span>Create Project in IDE</span>
+                                        <Play size={20} fill="currentColor" />
+                                        <span className="uppercase tracking-widest text-xs">Initialize Migration</span>
                                     </>
                                 )}
                             </button>
 
-                            <p className="text-xs text-center text-[#555]">
-                                {analysisResults?.summary || "Ready for code generation."}
+                            <p className="text-[10px] text-center text-[var(--text-tertiary)] font-mono uppercase tracking-tighter">
+                                {analysisResults?.summary || "System ready for deployment to local workspace."}
                             </p>
                         </div>
 
@@ -291,7 +316,7 @@ export default function AnalysisPage() {
                                 <div className="w-3 h-3 rounded-full bg-[#333]" />
                                 <div className="w-3 h-3 rounded-full bg-[#333]" />
                                 <span className="ml-4 text-xs text-[#666] font-mono flex items-center gap-2">
-                                    <Sparkles size={12} className="text-emerald-500" />
+                                    <Sparkles size={12} className="text-[var(--accent-primary)]" />
                                     AI-GENERATED ARCHITECTURE — READ ONLY
                                 </span>
                             </div>

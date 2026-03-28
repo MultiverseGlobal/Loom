@@ -130,8 +130,8 @@ export default function DashboardPage() {
         <div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
           <div className="text-center">
             <div className="relative w-16 h-16 mx-auto mb-6">
-              <div className="absolute inset-0 border-t-2 border-white rounded-full animate-spin"></div>
-              <div className="absolute inset-2 border-t-2 border-emerald-500 rounded-full animate-spin-slow"></div>
+              <div className="absolute inset-0 border-t-2 border-[var(--text-primary)] rounded-full animate-spin"></div>
+              <div className="absolute inset-2 border-t-2 border-[var(--accent-primary)] rounded-full animate-spin-slow"></div>
             </div>
             <p className="text-sm text-[#888] animate-pulse">Initializing Control Tower...</p>
           </div>
@@ -181,7 +181,7 @@ export default function DashboardPage() {
                     )} />
                     <span className={clsx(
                       "absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[var(--bg-panel)]",
-                      connectedDevices[0].status === 'online' ? "bg-emerald-500 animate-pulse" : "bg-rose-500"
+                      connectedDevices[0].status === 'online' ? "bg-[var(--accent-primary)] animate-pulse shadow-[0_0_8px_var(--accent-glow)]" : "bg-rose-500"
                     )} />
                   </div>
                   <div className="flex flex-col min-w-[100px]">
@@ -191,7 +191,7 @@ export default function DashboardPage() {
                       </span>
                       <span className={clsx(
                         "text-[9px] font-bold uppercase ml-2 px-1 rounded",
-                        connectedDevices[0].status === 'online' ? "text-emerald-500 bg-emerald-500/10" : "text-rose-500 bg-rose-500/10"
+                        connectedDevices[0].status === 'online' ? "text-[var(--accent-primary)] bg-[var(--accent-primary)]/10" : "text-rose-500 bg-rose-500/10"
                       )}>
                         {connectedDevices[0].status}
                       </span>

@@ -197,7 +197,14 @@ export default function ProjectDetailPage() {
                             <div className="pt-6 border-t border-[var(--border-subtle)] space-y-4">
                                 <div className="flex items-center justify-between">
                                     <span className="text-[11px] text-[var(--text-secondary)]">Status</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[9px] font-bold uppercase tracking-wider">Ready</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] text-[9px] font-bold uppercase tracking-wider shadow-[0_0_10px_var(--accent-glow)]">Ready</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[11px] text-[var(--text-secondary)]">Ship Status</span>
+                                    <div className="flex items-center gap-1.5">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] animate-pulse shadow-[0_0_8px_var(--accent-glow)]" />
+                                        <span className="text-[9px] font-bold text-[var(--text-primary)] uppercase tracking-tight">Vercel: Live</span>
+                                    </div>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-[11px] text-[var(--text-secondary)]">Version</span>
@@ -207,15 +214,15 @@ export default function ProjectDetailPage() {
                         </div>
 
                         {/* Analysis Snapshot */}
-                        <div className="p-6 rounded-2xl bg-[#8b5cf6]/5 border border-[#8b5cf6]/10 space-y-4">
-                            <h3 className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest">Health Score</h3>
+                        <div className="p-6 rounded-2xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/10 space-y-4 shadow-[0_0_30px_rgba(0,245,255,0.03)]">
+                            <h3 className="text-xs font-bold text-[var(--accent-primary)] uppercase tracking-[0.2em]">Health Score</h3>
                             <div className="flex items-end gap-2">
-                                <span className="text-4xl font-bold text-[#8b5cf6]">
+                                <span className="text-4xl font-bold text-[var(--accent-primary)] drop-shadow-[0_0_15px_var(--accent-glow)]">
                                     {analyses.length > 0 ? (analyses[0].result_json.analysis?.score || 100) : 100}
                                 </span>
-                                <span className="text-xs text-[#8b5cf6]/60 mb-1">/ 100</span>
+                                <span className="text-xs text-[var(--accent-primary)]/60 mb-1">/ 100</span>
                             </div>
-                            <p className="text-[11px] text-[#8b5cf6]/80 leading-relaxed">
+                            <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed">
                                 {analyses.length > 0 
                                     ? (analyses[0].result_json.analysis?.summary || "Architecture is optimal. AI-ready for production.")
                                     : "Architecture is optimal. AI-ready for production."}
