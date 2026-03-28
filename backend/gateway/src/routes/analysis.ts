@@ -110,9 +110,10 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                     .single();
 
                 return {
-                    ...analysisResult,
-                    blueprint,
                     analysisId: analysisRecord?.id,
+                    projectId: projectId || 'pending',
+                    blueprint,
+                    analysis: analysisResult,
                     creditsRemaining: user.credits - creditsToDeduct
                 };
 

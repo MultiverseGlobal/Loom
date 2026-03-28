@@ -10,19 +10,26 @@ export interface AnalysisInput {
 }
 
 export interface AnalysisResult {
-    issues: Array<{
+    issues?: Array<{
         type: 'error' | 'warning' | 'info';
         message: string;
         detail: string;
         file?: string;
         line?: number;
     }>;
-    score: number;
-    summary: string;
-    creditsUsed: number;
-    creditsRemaining: number;
+    score?: number;
+    summary?: string;
+    creditsUsed?: number;
+    creditsRemaining?: number;
     blueprint?: any;
     analysisId?: string;
+    analysis?: {
+        issues?: any[];
+        score?: number;
+        summary?: string;
+        code?: string;
+    };
+    code?: string;
 }
 
 export const analysisService = {
