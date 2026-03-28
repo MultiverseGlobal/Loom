@@ -80,29 +80,31 @@ const MODEL_CONFIGS: Record<AIModel, ModelConfig> = {
 
 export const aiEngine = {
     /**
-     * Intelligently select the best model based on task complexity and key availability
+     * Intelligently select the best model based on task availability and quotas.
+     * Prioritizes Gemini 1.5 Flash/Pro and Claude to bypass OpenAI quota issues.
      */
     selectModel(taskType: 'quick-scan' | 'deep-analysis' | 'fix' | 'refactor', fileCount: number): AIModel {
         const hasOpenAI = !!config.openaiApiKey;
         const hasGemini = !!config.geminiApiKey;
         const hasClaude = !!config.anthropicApiKey;
 
-        // 1. Prioritize Gemini (Fastest/Cheapest/Flash is often free-tier friendly)
-        if (hasGemini && (taskType === 'quick-scan' || !hasOpenAI)) {
-            return (fileCount > 15) ? 'gemini-1.5-pro' : 'gemini-1.5-flash';
+        // 1. ALWAYS Prioritize Gemini 1.5 (Fastest/Cheapest/Reliable)
+        if (hasGemini) {
+            // For huge projects, use Pro. For everything else, Flash is the safest bet for quotas.
+            return (fileCount > 20) ? 'gemini-1.5-pro' : 'gemini-1.5-flash';
         }
 
-        // 2. High Complexity -> Try Claude Sonnet (usually very robust for code)
-        if (hasClaude && (taskType === 'deep-analysis' || taskType === 'refactor' || !hasOpenAI)) {
+        // 2. High Complexity or Refactoring -> Use Claude 3.5 Sonnet
+        if (hasClaude && (taskType === 'deep-analysis' || taskType === 'refactor')) {
             return 'claude-3-5-sonnet';
         }
 
-        // 3. Fallback to OpenAI if we have the key, or if it's explicitly requested
+        // 3. Last Resort: OpenAI (Only if OpenAI key is present and nothing else is)
         if (hasOpenAI) {
             return (taskType === 'deep-analysis' || fileCount > 10) ? 'gpt-4o' : 'gpt-4o-mini';
         }
 
-        // 4. Ultimate Fallback (Gemini Flash is the safest bet)
+        // 4. Default Fallback
         return 'gemini-1.5-flash';
     },
 
