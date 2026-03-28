@@ -411,6 +411,102 @@ export async function registerProjectRoutes(app: FastifyInstance) {
     }
   );
 
+  typedApp.get(
+    "/:id/export",
+    {
+      schema: {
+        params: z.object({ id: z.string().uuid() })
+      },
+      preHandler: [requireAuth],
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const project = await getProject(id);
+      if (!project || project.user_id !== request.userId) {
+        return reply.notFound("Project not found");
+      }
+
+      // Fetch latest analysis
+      const { data: latestAnalysis } = await supabase
+        .from('analyses')
+        .select('result_json')
+        .eq('project_id', id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+        
+      const upg = latestAnalysis?.result_json?.blueprint || latestAnalysis?.result_json?.upg;
+      
+      if (!upg || !upg.nodes) {
+         return reply.badRequest("No generated components available for export.");
+      }
+      
+      const files: { path: string, content: string }[] = [];
+      const explanation = latestAnalysis?.result_json?.summary || "Successfully downloaded UPG blueprint.";
+      
+      // Parse the UPG mock nodes into physical files
+      // Basic flat-map: every 'component' node becomes a .tsx file.
+      for (const [key, node] of Object.entries(upg.nodes as Record<string, any>)) {
+         if (node.type === 'component') {
+            const fileName = node.name ? `${node.name}.tsx` : `Component_${key}.tsx`;
+            
+            // Build the stringified code for this component
+            let importsText = '';
+            if (node.imports && Array.isArray(node.imports)) {
+                importsText = node.imports.map((i: any) => {
+                   const named = i.named && i.named.length > 0 ? `{ ${i.named.join(', ')} }` : '';
+                   const def = i.default || '';
+                   const combo = [def, named].filter(Boolean).join(', ');
+                   return `import ${combo} from '${i.module}';`;
+                }).join('\n') + '\n\n';
+            }
+            
+            const stateText = node.state ? 
+                 Object.entries(node.state).map(([sKey, sVal]: [string, any]) => 
+                    `  const [${sKey}, set${sKey.charAt(0).toUpperCase() + sKey.slice(1)}] = useState(${JSON.stringify(sVal.defaultValue)});`
+                 ).join('\n') + '\n\n' : '';
+
+            // This is a naive code generator tailored to the Counter App payload structure
+            const renderChildren = (childIds: string[], level: number): string => {
+                const indent = '  '.repeat(level);
+                return childIds.map(cId => {
+                    const child = upg.nodes[cId];
+                    if (!child) return '';
+                    if (child.type === 'text') return `${indent}${child.content}\n`;
+                    if (child.type === 'element') {
+                        const propsString = Object.entries(child.props || {}).map(([p, v]) => `${p}={${v}}`).join(' ');
+                        const className = child.className ? ` className="${child.className}"` : '';
+                        const allAttribs = [className, propsString].filter(Boolean).join(' ');
+                        
+                        if (!child.children || child.children.length === 0) {
+                            return `${indent}<${child.tag}${allAttribs} />\n`;
+                        } else {
+                            const innerItems = renderChildren(child.children, level + 1);
+                            return `${indent}<${child.tag}${allAttribs}>\n${innerItems}${indent}</${child.tag}>\n`;
+                        }
+                    }
+                    return '';
+                }).join('');
+            };
+
+            const bodyContent = node.children && Array.isArray(node.children) 
+                ? renderChildren(node.children, 2) 
+                : '    <div />\n';
+
+            const componentText = `${importsText}export default function ${node.name}() {\n${stateText}  return (\n${bodyContent}  );\n}\n`;
+            files.push({ path: fileName, content: componentText });
+         }
+      }
+      
+      // If we somehow found zero components (like the fallback Analyzer limit), just output a single JSON representing it
+      if (files.length === 0) {
+          files.push({ path: 'blueprint.json', content: JSON.stringify(upg, null, 2) });
+      }
+
+      return reply.send({ files, explanation });
+    }
+  );
+
   typedApp.post(
     "/",
     {

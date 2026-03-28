@@ -8,7 +8,8 @@ import { toast } from "sonner";
 import { WorkspaceControls } from "@/components/workspace/WorkspaceControls";
 import { CodePreview } from "@/components/workspace/CodePreview";
 import { HealingPanel } from "@/components/workspace/HealingPanel";
-import { ArrowLeft, Box, Loader2 } from "lucide-react";
+import { ArrowLeft, Box, Loader2, Terminal, X, Copy } from "lucide-react";
+import { createClient } from "@/lib/supabase";
 
 export default function ProjectDetailPage() {
     const params = useParams();
@@ -19,6 +20,8 @@ export default function ProjectDetailPage() {
     const [currentCode, setCurrentCode] = useState<string>("");
     const [isLaunching, setIsLaunching] = useState(false);
     const [isRescanning, setIsRescanning] = useState(false);
+    const [showCliModal, setShowCliModal] = useState(false);
+    const [cliToken, setCliToken] = useState("");
 
     useEffect(() => {
         const loadData = async () => {
@@ -96,14 +99,16 @@ export default function ProjectDetailPage() {
         if (!project) return;
         setIsLaunching(true);
         try {
-            const result = await projectService.pushToIDE(project.id);
-            if (result.success) {
-                toast.success("Pushing to VS Code...");
+            const supabase = createClient();
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.access_token) {
+                setCliToken(session.access_token);
+                setShowCliModal(true);
             } else {
-                toast.error("Failed to connect to IDE");
+                toast.error("Authentication required to generate export token");
             }
         } catch (err: any) {
-            toast.error(err.message || "Failed to launch extension");
+            toast.error(err.message || "Failed to generate command");
         } finally {
             setIsLaunching(false);
         }
@@ -211,6 +216,43 @@ export default function ProjectDetailPage() {
                     })))}
                 />
             </div>
+
+            {/* CLI Modal */}
+            {showCliModal && project && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                    <div className="w-[500px] bg-[var(--bg-panel)] border border-[var(--border-subtle)] rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                        <div className="flex items-center justify-between p-4 border-b border-[var(--border-subtle)]">
+                            <div className="flex items-center gap-2">
+                                <Terminal className="w-5 h-5 text-[var(--accent-primary)]" />
+                                <h3 className="font-bold text-[var(--text-primary)]">Sync via CLI</h3>
+                            </div>
+                            <button onClick={() => setShowCliModal(false)} className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <p className="text-sm text-[var(--text-secondary)]">Run this command in your terminal to instantly sync all AI-generated components into your local project workspace.</p>
+                            <div className="relative group">
+                                <pre className="p-4 bg-[var(--bg-root)] rounded-lg border border-[var(--border-subtle)] overflow-x-auto text-[13px] font-mono text-[var(--text-primary)]">
+                                    {`npx shift-cli pull ${project.id} -t ${cliToken}`}
+                                </pre>
+                                <button 
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(`npx shift-cli pull ${project.id} -t ${cliToken}`);
+                                        toast.success("Command copied to clipboard!");
+                                    }}
+                                    className="absolute right-2 top-2 p-2 bg-[var(--bg-panel)] rounded border border-[var(--border-subtle)] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] hover:text-white text-[var(--text-secondary)]"
+                                >
+                                    <Copy className="w-4 h-4" />
+                                </button>
+                            </div>
+                            <div className="text-[11px] text-[var(--text-tertiary)] font-mono">
+                                Token expires in 60 minutes. Keep it secret.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
