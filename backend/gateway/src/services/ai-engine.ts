@@ -78,6 +78,8 @@ const MODEL_CONFIGS: Record<AIModel, ModelConfig> = {
     }
 };
 
+import { socketService } from "./socket.js";
+
 export const aiEngine = {
     /**
      * Intelligently select the best model based on task availability and quotas.
@@ -398,16 +400,46 @@ Return a JSON object with:
     /**
      * Generate UPG Blueprint from source via Python Analyzer
      */
-    async generateBlueprint(type: string, payload: any, projectName: string): Promise<any> {
+    async generateBlueprint(type: string, payload: any, projectName: string, projectId?: string): Promise<any> {
         try {
             console.log(`[AI Engine] Requesting blueprint for ${projectName} (${type})`);
+            
+            // Broadcast start event for Live Terminal
+            if (projectId) {
+                socketService.broadcast(projectId, 'analysis:status', {
+                    message: `Initializing deep scan for ${projectName}...`,
+                    step: 'start',
+                    timestamp: new Date().toISOString()
+                });
+            }
 
             // Call Python Service
+            // If the payload contains files, we pass them directly.
+            // If not, we might need a way to fetch them (but for now we assume they are passed if coming from a local sync or repo)
+            const files = payload.files || [];
+            
+            if (projectId) {
+                socketService.broadcast(projectId, 'analysis:status', {
+                    message: `Sending ${files.length} files to AI Analyzer (Gemini 1.5 Pro)...`,
+                    step: 'analyzing',
+                    timestamp: new Date().toISOString()
+                });
+            }
+
             const response = await axios.post(`${config.analyzerUrl}/analyzer/blueprint/generate`, {
                 type,
-                payload,
+                payload, // This now includes 'files' if provided
                 project_name: projectName
             });
+
+            if (projectId) {
+                socketService.broadcast(projectId, 'analysis:status', {
+                    message: `Architectural blueprint generated successfully.`,
+                    step: 'complete',
+                    timestamp: new Date().toISOString()
+                });
+            }
+
             return response.data;
 
         } catch (error: any) {

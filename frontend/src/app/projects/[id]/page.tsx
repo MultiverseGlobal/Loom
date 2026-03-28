@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { WorkspaceControls } from "@/components/workspace/WorkspaceControls";
 import { CodePreview } from "@/components/workspace/CodePreview";
 import { HealingPanel } from "@/components/workspace/HealingPanel";
+import { LiveTerminal } from "@/components/workspace/LiveTerminal";
 import { ArrowLeft, Box, Loader2, Terminal, X, Copy } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
@@ -114,6 +115,34 @@ export default function ProjectDetailPage() {
         }
     };
 
+    const handleFix = async (event: any) => {
+        if (!project) return;
+        const toastId = toast.loading("AI is calculating the fix...");
+        try {
+            const result = await analysisService.fix(
+                project.id,
+                event.message,
+                currentCode,
+                `${project.name.replace(/\s+/g, '')}.tsx`
+            );
+
+            setCurrentCode(result.fixedCode);
+            toast.success("Code fixed successfully!", { id: toastId });
+            
+            // Log the explanation to the Terminal
+            socketService.send({
+                type: 'LOG',
+                payload: {
+                    message: `AI Fix Applied: ${result.explanation}`,
+                    type: 'success'
+                }
+            });
+        } catch (err: any) {
+            console.error("Fix error:", err);
+            toast.error("Failed to apply fix: " + (err.message || "Unknown error"), { id: toastId });
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--bg-root)]">
@@ -192,6 +221,9 @@ export default function ProjectDetailPage() {
                                     : "Architecture is optimal. AI-ready for production."}
                             </p>
                         </div>
+
+                        {/* Live AI Terminal */}
+                        <LiveTerminal />
                     </div>
 
                     {/* Right Pane: Code Preview */}
@@ -207,6 +239,7 @@ export default function ProjectDetailPage() {
                 <HealingPanel 
                     onRescan={handleRescan}
                     isRescanning={isRescanning}
+                    onFix={handleFix}
                     events={analyses.flatMap(analysis => (analysis.result_json.analysis?.issues || []).map((issue: any, index: number) => ({
                         id: `${analysis.id}-${index}`,
                         type: issue.type === 'error' || issue.type === 'warning' ? 'fix' : (issue.type === 'info' ? 'info' : 'optimization'),

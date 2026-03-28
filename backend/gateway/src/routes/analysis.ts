@@ -76,7 +76,7 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                 // 2. Perform AI Analysis / Blueprint Generation
                 // For the analysis page preview, we generate a blueprint
                 const projectName = payload?.repo?.split('/')[1] || "New Project";
-                const blueprint = await aiEngine.generateBlueprint(source, payload, projectName);
+                const blueprint = await aiEngine.generateBlueprint(source, payload, projectName, projectId);
 
                 // 3. Perform AI analysis on the concept
                 const analysisResult = await aiEngine.analyzeProject([
