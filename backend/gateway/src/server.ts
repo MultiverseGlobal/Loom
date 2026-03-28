@@ -40,6 +40,8 @@ const server = fastify({
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
 
+console.log(`[Shift AI] Booting Gateway - Build Time: ${new Date().toISOString()}`);
+
 // Register Middleware
 server.addHook('onRequest', async (request, reply) => {
   console.log(`[REQUEST] ${request.method} ${request.url}`);
