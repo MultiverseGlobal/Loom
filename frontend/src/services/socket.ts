@@ -83,14 +83,14 @@ class SocketService {
 
     public subscribe(callback: SocketCallback) {
         this.subscribers.add(callback);
-        return () => this.subscribers.delete(callback);
+        return () => { this.subscribers.delete(callback); };
     }
 
     public onStatusChange(callback: (isOnline: boolean) => void) {
         this.statusListeners.add(callback);
         // Initial state
         callback(this.isConnected);
-        return () => this.statusListeners.delete(callback);
+        return () => { this.statusListeners.delete(callback); };
     }
 
     private notifyStatus(isOnline: boolean) {
