@@ -407,7 +407,7 @@ Return a JSON object with:
             // Broadcast start event for Live Terminal
             if (projectId) {
                 socketService.broadcast(projectId, 'analysis:status', {
-                    message: `Initializing deep scan for ${projectName}...`,
+                    message: `Initializing Parallel Neural Scan for ${projectName}...`,
                     step: 'start',
                     timestamp: new Date().toISOString()
                 });
@@ -420,8 +420,14 @@ Return a JSON object with:
             
             if (projectId) {
                 socketService.broadcast(projectId, 'analysis:status', {
-                    message: `Sending ${files.length} files to AI Analyzer (Gemini 1.5 Pro)...`,
-                    step: 'analyzing',
+                    message: `Synthesizing architectural blueprint (Gemini 1.5 Flash)...`,
+                    step: 'blueprint',
+                    timestamp: new Date().toISOString()
+                });
+                
+                socketService.broadcast(projectId, 'analysis:status', {
+                    message: `Analyzing security heuristics and dependency graph...`,
+                    step: 'audit',
                     timestamp: new Date().toISOString()
                 });
             }

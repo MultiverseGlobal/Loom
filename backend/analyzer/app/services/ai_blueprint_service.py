@@ -15,8 +15,9 @@ class AIBlueprintService:
         api_key = os.getenv("GEMINI_API_KEY")
         if api_key and api_key != "dummy-key":
             genai.configure(api_key=api_key)
+            # Use Flash for 3x faster initial blueprint generation
             self.model = genai.GenerativeModel(
-                model_name="gemini-1.5-pro",
+                model_name="gemini-1.5-flash",
                 generation_config={"response_mime_type": "application/json"}
             )
         else:

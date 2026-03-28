@@ -73,18 +73,38 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                     });
                 }
 
-                // 2. Perform AI Analysis / Blueprint Generation
-                // For the analysis page preview, we generate a blueprint
+                // 2. Perform AI Analysis / Blueprint Generation (Parallelized for Speed)
                 const projectName = payload?.repo?.split('/')[1] || "New Project";
-                const blueprint = await aiEngine.generateBlueprint(source, payload, projectName, projectId);
+                const files = payload?.files || [];
 
-                // 3. Perform AI analysis on the concept
-                const analysisResult = await aiEngine.analyzeProject([
-                    { name: 'blueprint.json', content: JSON.stringify(blueprint) }
-                ], {
-                    depth: depth || 'quick',
-                    model: model as AIModel | undefined
-                });
+                let blueprint: any;
+                let analysisResult: any;
+
+                if (files.length > 0) {
+                    // We have raw files! Run both synthesis and audit in parallel
+                    console.log(`[Analysis] Parallelizing scan for ${files.length} files...`);
+                    const [bp, ar] = await Promise.all([
+                        aiEngine.generateBlueprint(source, payload, projectName, projectId),
+                        aiEngine.analyzeProject(files.map((f: any) => ({
+                            name: f.path,
+                            content: f.content
+                        })), {
+                            depth: depth || 'quick',
+                            model: (model as AIModel | undefined) || 'gemini-1.5-flash' // Faster default for parallel audits
+                        })
+                    ]);
+                    blueprint = bp;
+                    analysisResult = ar;
+                } else {
+                    // Sequential fallback (used for Figma/Prompt where BP is the only source)
+                    blueprint = await aiEngine.generateBlueprint(source, payload, projectName, projectId);
+                    analysisResult = await aiEngine.analyzeProject([
+                        { name: 'blueprint.json', content: JSON.stringify(blueprint) }
+                    ], {
+                        depth: depth || 'quick',
+                        model: model as AIModel | undefined
+                    });
+                }
 
                 // 4. Deduct Credits
                 const creditsToDeduct = analysisResult.creditsUsed || 1;

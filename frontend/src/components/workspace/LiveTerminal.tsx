@@ -26,7 +26,9 @@ export function LiveTerminal() {
                     id: Math.random().toString(36).substr(2, 9),
                     message,
                     timestamp: timestamp || new Date().toISOString(),
-                    type: step === 'complete' ? 'success' : (step === 'error' ? 'error' : 'process')
+                    type: step === 'complete' ? 'success' : 
+                          step === 'error' ? 'error' : 
+                          (step === 'blueprint' || step === 'audit') ? 'info' : 'process'
                 };
 
                 setLogs(prev => [...prev.slice(-19), newLog]); // Keep last 20 lines
