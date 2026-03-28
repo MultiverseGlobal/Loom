@@ -258,69 +258,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Action 1: Import */}
-          <div
-            onClick={() => router.push('/import')}
-            className="group relative p-5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-default)] hover:border-[var(--border-highlight)] transition-all cursor-pointer overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-              <ArrowRight size={18} className="text-[var(--text-secondary)] -translate-x-2 group-hover:translate-x-0 transition-transform" />
-            </div>
-            <div className="w-10 h-10 rounded-lg bg-[var(--accent-primary)]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              <Terminal size={20} className="text-[var(--accent-primary)]" />
-            </div>
-            <h3 className="text-[15px] font-medium text-[var(--text-primary)] mb-1">New Import</h3>
-            <p className="text-[13px] text-[var(--text-secondary)]">
-              Start a new analysis by importing from a repository or file.
-            </p>
-          </div>
-
-          {/* Action 2: Generate */}
-          <div
-            onClick={() => router.push('/generate')}
-            className="group relative p-5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-default)] hover:border-[var(--border-highlight)] transition-all cursor-pointer overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-              <ArrowRight size={18} className="text-[var(--text-secondary)] -translate-x-2 group-hover:translate-x-0 transition-transform" />
-            </div>
-            <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              <Sparkles size={20} className="text-violet-500" />
-            </div>
-            <h3 className="text-[15px] font-medium text-[var(--text-primary)] mb-1">Generate App</h3>
-            <p className="text-[13px] text-[var(--text-secondary)]">
-              Describe your idea and let Shift AI build the architecture.
-            </p>
-          </div>
-
-          {/* Action 3: Recent Status */}
-          <div
-            className="relative p-5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-default)] overflow-hidden"
-          >
-            <h3 className="text-[13px] font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-4">Recent Activity</h3>
-            <div className="space-y-3">
-              {activities.length === 0 ? (
-                <p className="text-[12px] text-[var(--text-tertiary)] italic">No recent activity</p>
-              ) : (
-                activities.map((activity) => (
-                  <div key={activity.id} className="flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)]" />
-                    <span className="text-[13px] text-[var(--text-primary)] truncate max-w-[180px]">
-                      {activity.action.replace(/_/g, ' ')}
-                    </span>
-                    <span className="ml-auto text-[11px] text-[var(--text-tertiary)] whitespace-nowrap">
-                      {new Date(activity.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* Projects Grid */}
-        <div>
+        <div className="pt-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[18px] font-medium text-white">Active Projects</h2>
             <button className="text-[13px] text-[#888] hover:text-white transition-colors">View All</button>

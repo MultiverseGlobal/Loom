@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
-    Home,
+    LayoutDashboard,
     UploadCloud,
     Activity,
     GitBranch,
@@ -70,7 +70,7 @@ export function Sidebar() {
 
     const navigation = [
         { name: "Import Project", href: "/import", icon: Zap },
-        { name: "Projects", href: "/dashboard", icon: Home },
+        { name: "Projects", href: "/dashboard", icon: LayoutDashboard },
         { name: "Analysis", href: "/analysis", icon: Activity },
     ];
 
