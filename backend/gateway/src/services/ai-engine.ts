@@ -80,26 +80,30 @@ const MODEL_CONFIGS: Record<AIModel, ModelConfig> = {
 
 export const aiEngine = {
     /**
-     * Intelligently select the best model based on task complexity
+     * Intelligently select the best model based on task complexity and key availability
      */
     selectModel(taskType: 'quick-scan' | 'deep-analysis' | 'fix' | 'refactor', fileCount: number): AIModel {
-        // Quick scan or small projects -> use gemini-flash (cheapest/fastest)
-        if (taskType === 'quick-scan') {
-            return 'gemini-1.5-flash';
+        const hasOpenAI = !!config.openaiApiKey;
+        const hasGemini = !!config.geminiApiKey;
+        const hasClaude = !!config.anthropicApiKey;
+
+        // 1. Prioritize Gemini (Fastest/Cheapest/Flash is often free-tier friendly)
+        if (hasGemini && (taskType === 'quick-scan' || !hasOpenAI)) {
+            return (fileCount > 15) ? 'gemini-1.5-pro' : 'gemini-1.5-flash';
         }
 
-        // Very large projects -> use gemini-pro (huge context window)
-        if (fileCount > 20) {
-            return 'gemini-1.5-pro';
+        // 2. High Complexity -> Try Claude Sonnet (usually very robust for code)
+        if (hasClaude && (taskType === 'deep-analysis' || taskType === 'refactor' || !hasOpenAI)) {
+            return 'claude-3-5-sonnet';
         }
 
-        // Deep analysis or many files -> use full GPT-4o
-        if (taskType === 'deep-analysis' || fileCount > 10) {
-            return 'gpt-4o';
+        // 3. Fallback to OpenAI if we have the key, or if it's explicitly requested
+        if (hasOpenAI) {
+            return (taskType === 'deep-analysis' || fileCount > 10) ? 'gpt-4o' : 'gpt-4o-mini';
         }
 
-        // Medium complexity -> use Claude
-        return 'claude-3-5-sonnet';
+        // 4. Ultimate Fallback (Gemini Flash is the safest bet)
+        return 'gemini-1.5-flash';
     },
 
     /**
