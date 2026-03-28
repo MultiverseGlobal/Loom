@@ -23,46 +23,31 @@ export default function SignupPage() {
         setError('');
         setLoading(true);
 
-        try {
-            const { data, error: signUpError } = await authService.signUp(email, password, fullName);
+        const { data, error: signUpError } = await authService.signUp(email, password, fullName);
 
-            if (signUpError) {
-                setError(signUpError.message);
-                setLoading(false);
-            } else if (data.user) {
-                // Check if email confirmation is required
-                if (data.user.identities && data.user.identities.length === 0) {
-                    // Email confirmation required
-                    setSuccess(true);
-                    setLoading(false);
-                } else {
-                    // No email confirmation needed or already confirmed
-                    router.push('/onboarding/connect');
-                    router.refresh();
-                }
-            }
-        } catch (err: any) {
-            console.error('[AUTH ERROR] handleSubmit:', err);
-            setError(err.message || 'An unexpected error occurred');
+        if (signUpError) {
+            setError(signUpError.message);
             setLoading(false);
+        } else if (data.user) {
+            // Check if email confirmation is required
+            if (data.user.identities && data.user.identities.length === 0) {
+                // Email confirmation required
+                setSuccess(true);
+                setLoading(false);
+            } else {
+                // No email confirmation needed or already confirmed
+                router.push('/import');
+                router.refresh();
+            }
         }
     };
 
     const handleGithubLogin = async () => {
         setLoading(true);
         setError('');
-        console.log('[AUTH] Initiating GitHub login...');
-        
-        try {
-            const { error: githubError } = await authService.signInWithGithub();
-            if (githubError) {
-                console.error('[AUTH ERROR] signInWithGithub:', githubError);
-                setError(githubError.message);
-                setLoading(false);
-            }
-        } catch (err: any) {
-            console.error('[AUTH ERROR] handleGithubLogin exception:', err);
-            setError(err.message || 'Failed to start GitHub login');
+        const { error: githubError } = await authService.signInWithGithub();
+        if (githubError) {
+            setError(githubError.message);
             setLoading(false);
         }
     };

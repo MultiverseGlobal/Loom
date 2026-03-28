@@ -22,38 +22,23 @@ export default function LoginPage() {
         setError('');
         setLoading(true);
 
-        try {
-            const { data, error: signInError } = await authService.signIn(email, password);
+        const { data, error: signInError } = await authService.signIn(email, password);
 
-            if (signInError) {
-                setError(signInError.message);
-                setLoading(false);
-            } else if (data.user) {
-                router.push('/dashboard');
-                router.refresh();
-            }
-        } catch (err: any) {
-            console.error('[AUTH ERROR] handleSubmit:', err);
-            setError(err.message || 'An unexpected error occurred');
+        if (signInError) {
+            setError(signInError.message);
             setLoading(false);
+        } else if (data.user) {
+            router.push('/import');
+            router.refresh();
         }
     };
 
     const handleGithubLogin = async () => {
         setLoading(true);
         setError('');
-        console.log('[AUTH] Initiating GitHub login...');
-        
-        try {
-            const { error: githubError } = await authService.signInWithGithub();
-            if (githubError) {
-                console.error('[AUTH ERROR] signInWithGithub:', githubError);
-                setError(githubError.message);
-                setLoading(false);
-            }
-        } catch (err: any) {
-            console.error('[AUTH ERROR] handleGithubLogin exception:', err);
-            setError(err.message || 'Failed to start GitHub login');
+        const { error: githubError } = await authService.signInWithGithub();
+        if (githubError) {
+            setError(githubError.message);
             setLoading(false);
         }
     };

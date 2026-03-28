@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
     const requestUrl = new URL(request.url);
     const code = requestUrl.searchParams.get('code');
-    const next = requestUrl.searchParams.get('next') ?? '/dashboard';
+    const next = requestUrl.searchParams.get('next') ?? '/import';
 
     if (code) {
         console.log(`[AUTH CALLBACK] Exchanging code: ${code.substring(0, 5)}...`);

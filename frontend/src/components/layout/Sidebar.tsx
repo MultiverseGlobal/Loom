@@ -69,8 +69,8 @@ export function Sidebar() {
     }, []);
 
     const navigation = [
-        { name: "Dashboard", href: "/dashboard", icon: Home },
-        { name: "Import Project", href: "/import", icon: UploadCloud },
+        { name: "Import Project", href: "/import", icon: Zap },
+        { name: "Projects", href: "/dashboard", icon: Home },
         { name: "Analysis", href: "/analysis", icon: Activity },
     ];
 

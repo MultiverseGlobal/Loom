@@ -152,13 +152,13 @@ export default function DashboardPage() {
           <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-semibold text-[var(--text-primary)] tracking-tight">Dashboard</h1>
-                <span className="px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 text-[var(--accent-primary)] text-[11px] font-medium">
-                  System Online
+                <h1 className="text-3xl font-semibold text-[var(--text-primary)] tracking-tight">Project Management</h1>
+                <span className="px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 border border border-[var(--accent-primary)]/20 text-[var(--accent-primary)] text-[11px] font-medium">
+                  Workspace Active
                 </span>
               </div>
               <p className="text-[var(--text-secondary)] text-[15px] max-w-xl">
-                Manage your logic, monitor connected IDEs, and deploy intelligence.
+                Manage your logic, monitor connected IDEs, and scale your intelligence.
               </p>
             </div>
 
@@ -263,9 +263,9 @@ export default function DashboardPage() {
             <div className="w-10 h-10 rounded-lg bg-[var(--accent-primary)]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Terminal size={20} className="text-[var(--accent-primary)]" />
             </div>
-            <h3 className="text-[15px] font-medium text-[var(--text-primary)] mb-1">Import from IDE</h3>
+            <h3 className="text-[15px] font-medium text-[var(--text-primary)] mb-1">New Import</h3>
             <p className="text-[13px] text-[var(--text-secondary)]">
-              Connect local projects via VSCode extension for analysis.
+              Start a new analysis by importing from a repository or file.
             </p>
           </div>
 
