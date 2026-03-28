@@ -50,7 +50,7 @@ export async function fetchAPI<T>(
                 if (errorData.error) {
                     errorMessage = errorData.error;
                     if (errorData.details) {
-                        errorMessage += `: ${errorData.details}`;
+                        errorMessage += ` (${typeof errorData.details === 'string' ? errorData.details : JSON.stringify(errorData.details)})`;
                     }
                 } else if (errorData.message) {
                     errorMessage = errorData.message;
