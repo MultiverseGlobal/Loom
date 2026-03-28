@@ -388,7 +388,15 @@ Return a JSON object with:
             return response.data;
 
         } catch (error: any) {
-            console.error(`[AI Engine] Python analyzer failed or unavailable (${error.message}). Returning fallback blueprint.`);
+            const isConnectionError = error.code === 'ECONNREFUSED' || error.message.includes('network');
+            const isTimeout = error.code === 'ECONNABORTED';
+            
+            let specificReason = "";
+            if (isConnectionError) specificReason = `Could not reach Python Analyzer at ${config.analyzerUrl}. Ensure ANALYZER_URL is set correctly in Render.`;
+            else if (isTimeout) specificReason = "The Python Analyzer took too long to respond (Cold Start). Please wait 30 seconds and try again.";
+            else specificReason = error.message;
+
+            console.error(`[AI Engine] Python analyzer failed: ${specificReason}`);
             
             // Return a safe mock blueprint instead of crashing the entire analysis flow
             const rootId = 'fallback-root';
@@ -419,7 +427,7 @@ Return a JSON object with:
                         className: 'text-xl font-bold text-red-400',
                         children: ['t1_text'] 
                     },
-                    't1_text': { id: 't1_text', type: 'text', parent: 't1', content: 'Analyzer Unavailable' },
+                    't1_text': { id: 't1_text', type: 'text', parent: 't1', content: 'Analyzer Connection Error' },
                     't2': { 
                         id: 't2',
                         tag: 'p',
@@ -428,7 +436,7 @@ Return a JSON object with:
                         className: 'text-gray-400 text-sm font-mono',
                         children: ['t2_text']
                     },
-                    't2_text': { id: 't2_text', type: 'text', parent: 't2', content: `The architecture analyzer service is currently starting up or offline. (${error.message})` }
+                    't2_text': { id: 't2_text', type: 'text', parent: 't2', content: specificReason }
                 }
             };
         }

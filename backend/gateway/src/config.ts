@@ -23,6 +23,14 @@ export const config = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY,
   geminiApiKey: process.env.GEMINI_API_KEY,
 
+  // Diagnostics (Safe logs)
+  _diagnostics: {
+    openai: process.env.OPENAI_API_KEY ? `SET (prefix: ${process.env.OPENAI_API_KEY.substring(0, 7)}...)` : 'MISSING',
+    anthropic: process.env.ANTHROPIC_API_KEY ? 'SET' : 'MISSING',
+    gemini: process.env.GEMINI_API_KEY ? 'SET' : 'MISSING',
+    analyzer: process.env.ANALYZER_URL ? `SET (${process.env.ANALYZER_URL})` : 'MISSING (Falling back to localhost)',
+  },
+
   // Supabase Configuration
   // Note: These are validated at runtime by the auth middleware
   supabaseUrl: process.env.SUPABASE_URL || '',
