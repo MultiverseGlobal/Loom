@@ -58,7 +58,7 @@ export default function DocsPage() {
                             Documentation
                         </h1>
                         <p className="text-[18px] text-[var(--text-secondary)] max-w-2xl">
-                            Everything you need to know about using Loom AI to transform your projects from AI prototypes to production-ready code.
+                            Everything you need to know about using Shift AI to transform your projects from AI prototypes to production-ready code.
                         </p>
                     </div>
 
@@ -134,7 +134,7 @@ export default function DocsPage() {
                                         <Layers className="text-[var(--accent-primary)]" size={40} />
                                     </div>
                                     <div className="text-center">
-                                        <div className="font-semibold text-[var(--text-primary)]">Loom Engine</div>
+                                        <div className="font-semibold text-[var(--text-primary)]">Shift Engine</div>
                                         <div className="text-xs text-[var(--text-secondary)]">Universal Project Graph</div>
                                     </div>
                                 </div>

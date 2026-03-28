@@ -6,7 +6,7 @@ export default function ChangelogPage() {
     return (
         <ComingSoon
             title="Changelog"
-            description="We're building a feed of all the latest updates and improvements to Loom AI. Stay tuned!"
+            description="We're building a feed of all the latest updates and improvements to Shift AI. Stay tuned!"
         />
     );
 }

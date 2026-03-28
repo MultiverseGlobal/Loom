@@ -87,7 +87,7 @@ export default function DeveloperSettingsPage() {
                 {/* Header */}
                 <div>
                     <h1 className="text-2xl font-bold text-white mb-2">Developer Settings</h1>
-                    <p className="text-[#888] text-sm">Convert your existing projects or build for the Loom platform.</p>
+                    <p className="text-[#888] text-sm font-sans uppercase tracking-widest font-bold opacity-60">Build for the Shift AI Platform</p>
                 </div>
 
                 {/* API Keys Section */}
@@ -95,7 +95,7 @@ export default function DeveloperSettingsPage() {
                     <div className="p-6 border-b border-[#2C2C2C] flex items-center justify-between">
                         <div>
                             <h2 className="text-lg font-medium text-white flex items-center gap-2">
-                                <Key size={18} className="text-emerald-500" />
+                                <Key size={18} className="text-[var(--accent-primary)]" />
                                 API Keys
                             </h2>
                             <p className="text-[#666] text-xs mt-1">Manage access tokens for CLI and IDE extensions.</p>
@@ -114,13 +114,13 @@ export default function DeveloperSettingsPage() {
                                         placeholder="Key Name (e.g. VS Code Laptop)"
                                         value={newKeyName}
                                         onChange={e => setNewKeyName(e.target.value)}
-                                        className="w-full bg-[#1C1C1C] border border-[#333] rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
+                                        className="w-full bg-[#1C1C1C] border border-[#333] rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-[var(--accent-primary)]"
                                     />
                                 </div>
                                 <button
                                     type="submit"
                                     disabled={isCreating}
-                                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-lg flex items-center gap-2 transition-colors disabled:opacity-50"
+                                    className="px-4 py-2 bg-[var(--accent-primary)] hover:opacity-90 text-black text-sm font-bold uppercase tracking-widest rounded-lg flex items-center gap-2 transition-all shadow-[0_0_15px_var(--accent-glow)] disabled:opacity-50"
                                 >
                                     {isCreating ? <div className="w-4 h-4 rounded-full border-2 border-white/20 border-t-white animate-spin" /> : <Plus size={16} />}
                                     Generate
@@ -130,26 +130,26 @@ export default function DeveloperSettingsPage() {
 
                         {/* Generated Key Display */}
                         {generatedKey && (
-                            <div className="p-4 bg-emerald-950/20 border border-emerald-900/50 rounded-lg animate-fadeIn">
+                            <div className="p-4 bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 rounded-lg animate-fadeIn shadow-[0_0_20px_var(--accent-glow)]/5">
                                 <div className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500">
+                                    <div className="mt-1 text-[var(--accent-primary)]">
                                         <Shield size={20} />
                                     </div>
                                     <div className="flex-1 space-y-3">
                                         <div>
-                                            <h3 className="text-sm font-medium text-emerald-400">New Secret Key Generated</h3>
-                                            <p className="text-xs text-emerald-300/70 mt-1">
+                                            <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--accent-primary)]">New Secret Key Generated</h3>
+                                            <p className="text-xs text-[var(--text-secondary)] mt-1">
                                                 Please copy this key immediately. We won't show it again.
                                             </p>
                                         </div>
 
                                         <div className="flex items-center gap-2">
-                                            <code className="flex-1 bg-black/30 border border-emerald-900/50 rounded px-3 py-2 text-sm font-mono text-emerald-200 break-all">
+                                            <code className="flex-1 bg-black/30 border border-[var(--accent-primary)]/20 rounded px-3 py-2 text-sm font-mono text-[var(--accent-primary)] break-all">
                                                 {generatedKey}
                                             </code>
                                             <button
                                                 onClick={() => copyToClipboard(generatedKey)}
-                                                className="p-2 hover:bg-emerald-900/30 rounded text-emerald-400 transition-colors"
+                                                className="p-2 hover:bg-[var(--accent-primary)]/10 rounded text-[var(--accent-primary)] transition-colors"
                                             >
                                                 {justCopied ? <Check size={16} /> : <Copy size={16} />}
                                             </button>

@@ -127,7 +127,7 @@ export default function PricingPage() {
                     </div>
                     <div>
                         <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Do you offer refunds?</h3>
-                        <p className="text-[var(--text-secondary)]">We offer a 30-day money-back guarantee if you're not satisfied with Loom AI.</p>
+                        <p className="text-[var(--text-secondary)]">We offer a 30-day money-back guarantee if you're not satisfied with Shift AI.</p>
                     </div>
                 </div>
             </section>

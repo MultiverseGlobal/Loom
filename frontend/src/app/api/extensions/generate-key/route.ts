@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
         const { extensionType } = body; // 'vscode' or 'cursor'
 
         // Generate API key
-        const apiKey = `loom_${randomBytes(32).toString('hex')}`;
+        const apiKey = `shift_${randomBytes(32).toString('hex')}`;
 
         // Store in database (we'll need to create this table)
         // For MVP, just return the key

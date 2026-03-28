@@ -102,7 +102,7 @@ export default function ImportPage() {
                 <div className="text-center mb-16 animate-fadeIn">
                     <h1 className="text-3xl font-bold tracking-tight text-[var(--text-primary)] mb-3">Where is your project coming from?</h1>
                     <p className="text-[var(--text-secondary)] text-[16px]">
-                        Loom extracts structure, not just files. Select a source to begin analysis.
+                        Shift AI extracts structure, not just files. Select a source to begin analysis.
                     </p>
                 </div>
 

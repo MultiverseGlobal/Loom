@@ -23,7 +23,7 @@ export default function AssistantPage() {
                                     <Bot size={16} className="text-white" />
                                 </div>
                                 <div>
-                                    <div className="text-[13px] font-medium text-[var(--text-primary)]">Loom AI Assistant</div>
+                                    <div className="text-[13px] font-medium text-[var(--text-primary)]">Shift AI Assistant</div>
                                     <div className="text-[11px] text-[var(--text-tertiary)]">Always ready to help</div>
                                 </div>
                             </div>

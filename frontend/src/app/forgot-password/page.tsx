@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)] text-white">
                         <Zap size={20} fill="currentColor" />
                     </div>
-                    <span className="text-2xl font-medium text-[var(--text-primary)]">Loom AI</span>
+                    <span className="text-2xl font-medium text-[var(--text-primary)]">Shift AI</span>
                 </div>
 
                 {/* Reset Card */}
@@ -73,8 +73,8 @@ export default function ForgotPasswordPage() {
                         </>
                     ) : (
                         <div className="text-center py-4">
-                            <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
-                                <Mail size={32} className="text-emerald-400" />
+                            <div className="w-16 h-16 rounded-full bg-[var(--accent-primary)]/10 flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_var(--accent-glow)]">
+                                <Mail size={32} className="text-[var(--accent-primary)]" />
                             </div>
                             <h2 className="text-xl font-medium text-[var(--text-primary)] mb-2">Check your email</h2>
                             <p className="text-[14px] text-[var(--text-secondary)] mb-6">

@@ -201,7 +201,7 @@ function SettingsContent() {
                             <div className="space-y-6 animate-fadeIn">
                                 <div>
                                     <h2 className="text-[18px] font-semibold text-[var(--text-primary)] mb-1">Appearance</h2>
-                                    <p className="text-[14px] text-[var(--text-secondary)]">Customize how Loom AI looks</p>
+                                    <p className="text-[14px] text-[var(--text-secondary)]">Customize how Shift AI looks</p>
                                 </div>
 
                                 <div className="space-y-4">

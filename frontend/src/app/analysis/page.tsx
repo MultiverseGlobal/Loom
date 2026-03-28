@@ -137,7 +137,7 @@ export default function AnalysisPage() {
         try {
             // 1. Persist Project to Database
             const project = await projectService.createProject({
-                name: repoName || "Loom Project",
+                name: repoName || "Shift AI Project",
                 platform: source === 'figma' ? 'figma' : 'komposo',
                 source_url: figmaUrl || (repoName ? `https://github.com/${repoName}` : undefined),
                 framework: 'React' // Default framework
@@ -201,7 +201,7 @@ export default function AnalysisPage() {
                     <div className="max-w-xl mx-auto space-y-8 animate-fadeIn">
                         <div className="text-center space-y-2">
                             <h2 className="text-2xl font-bold text-white tracking-tight">Neural Core Scanning...</h2>
-                            <p className="text-[var(--text-tertiary)] text-xs uppercase tracking-[0.3em] font-mono">Mapping Logical Architecture</p>
+                            <p className="text-[var(--text-tertiary)] text-xs uppercase tracking-[0.3em] font-mono">Shift AI is mapping logical architecture</p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -253,7 +253,7 @@ export default function AnalysisPage() {
                                 <span className="text-[10px] text-[var(--accent-primary)] font-bold uppercase tracking-[0.3em]">Analysis Complete</span>
                                 <h1 className="text-3xl font-bold text-white tracking-tight">System Refactored</h1>
                                 <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
-                                    The Intelligence Core has successfully constructed a clean architecture from your {source === 'figma' ? 'design tokens' : 'source repository'}.
+                                    Shift AI has successfully constructed a clean architecture from your {source === 'figma' ? 'design tokens' : 'source repository'}.
                                 </p>
                             </div>
 

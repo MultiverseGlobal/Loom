@@ -31,31 +31,31 @@
     "contributes": {
         "commands": [
             {
-                "command": "loom.connect",
-                "title": "Hatch: Connect to Cloud"
+                "command": "shift.connect",
+                "title": "Shift: Connect to Cloud"
             },
             {
-                "command": "loom.disconnect",
-                "title": "Hatch: Disconnect"
+                "command": "shift.disconnect",
+                "title": "Shift: Disconnect"
             },
             {
-                "command": "loom.reanalyze",
-                "title": "Hatch: Reanalyze Project"
+                "command": "shift.reanalyze",
+                "title": "Shift: Reanalyze Project"
             },
             {
-                "command": "loom.importProject",
-                "title": "Hatch: Import Project"
+                "command": "shift.importProject",
+                "title": "Shift: Import Project"
             },
             {
-                "command": "loom.figmaBridge",
-                "title": "Hatch: Universal Bridge (Figma/Web)"
+                "command": "shift.figmaBridge",
+                "title": "Shift: Universal Bridge (Figma/Web)"
             }
         ],
         "viewsContainers": {
             "activitybar": [
                 {
-                    "id": "loom-explorer",
-                    "title": "Hatch",
+                    "id": "shift-explorer",
+                    "title": "Shift",
                     "icon": "media/logo.svg"
                 }
             ]
@@ -71,22 +71,22 @@
             ]
         },
         "configuration": {
-            "title": "Hatch",
+            "title": "Shift",
             "properties": {
-                "loom.apiKey": {
+                "shift.apiKey": {
                     "type": "string",
                     "default": "",
-                    "description": "Your Hatch API key"
+                    "description": "Your Shift API key"
                 },
-                "loom.apiUrl": {
+                "shift.apiUrl": {
                     "type": "string",
                     "default": "http://localhost:4000",
-                    "description": "Hatch API URL"
+                    "description": "Shift API URL"
                 },
-                "loom.projectsDirectory": {
+                "shift.projectsDirectory": {
                     "type": "string",
-                    "default": "~/hatch-projects",
-                    "description": "Directory where Hatch projects will be cloned"
+                    "default": "~/shift-projects",
+                    "description": "Directory where Shift projects will be cloned"
                 }
             }
         }

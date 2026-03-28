@@ -84,10 +84,10 @@ function ConnectContent() {
                 {/* Header Icon */}
                 <div className="flex justify-center mb-6">
                     <div className="w-16 h-16 rounded-full bg-[var(--bg-subtle)] flex items-center justify-center">
-                        <img src="/logo.svg" alt="Loom" className="w-8 h-8 opacity-80" onError={(e) => {
+                        <img src="/logo.svg" alt="Shift AI" className="w-8 h-8 opacity-80 shadow-[0_0_15px_var(--accent-glow)]/30" onError={(e) => {
                             // Fallback if logo invalid
                             (e.target as any).style.display = 'none';
-                            (e.target as any).parentNode.innerHTML = '<span class="text-2xl font-bold">L</span>';
+                            (e.target as any).parentNode.innerHTML = '<span class="text-2xl font-bold text-[var(--accent-primary)]">S</span>';
                         }} />
                     </div>
                 </div>
@@ -102,7 +102,7 @@ function ConnectContent() {
                         </div>
 
                         <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-left flex items-start gap-3">
-                            <Shield className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
+                            <Shield className="w-5 h-5 text-[var(--accent-primary)] mt-0.5 shrink-0" />
                             <div>
                                 <p className="text-[13px] font-medium text-[var(--text-primary)]">Grant Access</p>
                                 <p className="text-[12px] text-[var(--text-secondary)] mt-0.5">
@@ -138,8 +138,8 @@ function ConnectContent() {
 
                 {status === 'success' && (
                     <div className="text-center py-4 space-y-6">
-                        <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto">
-                            <CheckCircle className="w-8 h-8 text-emerald-500" />
+                        <div className="w-16 h-16 rounded-full bg-[var(--accent-primary)]/10 flex items-center justify-center mx-auto shadow-[0_0_20px_var(--accent-glow)]">
+                            <CheckCircle className="w-8 h-8 text-[var(--accent-primary)]" />
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">Connected!</h2>

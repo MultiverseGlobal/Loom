@@ -29,7 +29,7 @@ export default function VersionsPage() {
             <div className="max-w-4xl mx-auto p-8 space-y-8">
                 <div>
                     <h1 className="text-3xl font-semibold text-[var(--text-primary)] mb-2">Version History</h1>
-                    <p className="text-[var(--text-secondary)]">Track every change made by Loom AI and sync status.</p>
+                    <p className="text-[var(--text-secondary)]">Track every change made by Shift AI and sync status.</p>
                 </div>
 
                 {loading ? (

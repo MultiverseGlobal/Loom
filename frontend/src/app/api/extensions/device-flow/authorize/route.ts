@@ -53,7 +53,7 @@ export async function POST(request: Request) {
         }
 
         // 3. Register Extension & Generate Token
-        const extensionToken = `loomext_${randomUUID().replace(/-/g, '')}`;
+        const extensionToken = `shiftext_${randomUUID().replace(/-/g, '')}`;
 
         // Create Extension Record
         const { error: extError } = await supabaseAdmin

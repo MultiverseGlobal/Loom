@@ -59,8 +59,8 @@ export default function SignupPage() {
                     <div className="w-full max-w-md">
                         <div className="bg-[var(--bg-panel)] backdrop-blur-xl border border-[var(--border-default)] rounded-2xl shadow-2xl p-8 text-center">
                             <div className="mb-4">
-                                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
-                                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="w-16 h-16 bg-[var(--accent-primary)]/10 rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_var(--accent-glow)]">
+                                    <svg className="w-8 h-8 text-[var(--accent-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                 </div>

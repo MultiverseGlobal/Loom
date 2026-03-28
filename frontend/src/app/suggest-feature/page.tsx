@@ -53,10 +53,8 @@ export default function SuggestFeaturePage() {
             <div className="max-w-4xl mx-auto p-8 grid md:grid-cols-3 gap-8">
                 {/* Form Section */}
                 <div className="md:col-span-1 space-y-6">
-                    <div>
-                        <h1 className="text-2xl font-semibold text-[var(--text-primary)] mb-2">Suggest Feature</h1>
-                        <p className="text-[14px] text-[var(--text-secondary)]">Shape the future of Loom AI.</p>
-                    </div>
+                        <h1 className="text-2xl font-semibold text-[var(--text-primary)] mb-2 tracking-tight">Suggest Feature</h1>
+                        <p className="text-[11px] text-[var(--accent-primary)] font-bold uppercase tracking-[0.2em] opacity-80">Shape the future of Shift AI</p>
 
                     <form onSubmit={handleSubmit} className="space-y-4 p-5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-default)]">
                         <div>
@@ -79,9 +77,9 @@ export default function SuggestFeaturePage() {
                         </div>
                         <button
                             disabled={isSubmitting || !title}
-                            className="w-full py-2 rounded-lg bg-[var(--accent-primary)] text-white text-[13px] font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+                            className="w-full py-2.5 rounded-lg bg-[var(--accent-primary)] text-black text-[11px] font-bold uppercase tracking-widest hover:opacity-90 disabled:opacity-50 transition-all shadow-[0_0_15px_var(--accent-glow)]"
                         >
-                            {isSubmitting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Submit Request"}
+                            {isSubmitting ? <Loader2 size={16} className="animate-spin mx-auto text-black" /> : "Submit Request"}
                         </button>
                     </form>
                 </div>

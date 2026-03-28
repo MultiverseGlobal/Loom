@@ -133,5 +133,3 @@ export function HealingPanel({ events, onRescan, isRescanning, onFix }: HealingP
         </div>
     );
 }
-  );
-}
