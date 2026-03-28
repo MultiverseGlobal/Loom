@@ -212,7 +212,21 @@ Return a JSON object with this exact structure:
                 return this.analyzeProject(files, { ...options, model: 'gpt-4o-mini' });
             }
 
-            throw error;
+            console.warn(`[AI Engine] All AI models failed or unavailable (${error.message}). Returning mock analysis.`);
+            return {
+                issues: [
+                    {
+                        type: 'warning',
+                        message: 'AI Analysis Unavailable',
+                        detail: `The AI analysis failed (Reason: ${error.message}). Please ensure your API keys are correctly configured and have sufficient quota.`,
+                        file: 'blueprint.json',
+                        line: 1
+                    }
+                ],
+                score: 100,
+                summary: 'Analysis could not be completed because the AI engine is currently unavailable or missing configuration.',
+                creditsUsed: 0
+            };
         }
     },
 
@@ -307,7 +321,13 @@ Return a JSON object with:
 
         } catch (error: any) {
             console.error(`Fix generation failed with ${selectedModel}:`, error);
-            throw error;
+            
+            console.warn(`[AI Engine] Backend API keys missing or Model unavailable. Returning mock fix.`);
+            return {
+                fixedCode: `// The AI Engine is currently unavailable. No fix could be generated.\n// Reason: ${error.message}\n\n${fileContent}`,
+                explanation: `Failed to generate a fix because the AI engine reported: ${error.message}. Please configure your API keys.`,
+                creditsUsed: 0
+            };
         }
     },
 
