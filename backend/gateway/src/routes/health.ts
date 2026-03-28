@@ -18,7 +18,7 @@ const responseSchema = z.object({
 
 export async function registerHealthRoutes(app: FastifyInstance) {
   app.withTypeProvider().get(
-    "/",
+    "/health-check",
     {
       schema: {
         response: {
