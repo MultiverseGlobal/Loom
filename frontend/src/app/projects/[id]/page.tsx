@@ -11,6 +11,7 @@ import { HealingPanel } from "@/components/workspace/HealingPanel";
 import { LiveTerminal } from "@/components/workspace/LiveTerminal";
 import { ArrowLeft, Box, Loader2, Terminal, X, Copy } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import { socketService } from "@/services/socket";
 
 export default function ProjectDetailPage() {
     const params = useParams();
