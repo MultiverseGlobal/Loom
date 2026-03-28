@@ -80,9 +80,16 @@ export async function registerGithubRoutes(server: FastifyInstance) {
             return { success: true, github_user: githubUser.login, integration_id: integration.id };
         } catch (error: any) {
             const errorData = error.response?.data;
-            const errorMsg = errorData?.error_description || errorData?.error || error.message;
-            console.error('[GitHub Callback] Error:', errorData || error.message);
-            return reply.status(500).send({ error: `OAuth exchange failed: ${errorMsg}` });
+            const errorMsg = errorData?.error_description || errorData?.error || error.message || "Unknown error";
+            console.error('[GitHub Callback] Technical Error:', {
+                message: error.message,
+                status: error.response?.status,
+                data: errorData
+            });
+            return reply.status(500).send({ 
+                error: `OAuth exchange failed: ${errorMsg}`,
+                details: errorData || error.message
+            });
         }
     });
 
