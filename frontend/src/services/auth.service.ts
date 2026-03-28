@@ -58,16 +58,28 @@ export const authService = {
     },
 
     async signInWithGithub() {
-        const supabase = createClient();
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'github',
-            options: {
-                scopes: 'repo',
-                redirectTo: typeof window !== 'undefined'
-                    ? `${window.location.origin}/auth/callback?next=/dashboard`
-                    : undefined,
-            },
-        });
-        return { data, error };
+        console.log('[AUTH SERVICE] signInWithGithub called');
+        try {
+            const supabase = createClient();
+            console.log('[AUTH SERVICE] Supabase client created. Origin:', typeof window !== 'undefined' ? window.location.origin : 'server');
+            
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    scopes: 'repo',
+                    redirectTo: typeof window !== 'undefined'
+                        ? `${window.location.origin}/auth/callback?next=/dashboard`
+                        : undefined,
+                },
+            });
+
+            if (error) console.error('[AUTH SERVICE] signInWithOAuth error:', error);
+            else console.log('[AUTH SERVICE] signInWithOAuth success (redirect should follow)');
+
+            return { data, error };
+        } catch (err: any) {
+            console.error('[AUTH SERVICE] signInWithGithub exception:', err);
+            return { data: null, error: err };
+        }
     },
 };
