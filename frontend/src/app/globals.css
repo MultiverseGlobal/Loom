@@ -29,27 +29,27 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  /* Backgrounds - Deep blacks with subtle violet tint */
-  --bg-root: #050507;
-  --bg-panel: #0d0d12;
-  --bg-hover: #16161f;
-  --bg-active: #1c1c2b;
-  --bg-subtle: #09090e;
+  /* Backgrounds - Deep Charcoal "Neon Graphite" */
+  --bg-root: #0A0A0B;
+  --bg-panel: #121214;
+  --bg-hover: #1A1A1E;
+  --bg-active: #222228;
+  --bg-subtle: #0E0E10;
 
-  /* Borders - Indigo-tinted */
-  --border-subtle: rgba(99, 102, 241, 0.08);
-  --border-default: rgba(99, 102, 241, 0.15);
-  --border-highlight: rgba(139, 92, 246, 0.3);
+  /* Borders - Graphite-tinted */
+  --border-subtle: rgba(0, 245, 255, 0.05);
+  --border-default: rgba(0, 245, 255, 0.12);
+  --border-highlight: rgba(0, 245, 255, 0.25);
 
   /* Text */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-tertiary: #64748b;
+  --text-primary: #F2F2F2;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
 
-  /* Accents - Indigo/Violet */
-  --accent-primary: #6366f1;
-  --accent-secondary: #8b5cf6;
-  --accent-glow: rgba(99, 102, 241, 0.3);
+  /* Accents - Neon Cyan */
+  --accent-primary: #00F5FF;
+  --accent-secondary: #00D1FF;
+  --accent-glow: rgba(0, 245, 255, 0.15);
 }
 
 /* Emerald Legacy Theme */

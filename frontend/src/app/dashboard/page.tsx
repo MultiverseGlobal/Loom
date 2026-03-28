@@ -151,10 +151,18 @@ export default function DashboardPage() {
 
           <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
+              <div className="flex flex-col mb-4">
+                <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--accent-primary)] mb-1 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]">
+                  System Dashboard
+                </span>
+                <h2 className="text-sm font-medium text-[var(--text-secondary)]">
+                  Welcome back, <span className="text-[var(--text-primary)] font-bold">{user?.user_metadata?.full_name?.split(' ')[0] || 'Developer'}</span>
+                </h2>
+              </div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-semibold text-[var(--text-primary)] tracking-tight">Project Management</h1>
-                <span className="px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 border border border-[var(--accent-primary)]/20 text-[var(--accent-primary)] text-[11px] font-medium">
-                  Workspace Active
+                <h1 className="text-3xl font-semibold text-[var(--text-primary)] tracking-tight">Shift AI <span className="text-[var(--text-tertiary)] font-light">Control Tower</span></h1>
+                <span className="px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 text-[var(--accent-primary)] text-[11px] font-medium animate-pulse">
+                  v1.2.4-stable
                 </span>
               </div>
               <p className="text-[var(--text-secondary)] text-[15px] max-w-xl">

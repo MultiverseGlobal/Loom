@@ -19,6 +19,14 @@ program
   .description('Instantly sync your AI-generated components directly into your local codebase.')
   .version('0.1.0');
 
+const SHIFT_LOGO = `
+   _____ __  _____________   ___    ____
+  / ___// / / /  _/ ____/ /_ /   |  /  _/
+  \\__ \\/ /_/ // // /_  / __// /| |  / /  
+ ___/ / __  // // __/ / /_ / ___ |_/ /   
+/____/_/ /_/___/_/    \\__//_/  |_/___/   
+`;
+
 program
   .command('pull')
   .description('Pull a project or component into your local workspace')
@@ -26,7 +34,10 @@ program
   .requiredOption('-t, --token <type>', 'Export token provided by the dashboard')
   .option('-d, --dir <dir>', 'The directory to install into', './src/components')
   .action(async (projectId, options) => {
-    const spinner = ora(`Connecting to Shift AI...`).start();
+    console.log(chalk.cyan(SHIFT_LOGO));
+    console.log(chalk.bold.white(`  Developer Sync Utility v0.1.0\n`));
+
+    const spinner = ora(`Connecting to Shift AI Global Grid...`).start();
     
     try {
       // 1. Fetch file payload
