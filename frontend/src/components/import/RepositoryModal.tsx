@@ -37,25 +37,21 @@ export function RepositoryModal({ isOpen, onClose, onSelect }: RepositoryModalPr
         setError(null);
         try {
             const { githubService } = await import("@/services/github.service");
-            const repos = await githubService.getRepositories();
+            const status = await githubService.getStatus();
 
-            if (repos && repos.length > 0) {
+            if (status.connected) {
                 setIsUsingOAuth(true);
-                setRepos(repos as any);
                 setStep("select");
+                // Start fetching repos in background
+                fetchRepos();
+            } else {
+                setIsUsingOAuth(false);
+                setStep("token");
             }
         } catch (err: any) {
             console.error("[RepositoryModal] Auth check failed:", err);
-
-            // Check if it's a connection error
-            if (err.message?.includes("GitHub account not connected") || err.message?.includes("GITHUB_NOT_CONNECTED")) {
-                setError("GitHub account not connected. Please connect via GitHub above.");
-            } else if (err.message?.includes("Not authenticated")) {
-                setError("Please log in to your account first.");
-            } else {
-                // Other errors - just stay on token screen
-                console.log("Assuming no GitHub connection, showing OAuth option");
-            }
+            setIsUsingOAuth(false);
+            setStep("token");
         } finally {
             setIsLoadingRepos(false);
         }
@@ -150,10 +146,17 @@ export function RepositoryModal({ isOpen, onClose, onSelect }: RepositoryModalPr
                             )}
                             <button
                                 onClick={handleOAuthConnect}
-                                className="w-full h-10 rounded-lg bg-white text-black text-[13px] font-medium hover:bg-white/90 transition-all flex items-center justify-center gap-2"
+                                disabled={isLoadingRepos}
+                                className="w-full h-10 rounded-lg bg-white text-black text-[13px] font-medium hover:bg-white/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                             >
-                                <Github size={16} />
-                                Connect via GitHub
+                                {isLoadingRepos ? (
+                                    <Loader2 size={16} className="animate-spin" />
+                                ) : (
+                                    <>
+                                        <Github size={16} />
+                                        Connect via GitHub
+                                    </>
+                                )}
                             </button>
                         </div>
 

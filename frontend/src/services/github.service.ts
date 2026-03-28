@@ -43,5 +43,16 @@ export const githubService = {
 
         if (!data.url) throw new Error("Backend did not return an authorization URL");
         return data.url;
+    },
+
+    async getStatus(): Promise<{ connected: boolean; username?: string }> {
+        const { data: { session } } = await createClient().auth.getSession();
+        if (!session) return { connected: false };
+
+        return await fetchAPI('/github/status', {
+            headers: {
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
     }
 };

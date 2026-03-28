@@ -42,12 +42,19 @@ export async function registerGithubRoutes(server: FastifyInstance) {
                 code: code.substring(0, 5) + '...'
             });
 
-            const tokenResponse = await axios.post('https://github.com/login/oauth/access_token', {
+            const exchangePayload = {
                 client_id: config.githubClientId,
                 client_secret: config.githubClientSecret,
                 code,
                 redirect_uri: redirectUri
-            }, {
+            };
+
+            console.log('[GitHub Callback] Sending exchange request to GitHub:', {
+                ...exchangePayload,
+                client_secret: '***' // Hide secret in logs
+            });
+
+            const tokenResponse = await axios.post('https://github.com/login/oauth/access_token', exchangePayload, {
                 headers: { Accept: 'application/json' }
             });
 
@@ -165,25 +172,21 @@ export async function registerGithubRoutes(server: FastifyInstance) {
             return reply.status(500).send({ error: error.message });
         }
     });
-    // List Repositories
-    server.get('/github/repos', { preHandler: [requireAuth] }, async (req: FastifyRequest, reply: FastifyReply) => {
+    });
+    
+    // Check connection status
+    server.get('/github/status', { preHandler: [requireAuth] }, async (req: FastifyRequest, reply: FastifyReply) => {
         const userId = req.userId!;
-
         const integration = await integrationService.getUserIntegrationByProvider(userId, 'github');
+        
         if (!integration) {
-            return reply.status(401).send({ error: "GitHub account not connected" });
+            return { connected: false };
         }
-
-        try {
-            const svc = new GithubService(integration.access_token);
-            const repos = await svc.getUserRepos();
-            return { repos };
-        } catch (error: any) {
-            console.error("Failed to list repos:", error);
-            if (error.status === 401) {
-                return reply.status(401).send({ error: "GitHub token expired or invalid" });
-            }
-            return reply.status(500).send({ error: "Failed to fetch repositories from GitHub" });
-        }
+        
+        return { 
+            connected: true, 
+            username: integration.metadata?.github_login || 'Connected User',
+            connected_at: integration.connected_at
+        };
     });
 }
