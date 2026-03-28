@@ -13,9 +13,11 @@ interface HealingEvent {
 
 interface HealingPanelProps {
   events: HealingEvent[];
+  onRescan?: () => void;
+  isRescanning?: boolean;
 }
 
-export function HealingPanel({ events }: HealingPanelProps) {
+export function HealingPanel({ events, onRescan, isRescanning }: HealingPanelProps) {
   return (
     <div className="flex flex-col h-full bg-[var(--bg-panel)] border-l border-[var(--border-default)] w-[300px]">
       <div className="p-4 border-b border-[var(--border-default)] flex items-center justify-between">
@@ -65,8 +67,13 @@ export function HealingPanel({ events }: HealingPanelProps) {
       </div>
 
       <div className="p-4 bg-[var(--bg-subtle)] border-t border-[var(--border-default)]">
-        <button className="w-full py-2 bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] rounded transition-all border border-white/5">
-          Rescan Engine
+        <button 
+          onClick={onRescan}
+          disabled={isRescanning}
+          className="w-full py-2 bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] rounded transition-all border border-white/5 disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {isRescanning && <Loader2 size={12} className="animate-spin" />}
+          {isRescanning ? "Engine Working..." : "Rescan Engine"}
         </button>
       </div>
     </div>

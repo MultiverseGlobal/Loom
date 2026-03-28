@@ -18,6 +18,7 @@ export default function ProjectDetailPage() {
     const [analyses, setAnalyses] = useState<any[]>([]);
     const [currentCode, setCurrentCode] = useState<string>("");
     const [isLaunching, setIsLaunching] = useState(false);
+    const [isRescanning, setIsRescanning] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
@@ -54,6 +55,42 @@ export default function ProjectDetailPage() {
 
         loadData();
     }, [params.id, router]);
+
+    // Auto-Rescan if no analyses exist
+    useEffect(() => {
+        if (!loading && project && analyses.length === 0 && !isRescanning) {
+            console.log("No analyses found. Triggering initial scan...");
+            handleRescan();
+        }
+    }, [loading, project, analyses.length]);
+
+    const handleRescan = async () => {
+        if (!project || isRescanning) return;
+        setIsRescanning(true);
+        const toastId = toast.loading("Analyzing project architecture...");
+        try {
+            const result = await analysisService.analyze({
+                projectId: project.id,
+                source: project.source_platform || 'komposo',
+                repo: project.source_url?.includes('github.com') ? project.source_url.split('github.com/')[1] : undefined
+            });
+
+            // Refresh analyses list
+            const updatedAnalyses = await analysisService.getAnalyses(project.id);
+            setAnalyses(updatedAnalyses);
+
+            // Update current code
+            const code = result.analysis?.code || result.code || (result.blueprint ? JSON.stringify(result.blueprint, null, 2) : "");
+            setCurrentCode(code);
+
+            toast.success("Analysis complete!", { id: toastId });
+        } catch (err: any) {
+            console.error("Rescan error:", err);
+            toast.error("Analysis failed: " + (err.message || "Unknown error"), { id: toastId });
+        } finally {
+            setIsRescanning(false);
+        }
+    };
 
     const handleLaunchExtension = async () => {
         if (!project) return;
@@ -163,6 +200,8 @@ export default function ProjectDetailPage() {
 
                 {/* Healing Panel (Sidebar) */}
                 <HealingPanel 
+                    onRescan={handleRescan}
+                    isRescanning={isRescanning}
                     events={analyses.flatMap(analysis => (analysis.result_json.analysis?.issues || []).map((issue: any, index: number) => ({
                         id: `${analysis.id}-${index}`,
                         type: issue.type === 'error' || issue.type === 'warning' ? 'fix' : (issue.type === 'info' ? 'info' : 'optimization'),
