@@ -368,8 +368,49 @@ Return a JSON object with:
             return response.data;
 
         } catch (error: any) {
-            console.error("Failed to generate blueprint:", error);
-            throw error;
+            console.error(`[AI Engine] Python analyzer failed or unavailable (${error.message}). Returning fallback blueprint.`);
+            
+            // Return a safe mock blueprint instead of crashing the entire analysis flow
+            const rootId = 'fallback-root';
+            const containerId = 'fallback-container';
+            return {
+                id: 'mock-blueprint',
+                rootComponentId: rootId,
+                nodes: {
+                    [rootId]: {
+                        id: rootId,
+                        name: projectName || "FallbackComponent",
+                        type: "component",
+                        children: [containerId],
+                    },
+                    [containerId]: {
+                        id: containerId,
+                        tag: 'div',
+                        type: 'element',
+                        parent: rootId,
+                        className: 'p-8 bg-gray-900 border border-gray-800 text-white rounded-lg flex flex-col gap-4',
+                        children: ['t1', 't2']
+                    },
+                    't1': { 
+                        id: 't1', 
+                        tag: 'h3',
+                        type: 'element',
+                        parent: containerId,
+                        className: 'text-xl font-bold text-red-400',
+                        children: ['t1_text'] 
+                    },
+                    't1_text': { id: 't1_text', type: 'text', parent: 't1', content: 'Analyzer Unavailable' },
+                    't2': { 
+                        id: 't2',
+                        tag: 'p',
+                        type: 'element', 
+                        parent: containerId, 
+                        className: 'text-gray-400 text-sm font-mono',
+                        children: ['t2_text']
+                    },
+                    't2_text': { id: 't2_text', type: 'text', parent: 't2', content: `The architecture analyzer service is currently starting up or offline. (${error.message})` }
+                }
+            };
         }
     }
 };
