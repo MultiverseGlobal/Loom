@@ -46,14 +46,18 @@ export async function fetchAPI<T>(
                 const errorData = await response.json();
                 console.error('Backend error response:', errorData);
 
-                // Check multiple possible error field names
-                if (errorData.error) {
+                // Fastify-sensible returns { statusCode, error: "Bad Request", message: "Helpful text" }
+                if (errorData.message) {
+                    errorMessage = errorData.message;
+                    // Optionally append the technical error type if it's different
+                    if (errorData.error && errorData.error !== errorMessage && !errorMessage.includes(errorData.error)) {
+                         // Most times 'message' is detailed enough on its own
+                    }
+                } else if (errorData.error) {
                     errorMessage = errorData.error;
                     if (errorData.details) {
                         errorMessage += ` (${typeof errorData.details === 'string' ? errorData.details : JSON.stringify(errorData.details)})`;
                     }
-                } else if (errorData.message) {
-                    errorMessage = errorData.message;
                 } else if (Object.keys(errorData).length === 0) {
                     // Empty object response
                     errorMessage = `${errorMessage} (No error details provided)`;
