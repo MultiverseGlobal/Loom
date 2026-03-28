@@ -71,7 +71,7 @@ export default function ProjectDetailPage() {
         try {
             const result = await analysisService.analyze({
                 projectId: project.id,
-                source: project.source_platform || 'komposo',
+                source: project.platform || 'komposo',
                 repo: project.source_url?.includes('github.com') ? project.source_url.split('github.com/')[1] : undefined
             });
 
