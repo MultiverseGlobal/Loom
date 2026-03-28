@@ -172,6 +172,27 @@ export async function registerGithubRoutes(server: FastifyInstance) {
             return reply.status(500).send({ error: error.message });
         }
     });
+
+    // List Repositories
+    server.get('/github/repos', { preHandler: [requireAuth] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        const userId = req.userId!;
+
+        const integration = await integrationService.getUserIntegrationByProvider(userId, 'github');
+        if (!integration) {
+            return reply.status(401).send({ error: "GitHub account not connected" });
+        }
+
+        try {
+            const svc = new GithubService(integration.access_token);
+            const repos = await svc.getUserRepos();
+            return { repos };
+        } catch (error: any) {
+            console.error("Failed to list repos:", error);
+            if (error.status === 401) {
+                return reply.status(401).send({ error: "GitHub token expired or invalid" });
+            }
+            return reply.status(500).send({ error: "Failed to fetch repositories from GitHub" });
+        }
     });
     
     // Check connection status
