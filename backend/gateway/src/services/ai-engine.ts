@@ -212,13 +212,30 @@ Return a JSON object with this exact structure:
         } catch (error: any) {
             console.error(`AI Analysis failed with ${selectedModel}:`, error);
 
-            // Fallback: try a different model
-            if (selectedModel !== 'gpt-4o-mini') {
-                console.log('Retrying with gpt-4o-mini...');
+            // Resilient Fallback Waterfall
+            const hasGemini = !!config.geminiApiKey;
+            const hasClaude = !!config.anthropicApiKey;
+            const hasOpenAI = !!config.openaiApiKey;
+
+            // 1. If Gemini hasn't been tried yet and we have a key, try it.
+            if (hasGemini && !selectedModel.startsWith('gemini')) {
+                console.log('--- FALLBACK: Retrying with Gemini 1.5 Flash ---');
+                return this.analyzeProject(files, { ...options, model: 'gemini-1.5-flash' });
+            }
+
+            // 2. If Gemini failed or is missing, try Claude.
+            if (hasClaude && !selectedModel.startsWith('claude')) {
+                console.log('--- FALLBACK: Retrying with Claude 3.5 Sonnet ---');
+                return this.analyzeProject(files, { ...options, model: 'claude-3-5-sonnet' });
+            }
+
+            // 3. Last chance (only if OpenAI hasn't failed yet)
+            if (hasOpenAI && !selectedModel.startsWith('gpt') && !error.message.includes('429')) {
+                console.log('--- FALLBACK: Retrying with GPT-4o-mini ---');
                 return this.analyzeProject(files, { ...options, model: 'gpt-4o-mini' });
             }
 
-            console.warn(`[AI Engine] All AI models failed or unavailable (${error.message}). Returning mock analysis.`);
+            console.warn(`[AI Engine] ALL Fallbacks exhausted. Error: ${error.message}`);
             return {
                 issues: [
                     {
