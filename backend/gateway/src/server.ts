@@ -83,7 +83,7 @@ try {
 }
 
 // Register routes
-await server.register(registerHealthRoutes);
+await server.register(registerHealthRoutes, { prefix: "/api/health" });
 await server.register(registerAnalysisRoutes, { prefix: "/api" });
 await server.register(registerBridgeRoutes, { prefix: "/api" });
 await server.register(registerCommandRoutes, { prefix: "/api" });
