@@ -234,11 +234,11 @@ export default function ProjectDetailPage() {
                             <p className="text-sm text-[var(--text-secondary)]">Run this command in your terminal to instantly sync all AI-generated components into your local project workspace.</p>
                             <div className="relative group">
                                 <pre className="p-4 bg-[var(--bg-root)] rounded-lg border border-[var(--border-subtle)] overflow-x-auto text-[13px] font-mono text-[var(--text-primary)]">
-                                    {`npx shift-cli pull ${project.id} -t ${cliToken}`}
+                                    {`npx shift-ai-cli pull ${project.id} -t ${cliToken}`}
                                 </pre>
                                 <button 
                                     onClick={() => {
-                                        navigator.clipboard.writeText(`npx shift-cli pull ${project.id} -t ${cliToken}`);
+                                        navigator.clipboard.writeText(`npx shift-ai-cli pull ${project.id} -t ${cliToken}`);
                                         toast.success("Command copied to clipboard!");
                                     }}
                                     className="absolute right-2 top-2 p-2 bg-[var(--bg-panel)] rounded border border-[var(--border-subtle)] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] hover:text-white text-[var(--text-secondary)]"
