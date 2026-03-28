@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, CheckCircle2, Info, Sparkles, Wrench } from "lucide-react";
+import { Activity, CheckCircle2, Info, Loader2, Sparkles, Wrench } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface HealingEvent {
