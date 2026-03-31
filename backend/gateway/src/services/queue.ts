@@ -192,7 +192,7 @@ async function ensureProject(job: IngestJobPayload) {
       return project.id;
     }
   }
-  const name = job.projectName ?? `Loom Project ${new Date().toISOString()}`;
+  const name = job.projectName ?? `Shift Project ${new Date().toISOString()}`;
   return createProject(job.userId, name, job.metadata.frameworkHint as string | undefined);
 }
 

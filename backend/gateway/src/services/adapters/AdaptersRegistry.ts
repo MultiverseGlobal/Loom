@@ -1,5 +1,5 @@
 
-import { BridgeAdapter, LoomBlueprint } from './types.js';
+import { BridgeAdapter, ShiftBlueprint } from './types.js';
 import { FigmaAdapter } from './FigmaAdapter.js';
 import { LovableAdapter } from './LovableAdapter.js';
 import { ScraperAdapter } from './ScraperAdapter.js';
@@ -25,7 +25,7 @@ class AdaptersRegistry {
     /**
      * Universal bridge call
      */
-    async getBlueprint(url: string, options: Record<string, any>): Promise<LoomBlueprint | null> {
+    async getBlueprint(url: string, options: Record<string, any>): Promise<ShiftBlueprint | null> {
         const adapter = this.getAdapterFor(url);
         if (!adapter) {
             console.warn(`[Registry] No adapter found for URL: ${url}`);

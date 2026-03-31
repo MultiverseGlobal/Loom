@@ -6,7 +6,7 @@ import { adaptersRegistry } from './adapters/AdaptersRegistry.js';
 
 export const bridgeService = {
     /**
-     * Universal entry point to bridge a No-Code source to a Loom project
+     * Universal entry point to bridge a No-Code source to a Shift project
      */
     async bridgeFromSource(params: {
         sourceUrl: string;

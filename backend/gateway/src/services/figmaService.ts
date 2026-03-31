@@ -25,7 +25,7 @@ export const figmaService = {
     },
 
     /**
-     * Get file content and convert it to a Loom Blueprint
+     * Get file content and convert it to a Shift Blueprint
      */
     async getBlueprint(fileKey: string, nodeId: string, token: string): Promise<any> {
         try {

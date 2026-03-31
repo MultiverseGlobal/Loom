@@ -1,4 +1,4 @@
-# Deployment Guide for Loom AI
+# Deployment Guide for Shift AI
 
 This guide will help you deploy the application online so you don't need to run it locally.
 
@@ -65,7 +65,7 @@ The Analyzer is a Python service that needs its own hosting.
     - **Environment Variables**:
         - `NEXT_PUBLIC_SUPABASE_URL`: (Copy from .env.local)
         - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: (Copy from .env.local)
-        - `NEXT_PUBLIC_API_URL`: **(The URL from Render Gateway, e.g. `https://loom-gateway.onrender.com`)**
+        - `NEXT_PUBLIC_API_URL`: **(The URL from Render Gateway, e.g. `https://shift-gateway.onrender.com`)**
 
 ---
 
@@ -74,7 +74,7 @@ The Analyzer is a Python service that needs its own hosting.
 1.  **Link Gateway to Analyzer**
     - Go back to your **Backend (Gateway)** on Render.
     - Add/Update the following environment variable:
-        - `ANALYZER_URL`: **(The URL from Render Analyzer, e.g. `https://loom-analyzer.onrender.com`)**
+        - `ANALYZER_URL`: **(The URL from Render Analyzer, e.g. `https://shift-analyzer.onrender.com`)**
 
 2.  **Update Backend CORS**
     - Go to **Backend (Gateway)** -> **Environment**.

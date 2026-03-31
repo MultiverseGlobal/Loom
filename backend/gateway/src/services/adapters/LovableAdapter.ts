@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { BridgeAdapter, LoomBlueprint, BlueprintNode } from './types.js';
+import { BridgeAdapter, ShiftBlueprint, BlueprintNode } from './types.js';
 
 export class LovableAdapter implements BridgeAdapter {
     id = 'lovable';
@@ -9,7 +9,7 @@ export class LovableAdapter implements BridgeAdapter {
         return url.includes('lovable.dev/');
     }
 
-    async getBlueprint(url: string, _options: Record<string, any>): Promise<LoomBlueprint | null> {
+    async getBlueprint(url: string, _options: Record<string, any>): Promise<ShiftBlueprint | null> {
         try {
             console.log(`[Lovable] Bridging Lovable project: ${url}`);
             // In a real scenario, we might use a cookie-less fetch or a specialized API 

@@ -9,7 +9,7 @@ export interface BlueprintNode {
     content?: string;
 }
 
-export interface LoomBlueprint {
+export interface ShiftBlueprint {
     version: string;
     source: {
         type: string;
@@ -37,7 +37,7 @@ export interface BridgeAdapter {
     canHandle(url: string): boolean;
 
     /**
-     * Extract data from the source and convert it to a Loom Blueprint
+     * Extract data from the source and convert it to a Shift Blueprint
      */
-    getBlueprint(url: string, options: Record<string, any>): Promise<LoomBlueprint | null>;
+    getBlueprint(url: string, options: Record<string, any>): Promise<ShiftBlueprint | null>;
 }

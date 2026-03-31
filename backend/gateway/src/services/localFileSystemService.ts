@@ -3,7 +3,7 @@ import path from 'path';
 
 /**
  * Service to handle direct file system operations for Local Mode.
- * This allows the Loom Gateway to apply fixes directly to disk.
+ * This allows the Shift Gateway to apply fixes directly to disk.
  */
 export const localFileSystemService = {
     /**

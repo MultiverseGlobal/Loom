@@ -17,7 +17,7 @@ export async function createProject(
   userId: string,
   name: string,
   framework?: string,
-  sourcePlatform = 'komposo',
+  sourcePlatform = 'shift',
   sourceUrl?: string,
   originMeta: Record<string, any> = {}
 ) {

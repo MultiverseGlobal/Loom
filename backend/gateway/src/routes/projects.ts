@@ -30,7 +30,7 @@ const projectResponse = z.object({
 function mapProject(p: any) {
   return {
     ...p,
-    platform: p.source_platform || 'loom',
+    platform: p.source_platform || 'shift',
     status: p.status || 'ready'
   };
 }

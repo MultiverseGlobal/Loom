@@ -31,6 +31,7 @@ import { registerSettingsRoutes } from "./routes/settings.js";
 import { registerActivityRoutes } from "./routes/activity.js";
 import { registerGenerateRoutes } from "./routes/generate.js";
 import { registerIntegrationsRoutes } from "./routes/integrations.js";
+import { registerWebhookRoutes } from "./routes/webhooks.js";
 import { LocalWorkerService } from "./services/localWorkerService.js";
 
 const server = fastify({
@@ -102,6 +103,7 @@ await server.register(registerIntegrationsRoutes, { prefix: "/api" });
 await server.register(registerIngestRoutes, { prefix: "/api" });
 await server.register(registerJobRoutes, { prefix: "/api/jobs" });
 await server.register(registerDeltaRoutes, { prefix: "/api/deltas" });
+await server.register(registerWebhookRoutes);
 
 server
   .listen({ port: config.port, host: config.host })

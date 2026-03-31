@@ -10,10 +10,14 @@ const analyzeSchema = z.object({
     payload: z.object({
         repo: z.string().optional(),
         url: z.string().optional(),
-        prompt: z.string().optional()
+        prompt: z.string().optional(),
+        files: z.array(z.object({
+            path: z.string(),
+            content: z.string()
+        })).optional()
     }).optional(),
     depth: z.enum(['quick', 'deep']).optional(),
-    model: z.enum(['gpt-4o', 'gpt-4o-mini', 'claude-3-5-sonnet']).optional()
+    model: z.enum(['gpt-4o', 'gpt-4o-mini', 'claude-3-5-sonnet', 'gemini-1.5-pro', 'gemini-1.5-flash']).optional()
 });
 
 const fixSchema = z.object({
@@ -57,7 +61,7 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                         .insert({
                             id: userId,
                             email: authRequest.user?.email || 'unknown@example.com',
-                            full_name: authRequest.user?.user_metadata?.full_name || 'Loom User'
+                            full_name: authRequest.user?.user_metadata?.full_name || 'Shift AI User'
                         })
                         .select()
                         .single();

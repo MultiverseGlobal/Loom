@@ -9,7 +9,7 @@ import path from 'path';
 export class LocalWorkerService {
     private static interval: NodeJS.Timeout | null = null;
     private static readonly DEVICE_ID = 'LOCAL-ENGINE-001';
-    private static readonly BASE_DIR = path.join(process.cwd(), '..', '..', 'LoomLocalWorkspace');
+    private static readonly BASE_DIR = path.join(process.cwd(), '..', '..', 'ShiftLocalWorkspace');
 
     static async start() {
         if (this.interval) return;
@@ -60,7 +60,7 @@ export class LocalWorkerService {
 
             await commandService.completeCommand(command.id, {
                 success: true,
-                message: 'Executed locally by Loom Engine',
+                message: 'Executed locally by Shift Engine',
                 local_path: path.join(this.BASE_DIR, command.payload.projectName || 'unnamed-project')
             });
             console.log(`[LocalWorker] Completed command ${command.id}`);
@@ -78,7 +78,7 @@ export class LocalWorkerService {
         console.log(`[LocalWorker] Importing project to ${projectPath}`);
 
         // Ensure workspace directory exists
-        await localFileSystemService.writeFile(path.join(projectPath, '.loom-info.json'), JSON.stringify({
+        await localFileSystemService.writeFile(path.join(projectPath, '.shift-info.json'), JSON.stringify({
             projectId: command.project_id,
             name: projectName,
             importedAt: new Date().toISOString()
@@ -87,7 +87,7 @@ export class LocalWorkerService {
         // Create a README if it doesn't exist
         const readmePath = path.join(projectPath, 'README.md');
         if (!(await localFileSystemService.exists(readmePath))) {
-            await localFileSystemService.writeFile(readmePath, `# ${projectName}\n\nManaged by Mirrorverse Local Engine.`);
+            await localFileSystemService.writeFile(readmePath, `# ${projectName}\n\nManaged by Shift AI Local Engine.`);
         }
     }
 

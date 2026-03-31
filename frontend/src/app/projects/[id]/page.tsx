@@ -73,20 +73,31 @@ export default function ProjectDetailPage() {
         if (!project || isRescanning) return;
         setIsRescanning(true);
         const toastId = toast.loading("Analyzing project architecture...");
+        
+        // Safety timeout to prevent infinite loading
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Analysis timed out. The backend might be cold-starting or overloaded.")), 45000)
+        );
+
         try {
-            const result = await analysisService.analyze({
-                projectId: project.id,
-                source: project.platform || 'komposo',
-                repo: project.source_url?.includes('github.com') ? project.source_url.split('github.com/')[1] : undefined
-            });
+            const analysisPromise = (async () => {
+                const result = await analysisService.analyze({
+                    projectId: project.id,
+                    source: project.platform || 'komposo',
+                    repo: project.source_url?.includes('github.com') ? project.source_url.split('github.com/')[1] : undefined
+                });
 
-            // Refresh analyses list
-            const updatedAnalyses = await analysisService.getAnalyses(project.id);
-            setAnalyses(updatedAnalyses);
+                // Refresh analyses list
+                const updatedAnalyses = await analysisService.getAnalyses(project.id);
+                setAnalyses(updatedAnalyses);
 
-            // Update current code
-            const code = result.analysis?.code || result.code || (result.blueprint ? JSON.stringify(result.blueprint, null, 2) : "");
-            setCurrentCode(code);
+                // Update current code
+                const code = result.analysis?.code || result.code || (result.blueprint ? JSON.stringify(result.blueprint, null, 2) : "");
+                setCurrentCode(code);
+                return result;
+            })();
+
+            await Promise.race([analysisPromise, timeoutPromise]);
 
             toast.success("Analysis complete!", { id: toastId });
         } catch (err: any) {

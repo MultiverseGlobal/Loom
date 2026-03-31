@@ -10,7 +10,7 @@ import path from 'path';
 // Load environment variables if running locally
 require('dotenv').config();
 
-const API_URL = process.env.SHIFT_API_URL || 'https://shit-gateway.onrender.com/api';
+const API_URL = process.env.SHIFT_API_URL || 'https://shift-gateway.onrender.com/api';
 
 const program = new Command();
 

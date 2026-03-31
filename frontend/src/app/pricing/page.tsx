@@ -14,7 +14,26 @@ export default function PricingPage() {
     const [loadingId, setLoadingId] = useState<string | null>(null);
 
     const handleUpgrade = async (plan: typeof PRICING_PLANS[0]) => {
-        alert("Billing is currently under maintenance. We are moving to Polar.sh! Stay tuned.");
+        if (plan.price === "$0") {
+            router.push("/auth/signup");
+            return;
+        }
+
+        setLoadingId(plan.id);
+        try {
+            // In a production app, we would call a backend endpoint to create a Polar checkout session
+            // For now, we redirect to the Polar.sh subscribe page for the specific product
+            const polarBaseUrl = "https://polar.sh/MultiverseGlobal/subscriptions/subscribe";
+            const priceId = plan.polarPriceId || "default"; 
+            
+            // Redirect to Polar checkout
+            window.location.href = `${polarBaseUrl}?price_id=${priceId}`;
+        } catch (err) {
+            console.error("Billing error:", err);
+            toast.error("Could not initialize checkout. Please try again.");
+        } finally {
+            setLoadingId(null);
+        }
     };
 
     return (

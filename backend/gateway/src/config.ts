@@ -40,8 +40,8 @@ export const config = {
   githubApiKey: process.env.GITHUB_API_KEY,
   githubClientId: process.env.GITHUB_CLIENT_ID,
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
-  // polarAccessToken: process.env.POLAR_ACCESS_TOKEN, // Removed
-  // polarOrganizationId: process.env.POLAR_ORGANIZATION_ID, // Removed
-  // polarWebhookSecret: process.env.POLAR_WEBHOOK_SECRET, // Removed
+  polarAccessToken: process.env.POLAR_ACCESS_TOKEN, 
+  polarOrganizationId: process.env.POLAR_ORGANIZATION_ID, 
+  polarWebhookSecret: process.env.POLAR_WEBHOOK_SECRET, 
   isProduction: process.env.NODE_ENV === "production",
 };

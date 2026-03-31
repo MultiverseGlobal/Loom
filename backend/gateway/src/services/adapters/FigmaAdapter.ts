@@ -1,4 +1,4 @@
-import { LoomBlueprint, BridgeAdapter, BlueprintNode } from './types.js';
+import { ShiftBlueprint, BridgeAdapter, BlueprintNode } from './types.js';
 import { figmaService } from '../../services/figmaService.js';
 import axios from 'axios';
 
@@ -9,7 +9,7 @@ export class FigmaAdapter implements BridgeAdapter {
         return url.includes('figma.com/file/') || url.includes('figma.com/design/');
     }
 
-    async getBlueprint(url: string, options: Record<string, any>): Promise<LoomBlueprint | null> {
+    async getBlueprint(url: string, options: Record<string, any>): Promise<ShiftBlueprint | null> {
         const { token, nodeId } = options;
         if (!token) throw new Error("Figma token required");
 

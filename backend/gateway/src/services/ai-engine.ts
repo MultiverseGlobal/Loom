@@ -170,7 +170,7 @@ Return a JSON object with this exact structure:
                     ],
                     response_format: { type: "json_object" },
                     max_tokens: modelConfig.maxTokens
-                });
+                }, { timeout: 30000 }); // 30s hard timeout
 
                 const content = response.choices[0].message.content;
                 if (!content) throw new Error("No response from OpenAI");
@@ -185,7 +185,7 @@ Return a JSON object with this exact structure:
                         role: 'user',
                         content: `${systemPrompt}\n\n${userPrompt}`
                     }]
-                });
+                }, { timeout: 30000 }); // 30s hard timeout
 
                 const textContent = response.content.find(c => c.type === 'text');
                 if (!textContent || textContent.type !== 'text') {
@@ -195,15 +195,25 @@ Return a JSON object with this exact structure:
 
             } else if (selectedModel.startsWith('gemini')) {
                 // Use Gemini
-                const model = genAI.getGenerativeModel({ model: selectedModel, generationConfig: { responseMimeType: "application/json" } });
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s hard timeout
+                
+                try {
+                    const model = genAI.getGenerativeModel({ 
+                        model: selectedModel, 
+                        generationConfig: { responseMimeType: "application/json" } 
+                    });
 
-                const prompt = `${systemPrompt}\n\n${userPrompt}`;
-                const result = await model.generateContent(prompt);
-                const response = result.response;
-                const text = response.text();
+                    const prompt = `${systemPrompt}\n\n${userPrompt}`;
+                    const result = await model.generateContent(prompt, { signal: controller.signal });
+                    const response = result.response;
+                    const text = response.text();
 
-                if (!text) throw new Error("No response from Gemini");
-                analysisResult = JSON.parse(text);
+                    if (!text) throw new Error("No response from Gemini");
+                    analysisResult = JSON.parse(text);
+                } finally {
+                    clearTimeout(timeoutId);
+                }
             }
 
             return {
@@ -298,7 +308,7 @@ Return a JSON object with:
                         { role: "user", content: prompt }
                     ],
                     response_format: { type: "json_object" }
-                });
+                }, { timeout: 30000 });
 
                 const content = response.choices[0].message.content;
                 if (!content) throw new Error("No response from OpenAI");
@@ -382,7 +392,7 @@ Return a JSON object with:
             const response = await axios.post(`${config.analyzerUrl}/analyzer/generate`, {
                 prompt,
                 framework: options?.framework || 'react'
-            });
+            }, { timeout: 20000 }); // 20s timeout
 
             return {
                 code: response.data.code,
@@ -436,7 +446,7 @@ Return a JSON object with:
                 type,
                 payload, // This now includes 'files' if provided
                 project_name: projectName
-            });
+            }, { timeout: 25000 }); // 25s timeout
 
             if (projectId) {
                 socketService.broadcast(projectId, 'analysis:status', {

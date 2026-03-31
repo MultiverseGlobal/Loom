@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { LoomBlueprint, BridgeAdapter } from './types.js';
+import { ShiftBlueprint, BridgeAdapter } from './types.js';
 
 export class ScraperAdapter implements BridgeAdapter {
     id = 'scraper';
@@ -10,7 +10,7 @@ export class ScraperAdapter implements BridgeAdapter {
         return url.startsWith('http') && !url.includes('figma.com');
     }
 
-    async getBlueprint(url: string, _options: Record<string, any>): Promise<LoomBlueprint | null> {
+    async getBlueprint(url: string, _options: Record<string, any>): Promise<ShiftBlueprint | null> {
         try {
             console.log(`[Scraper] Scraping URL: ${url}`);
             const response = await axios.get(url);

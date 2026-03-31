@@ -39,7 +39,7 @@ export async function listUserConversations(userId: string) {
 }
 
 /**
- * Converts a Loom Blueprint into a structured prompt for the AI Generator
+ * Converts a Shift Blueprint into a structured prompt for the AI Generator
  */
 export function formatBlueprintPrompt(blueprint: any): string {
   const root = blueprint.root;
@@ -48,7 +48,7 @@ export function formatBlueprintPrompt(blueprint: any): string {
 BRIDE DESIGN TO CODE REQUEST
 Target Framework: Next.js + Tailwind CSS
 
-UI STRUCTURE (Loom Blueprint):
+UI STRUCTURE (Shift Blueprint):
 ${JSON.stringify(root, null, 2)}
 
 INSTRUCTIONS:
