@@ -8,8 +8,10 @@ export class GitHubIntegration extends BaseIntegration {
   }
 
   async processEvent(event: IntegrationEvent): Promise<IntegrationResponse> {
-    if (!this.config.enabled || !this.config.apiKey) {
-      return { success: false, error: "GitHub integration not configured" };
+    const apiKey = event.userConfig?.apiKey || this.config.apiKey;
+
+    if (!this.config.enabled || !apiKey) {
+      return { success: false, error: "GitHub integration not configured or API key missing" };
     }
 
     if (event.type === "export") {
@@ -22,11 +24,7 @@ export class GitHubIntegration extends BaseIntegration {
         isPrivate?: boolean;
       };
 
-      if (!this.config.apiKey) {
-        return { success: false, error: "GitHub integration not configured (Missing API Key)" };
-      }
-
-      const githubService = new GithubService(this.config.apiKey);
+      const githubService = new GithubService(apiKey);
 
       try {
         let targetRepo = repoUrl;

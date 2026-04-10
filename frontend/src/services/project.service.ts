@@ -138,4 +138,54 @@ export const projectService = {
             }
         });
     },
+
+    async getProjectFiles(projectId: string): Promise<Array<{ id: string; file_path: string; type: string; updated_at: string; content?: string }>> {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) throw new Error("User not authenticated");
+
+        return fetchAPI<any[]>(`/projects/${projectId}/files`, {
+            headers: {
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+    },
+
+    async downloadProjectZip(projectId: string, projectName: string): Promise<void> {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) throw new Error("User not authenticated");
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'}/projects/${projectId}/export`, {
+            headers: {
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+
+        if (!response.ok) throw new Error("Failed to download project ZIP");
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${projectName.replace(/\s+/g, '_')}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    },
+
+    async pushToGithub(projectId: string, payload: { repoName: string; isPrivate: boolean; createRepo: boolean }): Promise<{ success: boolean; repoUrl: string }> {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) throw new Error("User not authenticated");
+
+        return fetchAPI<{ success: boolean; repoUrl: string }>(`/projects/${projectId}/push-to-github`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify(payload)
+        });
+    }
 };

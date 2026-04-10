@@ -1,51 +1,50 @@
-"use client";
-
-import { Box, Code2, Download, Github, Loader2, Play, Terminal } from "lucide-react";
+import { Box, Code2, Download, Github, Loader2, Play, Terminal, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { fetchAPI } from "@/utils/api";
+import { projectService } from "@/services/project.service";
 
 interface WorkspaceControlsProps {
   projectId: string;
   projectName: string;
   isLaunching: boolean;
   onLaunchExtension: () => void;
+  onDownload: () => void;
+  isDownloading?: boolean;
 }
 
 export function WorkspaceControls({
   projectId,
   projectName,
   isLaunching,
-  onLaunchExtension
+  onLaunchExtension,
+  onDownload,
+  isDownloading
 }: WorkspaceControlsProps) {
   const [isPushingGithub, setIsPushingGithub] = useState(false);
 
   const handlePushToGithub = async () => {
     setIsPushingGithub(true);
+    const toastId = toast.loading("Preparing GitHub migration...");
     try {
-      // Show prompt for repo name or use project name
       const repoNameInput = prompt("Enter GitHub repository name:", projectName.toLowerCase().replace(/\s+/g, '-'));
       if (!repoNameInput) {
         setIsPushingGithub(false);
+        toast.dismiss(toastId);
         return;
       }
 
-      const result = await fetchAPI<any>(`/projects/${projectId}/push-to-github`, {
-        method: 'POST',
-        body: JSON.stringify({
-          repoName: repoNameInput,
-          createRepo: true,
-          isPrivate: true
-        })
+      const result = await projectService.pushToGithub(projectId, {
+        repoName: repoNameInput,
+        createRepo: true,
+        isPrivate: true
       });
 
       if (result.success) {
-        toast.success(`Successfully pushed to ${result.data.repoUrl}`);
-      } else {
-        toast.error(result.error || "Failed to push to GitHub");
+        toast.success(`Successfully pushed to ${result.repoUrl}`, { id: toastId });
+        window.open(`https://github.com/${result.repoUrl}`, '_blank');
       }
     } catch (err: any) {
-      toast.error(err.message || "Error pushing to GitHub");
+      toast.error(err.message || "Error pushing to GitHub", { id: toastId });
     } finally {
       setIsPushingGithub(false);
     }
@@ -85,10 +84,12 @@ export function WorkspaceControls({
         <div className="w-px h-6 bg-[var(--border-default)] mx-1" />
 
         <button
-          className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-md transition-all"
+          onClick={onDownload}
+          disabled={isDownloading}
+          className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-md transition-all disabled:opacity-50"
           title="Download ZIP"
         >
-          <Download size={16} />
+          {isDownloading ? <Loader2 size={16} className="animate-spin text-[var(--accent-primary)]" /> : <Download size={16} />}
         </button>
       </div>
     </div>

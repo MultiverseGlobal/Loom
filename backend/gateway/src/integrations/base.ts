@@ -16,6 +16,7 @@ export interface IntegrationEvent {
   type: string;
   projectId: string;
   payload: Record<string, unknown>;
+  userConfig?: Partial<IntegrationConfig>;
 }
 
 export interface IntegrationResponse {

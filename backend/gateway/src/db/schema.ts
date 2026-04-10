@@ -174,6 +174,19 @@ CREATE TABLE IF NOT EXISTS project_github_links (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
   UNIQUE(project_id)
 );
+
+CREATE TABLE IF NOT EXISTS project_files (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  file_path TEXT NOT NULL,
+  content TEXT NOT NULL,
+  type TEXT DEFAULT 'component', -- 'component', 'page', 'style', 'config'
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  UNIQUE(project_id, file_path)
+);
+
+CREATE INDEX IF NOT EXISTS idx_project_files_project_id ON project_files(project_id);
 ;
 `;
 

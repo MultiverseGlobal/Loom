@@ -7,6 +7,7 @@ export async function ensureDatabase() {
   // Migration: Ensure columns exist (idempotent)
   await db.unsafe(`
     ALTER TABLE projects ADD COLUMN IF NOT EXISTS source_platform TEXT;
+    ALTER TABLE projects ADD COLUMN IF NOT EXISTS source_url TEXT;
     ALTER TABLE projects ADD COLUMN IF NOT EXISTS origin_meta JSONB DEFAULT '{}'::jsonb;
     ALTER TABLE projects ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'ready';
     

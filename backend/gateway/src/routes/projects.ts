@@ -7,6 +7,8 @@ import { createProject, getProject, listProjects } from "../services/projectServ
 import { requireAuth } from '../middleware/supabase-auth.js';
 import * as commandService from "../services/commandService.js";
 import { supabase } from "../lib/supabase.js";
+import { db } from "../db/client.js";
+import JSZip from 'jszip';
 
 const createBody = z.any();
 // const createBody = z.object({
@@ -183,25 +185,19 @@ export async function registerProjectRoutes(app: FastifyInstance) {
         return reply.badRequest("GitHub account not connected. Please connect your GitHub account in settings.");
       }
 
-      // 2. Fetch latest files from analysis (UPG)
-      const { data: latestAnalysis } = await supabase
-        .from('analyses')
-        .select('result_json')
-        .eq('project_id', project.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      // 2. Fetch real generated files from project_files table
+      const projectFiles = await db<{ file_path: string; content: string }[]>`
+        SELECT file_path, content
+        FROM project_files
+        WHERE project_id = ${project.id}
+        ORDER BY file_path ASC
+      `;
 
-      const upg = latestAnalysis?.result_json?.blueprint || latestAnalysis?.result_json?.upg;
-      if (!upg || Object.keys(upg).length === 0) {
-        return reply.badRequest("No generated code found for this project. Please generate code first.");
+      if (projectFiles.length === 0) {
+        return reply.badRequest("No generated code found for this project. Upload a Webflow ZIP or trigger generation first.");
       }
 
-      // Convert UPG map to files array for the integration
-      const filesArr = Object.entries(upg).map(([path, file]: [string, any]) => ({
-        path,
-        content: typeof file === 'string' ? file : file.content
-      }));
+      const filesArr = projectFiles.map(f => ({ path: f.file_path, content: f.content }));
 
       // 3. Resolve target repo
       let targetRepoUrl = repoUrl;
@@ -227,15 +223,12 @@ export async function registerProjectRoutes(app: FastifyInstance) {
           throw new Error("GitHub integration adapter not registered");
         }
 
-        // Initialize with user's token (important override if global isn't set)
-        await githubAdapter.initialize({ 
-          enabled: true, 
-          apiKey: integration.access_token 
-        });
-
         const result = await githubAdapter.processEvent({
           type: 'export',
           projectId: project.id,
+          userConfig: {
+            apiKey: integration.access_token
+          },
           payload: {
             repoUrl: targetRepoUrl,
             branch: branch || 'main',
@@ -411,11 +404,21 @@ export async function registerProjectRoutes(app: FastifyInstance) {
     }
   );
 
+  // GET /:id/files — list all generated files for a project
   typedApp.get(
-    "/:id/export",
+    "/:id/files",
     {
       schema: {
-        params: z.object({ id: z.string().uuid() })
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          200: z.array(z.object({
+            id: z.string(),
+            file_path: z.string(),
+            type: z.string(),
+            updated_at: z.any(),
+          })),
+          404: z.object({ error: z.string() }),
+        },
       },
       preHandler: [requireAuth],
     },
@@ -426,84 +429,85 @@ export async function registerProjectRoutes(app: FastifyInstance) {
         return reply.notFound("Project not found");
       }
 
-      // Fetch latest analysis
-      const { data: latestAnalysis } = await supabase
-        .from('analyses')
-        .select('result_json')
-        .eq('project_id', id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-        
-      const upg = latestAnalysis?.result_json?.blueprint || latestAnalysis?.result_json?.upg;
-      
-      if (!upg || !upg.nodes) {
-         return reply.badRequest("No generated components available for export.");
-      }
-      
-      const files: { path: string, content: string }[] = [];
-      const explanation = latestAnalysis?.result_json?.summary || "Successfully downloaded UPG blueprint.";
-      
-      // Parse the UPG mock nodes into physical files
-      // Basic flat-map: every 'component' node becomes a .tsx file.
-      for (const [key, node] of Object.entries(upg.nodes as Record<string, any>)) {
-         if (node.type === 'component') {
-            const fileName = node.name ? `${node.name}.tsx` : `Component_${key}.tsx`;
-            
-            // Build the stringified code for this component
-            let importsText = '';
-            if (node.imports && Array.isArray(node.imports)) {
-                importsText = node.imports.map((i: any) => {
-                   const named = i.named && i.named.length > 0 ? `{ ${i.named.join(', ')} }` : '';
-                   const def = i.default || '';
-                   const combo = [def, named].filter(Boolean).join(', ');
-                   return `import ${combo} from '${i.module}';`;
-                }).join('\n') + '\n\n';
-            }
-            
-            const stateText = node.state ? 
-                 Object.entries(node.state).map(([sKey, sVal]: [string, any]) => 
-                    `  const [${sKey}, set${sKey.charAt(0).toUpperCase() + sKey.slice(1)}] = useState(${JSON.stringify(sVal.defaultValue)});`
-                 ).join('\n') + '\n\n' : '';
+      const files = await db<{ id: string; file_path: string; type: string; updated_at: string }[]>`
+        SELECT id, file_path, type, updated_at
+        FROM project_files
+        WHERE project_id = ${id}
+        ORDER BY updated_at DESC
+      `;
 
-            // This is a naive code generator tailored to the Counter App payload structure
-            const renderChildren = (childIds: string[], level: number): string => {
-                const indent = '  '.repeat(level);
-                return childIds.map(cId => {
-                    const child = upg.nodes[cId];
-                    if (!child) return '';
-                    if (child.type === 'text') return `${indent}${child.content}\n`;
-                    if (child.type === 'element') {
-                        const propsString = Object.entries(child.props || {}).map(([p, v]) => `${p}={${v}}`).join(' ');
-                        const className = child.className ? ` className="${child.className}"` : '';
-                        const allAttribs = [className, propsString].filter(Boolean).join(' ');
-                        
-                        if (!child.children || child.children.length === 0) {
-                            return `${indent}<${child.tag}${allAttribs} />\n`;
-                        } else {
-                            const innerItems = renderChildren(child.children, level + 1);
-                            return `${indent}<${child.tag}${allAttribs}>\n${innerItems}${indent}</${child.tag}>\n`;
-                        }
-                    }
-                    return '';
-                }).join('');
-            };
+      return files;
+    }
+  );
 
-            const bodyContent = node.children && Array.isArray(node.children) 
-                ? renderChildren(node.children, 2) 
-                : '    <div />\n';
-
-            const componentText = `${importsText}export default function ${node.name}() {\n${stateText}  return (\n${bodyContent}  );\n}\n`;
-            files.push({ path: fileName, content: componentText });
-         }
-      }
-      
-      // If we somehow found zero components (like the fallback Analyzer limit), just output a single JSON representing it
-      if (files.length === 0) {
-          files.push({ path: 'blueprint.json', content: JSON.stringify(upg, null, 2) });
+  // GET /:id/export — ZIP download of all generated files
+  typedApp.get(
+    "/:id/export",
+    {
+      schema: {
+        params: z.object({ id: z.string().uuid() }),
+      },
+      preHandler: [requireAuth],
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const project = await getProject(id);
+      if (!project || project.user_id !== request.userId) {
+        return reply.notFound("Project not found");
       }
 
-      return reply.send({ files, explanation });
+      // 1. Read real generated files from project_files table
+      const rows = await db<{ file_path: string; content: string }[]>`
+        SELECT file_path, content
+        FROM project_files
+        WHERE project_id = ${id}
+        ORDER BY file_path ASC
+      `;
+
+      if (rows.length === 0) {
+        return reply.status(404).send({ error: "No generated files found. Upload a Webflow ZIP or trigger generation first." } as any);
+      }
+
+      // 2. Bundle into a ZIP
+      const zip = new JSZip();
+      const projectFolder = zip.folder(project.name.replace(/[^a-z0-9_-]/gi, '_') || 'project')!;
+
+      for (const row of rows) {
+        projectFolder.file(row.file_path, row.content);
+      }
+
+      // 3. Add a minimal package.json and README so the ZIP is immediately openable
+      projectFolder.file('package.json', JSON.stringify({
+        name: project.name.toLowerCase().replace(/\s+/g, '-'),
+        version: '0.1.0',
+        scripts: { dev: 'next dev', build: 'next build', start: 'next start' },
+        dependencies: {
+          next: '^14.0.0',
+          react: '^18.0.0',
+          'react-dom': '^18.0.0',
+          typescript: '^5.0.0',
+        },
+        devDependencies: {
+          '@types/react': '^18.0.0',
+          '@types/node': '^20.0.0',
+          tailwindcss: '^3.3.0',
+          autoprefixer: '^10.0.0',
+          postcss: '^8.0.0',
+        },
+      }, null, 2));
+
+      projectFolder.file('README.md',
+        `# ${project.name}\n\nGenerated by Loom AI from ${project.source_platform || 'Webflow'}.\n\n## Getting Started\n\n\`\`\`bash\nnpm install\nnpm run dev\n\`\`\`\n`);
+
+      // 4. Stream the ZIP as a binary download
+      const zipBuffer = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
+
+      const safeName = project.name.replace(/[^a-z0-9_-]/gi, '_') || 'project';
+      reply
+        .header('Content-Type', 'application/zip')
+        .header('Content-Disposition', `attachment; filename="${safeName}.zip"`)
+        .header('Content-Length', zipBuffer.length)
+        .send(zipBuffer);
     }
   );
 
