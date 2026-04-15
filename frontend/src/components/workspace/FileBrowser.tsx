@@ -1,6 +1,6 @@
 "use client";
 
-import { File, Code2, Layout as LayoutIcon, Settings, Layers, FolderJson } from "lucide-react";
+import { File, Code2, Layout as LayoutIcon, Settings, Layers, Folder } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ProjectFile {
@@ -18,7 +18,7 @@ interface FileBrowserProps {
 
 export function FileBrowser({ files, selectedFileId, onSelectFile }: FileBrowserProps) {
     const getFileIcon = (filePath: string, type: string) => {
-        if (filePath.endsWith('.json')) return <FolderJson size={14} />;
+        if (filePath.endsWith('.json')) return <Folder size={14} />;
         if (type === 'page') return <LayoutIcon size={14} />;
         if (type === 'component') return <Code2 size={14} />;
         if (type === 'config') return <Settings size={14} />;
