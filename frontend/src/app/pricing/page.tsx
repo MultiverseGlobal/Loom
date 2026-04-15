@@ -8,6 +8,7 @@ import { authService } from '@/services/auth.service';
 import { createClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function PricingPage() {
     const router = useRouter();
