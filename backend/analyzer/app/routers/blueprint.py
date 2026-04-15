@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Optional, Dict, Any
 from app.services.ai_blueprint_service import AIBlueprintService
 from app.upg_models import UniversalProjectGraph
+from app.services.blueprint_generator import BlueprintGenerator
 
 router = APIRouter(
     prefix="/analyzer/blueprint",
