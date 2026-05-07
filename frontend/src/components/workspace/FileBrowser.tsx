@@ -1,7 +1,7 @@
 "use client";
 
 import { File, Code2, Layout as LayoutIcon, Settings, Layers, Folder } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 interface ProjectFile {
     id: string;
