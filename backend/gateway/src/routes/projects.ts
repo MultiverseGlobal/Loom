@@ -186,7 +186,7 @@ export async function registerProjectRoutes(app: FastifyInstance) {
       }
 
       // 2. Fetch real generated files from project_files table
-      let projectFiles = await db<{ file_path: string; content: string }[]>`
+      let projectFiles: any[] = await db<{ file_path: string; content: string }[]>`
         SELECT file_path, content
         FROM project_files
         WHERE project_id = ${project.id}
@@ -505,7 +505,7 @@ export async function registerProjectRoutes(app: FastifyInstance) {
       }
 
       // 1. Read real generated files from project_files table
-      let rows = await db<{ file_path: string; content: string }[]>`
+      let rows: any[] = await db<{ file_path: string; content: string }[]>`
         SELECT file_path, content
         FROM project_files
         WHERE project_id = ${id}
