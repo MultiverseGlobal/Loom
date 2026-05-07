@@ -157,7 +157,7 @@ if (process.env.RUN_WORKER === "true") {
           .from('analyses')
           .select('result_json')
           .eq('project_id', job.data.projectId)
-          .order('created_at', { ascending: False })
+          .order('created_at', { ascending: false })
           .limit(1)
           .single();
 
