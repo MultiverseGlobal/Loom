@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
 import { Figma, Link2, Key, Loader2, AlertCircle } from "lucide-react";
+import clsx from "clsx";
 
 interface FigmaModalProps {
     isOpen: boolean;
