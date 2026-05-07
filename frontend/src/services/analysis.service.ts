@@ -79,5 +79,18 @@ export const analysisService = {
             headers: { 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ projectId, issueDescription, fileContent, fileName })
         });
+    },
+
+    async architect(prompt: string): Promise<any> {
+        const session = await authService.getSession();
+        const token = session?.access_token;
+        if (!token) throw new Error("No active session");
+
+        return fetchAPI<any>('/architect', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ prompt })
+        });
     }
 };
+

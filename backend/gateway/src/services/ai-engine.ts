@@ -511,5 +511,23 @@ Return a JSON object with:
                 }
             };
         }
+    },
+
+    /**
+     * Architect a full project from a prompt via Python Analyzer
+     */
+    async architectProject(prompt: string): Promise<any> {
+        try {
+            console.log(`[AI Engine] Architecting project from prompt: "${prompt.substring(0, 50)}..."`);
+            const response = await axios.post(`${config.analyzerUrl}/analyzer/blueprint/architect`, {
+                prompt
+            }, { timeout: 45000 }); // 45s timeout for full architecture synthesis
+
+            return response.data;
+        } catch (error: any) {
+            console.error("Failed to architect project via Analyzer:", error.message);
+            throw error;
+        }
     }
 };
+

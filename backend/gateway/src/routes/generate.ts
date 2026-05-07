@@ -37,4 +37,28 @@ export async function registerGenerateRoutes(app: FastifyInstance) {
             }
         },
     );
+
+    app.withTypeProvider().post(
+        "/architect",
+        {
+            schema: {
+                body: z.object({ prompt: z.string().min(1) }),
+            },
+            preHandler: [requireAuth],
+        },
+        async (request, reply) => {
+            try {
+                const { prompt } = request.body as any;
+                const result = await aiEngine.architectProject(prompt);
+                return result;
+            } catch (error: any) {
+                request.log.error(error);
+                return reply.code(500).send({
+                    error: "Failed to architect project",
+                    details: error.message
+                });
+            }
+        }
+    );
 }
+

@@ -1,7 +1,21 @@
 from typing import Literal, Optional, List, Dict, Any, Union
 from pydantic import BaseModel, Field
 
-UPGNodeType = Literal['component', 'element', 'text', 'style', 'prop', 'state']
+UPGNodeType = Literal['component', 'element', 'text', 'style', 'prop', 'state', 'file']
+
+class ProjectMetadata(BaseModel):
+    name: str
+    description: Optional[str] = None
+    framework: str = "nextjs-tailwind-typescript"
+    dependencies: Dict[str, str] = Field(default_factory=dict)
+    version: str = "1.0.0"
+
+class FileTreeNode(BaseModel):
+    """
+    Recursive structure for representing the file system.
+    Value can be a string (node ID) for files, or another dict for directories.
+    """
+    nodes: Dict[str, Union[str, Dict[str, Any]]] = Field(default_factory=dict)
 
 class UPGNode(BaseModel):
     id: str
@@ -44,8 +58,20 @@ class UPGText(UPGNode):
     type: Literal['text'] = 'text'
     content: str
 
+class UPGFile(UPGNode):
+    """
+    Represents a full file in the project.
+    """
+    type: Literal['file'] = 'file'
+    path: str
+    content: str
+    language: str = "typescript"
+
 class UniversalProjectGraph(BaseModel):
     id: str
     version: str = "1.0.0"
-    rootComponentId: str
-    nodes: Dict[str, Union[UPGComponent, UPGElement, UPGText, UPGNode]]
+    project: Optional[ProjectMetadata] = None
+    file_tree: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    rootComponentId: Optional[str] = None
+    nodes: Dict[str, Union[UPGComponent, UPGElement, UPGText, UPGFile, UPGNode]]
+

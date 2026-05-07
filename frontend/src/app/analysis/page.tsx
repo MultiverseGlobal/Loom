@@ -98,12 +98,19 @@ export default function AnalysisPage() {
 
                 runStep('import', `Accessing ${source}...`);
 
-                const result = await analysisService.analyze({
-                    source,
-                    repo: repoName || undefined,
-                    url: figmaUrl || undefined,
-                    prompt: payload.prompt
-                });
+                let result;
+                if (source === 'prompt') {
+                    console.log("[Analysis] Triggering Project Architecture Synthesis...");
+                    result = { blueprint: await analysisService.architect(payload.prompt) };
+                } else {
+                    result = await analysisService.analyze({
+                        source,
+                        repo: repoName || undefined,
+                        url: figmaUrl || undefined,
+                        prompt: payload.prompt
+                    });
+                }
+
 
                 // Advance visual steps with technical delays
                 await new Promise(r => setTimeout(r, 1000));

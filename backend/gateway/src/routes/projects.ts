@@ -186,21 +186,69 @@ export async function registerProjectRoutes(app: FastifyInstance) {
       }
 
       // 2. Fetch real generated files from project_files table
-      const projectFiles = await db<{ file_path: string; content: string }[]>`
+      let projectFiles = await db<{ file_path: string; content: string }[]>`
         SELECT file_path, content
         FROM project_files
         WHERE project_id = ${project.id}
         ORDER BY file_path ASC
       `;
 
-      if (projectFiles.length === 0) {
-        return reply.badRequest("No generated code found for this project. Upload a Webflow ZIP or trigger generation first.");
+      let filesArr = projectFiles.map(f => ({ path: f.file_path, content: f.content }));
+
+      // Fallback: If no project_files, check for a UPG blueprint in the analyses table
+      if (filesArr.length === 0) {
+        console.log(`[PushToGitHub] No project_files found for ${project.id}. Checking for UPG blueprint...`);
+        const { data: latestAnalysis } = await supabase
+          .from('analyses')
+          .select('result_json')
+          .eq('project_id', project.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        const blueprint = latestAnalysis?.result_json?.blueprint || latestAnalysis?.result_json?.upg;
+
+        if (blueprint && blueprint.file_tree && blueprint.nodes) {
+          console.log(`[PushToGitHub] Found UPG blueprint. Extracting files...`);
+          const extractedFiles: Array<{ path: string; content: string }> = [];
+          
+          const walkTree = (tree: any) => {
+            for (const [name, value] of Object.entries(tree)) {
+              if (typeof value === 'string') {
+                const node = blueprint.nodes[value];
+                if (node && (node.type === 'file' || node.type === 'component')) {
+                  extractedFiles.push({ path: node.path || name, content: node.content || '' });
+                }
+              } else if (typeof value === 'object') {
+                walkTree(value);
+              }
+            }
+          };
+
+          walkTree(blueprint.file_tree);
+          filesArr = extractedFiles;
+
+          // Add package.json if metadata exists
+          if (blueprint.project && !filesArr.some(f => f.path === 'package.json')) {
+            filesArr.push({
+              path: 'package.json',
+              content: JSON.stringify({
+                name: blueprint.project.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                version: blueprint.project.version || "0.1.0",
+                dependencies: blueprint.project.dependencies || {}
+              }, null, 2)
+            });
+          }
+        }
       }
 
-      const filesArr = projectFiles.map(f => ({ path: f.file_path, content: f.content }));
+      if (filesArr.length === 0) {
+        return reply.badRequest("No generated code found for this project. Upload a source or trigger generation first.");
+      }
 
       // 3. Resolve target repo
       let targetRepoUrl = repoUrl;
+
       if (!targetRepoUrl && !createRepo) {
         // Fallback to linked repo
         const projectIntegrations = await integrationService.getProjectIntegrations(project.id);
@@ -457,18 +505,54 @@ export async function registerProjectRoutes(app: FastifyInstance) {
       }
 
       // 1. Read real generated files from project_files table
-      const rows = await db<{ file_path: string; content: string }[]>`
+      let rows = await db<{ file_path: string; content: string }[]>`
         SELECT file_path, content
         FROM project_files
         WHERE project_id = ${id}
         ORDER BY file_path ASC
       `;
 
+      // Fallback: If no project_files, check for a UPG blueprint
       if (rows.length === 0) {
-        return reply.status(404).send({ error: "No generated files found. Upload a Webflow ZIP or trigger generation first." } as any);
+        console.log(`[Export] No project_files found for ${id}. Checking for UPG blueprint...`);
+        const { data: latestAnalysis } = await supabase
+          .from('analyses')
+          .select('result_json')
+          .eq('project_id', id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        const blueprint = latestAnalysis?.result_json?.blueprint || latestAnalysis?.result_json?.upg;
+
+        if (blueprint && blueprint.file_tree && blueprint.nodes) {
+          console.log(`[Export] Found UPG blueprint. Generating files for ZIP...`);
+          const extractedRows: Array<{ file_path: string; content: string }> = [];
+          
+          const walkTree = (tree: any) => {
+            for (const [name, value] of Object.entries(tree)) {
+              if (typeof value === 'string') {
+                const node = blueprint.nodes[value];
+                if (node && (node.type === 'file' || node.type === 'component')) {
+                  extractedRows.push({ file_path: node.path || name, content: node.content || '' });
+                }
+              } else if (typeof value === 'object') {
+                walkTree(value);
+              }
+            }
+          };
+
+          walkTree(blueprint.file_tree);
+          rows = extractedRows;
+        }
+      }
+
+      if (rows.length === 0) {
+        return reply.status(404).send({ error: "No generated files found. Upload a source or trigger generation first." } as any);
       }
 
       // 2. Bundle into a ZIP
+
       const zip = new JSZip();
       const projectFolder = zip.folder(project.name.replace(/[^a-z0-9_-]/gi, '_') || 'project')!;
 
