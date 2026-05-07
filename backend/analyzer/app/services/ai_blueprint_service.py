@@ -23,32 +23,55 @@ class AIBlueprintService:
         else:
             self.model = None
 
-    async def generate_from_files(self, files: List[Dict[str, str]], project_name: str) -> UniversalProjectGraph:
+    async def generate_from_files(self, files: List[Dict[str, str]], project_name: str, tool_type: str = "general") -> UniversalProjectGraph:
         if not self.model:
             raise Exception("Gemini API key not configured for AI Blueprint Service")
 
         # Prepare context
         context = "\n\n".join([f"--- File: {f['path']} ---\n{f['content']}" for f in files])
         
-        system_prompt = f"""
-You are a Staff Software Architect. Your task is to analyze the provided source code and convert it into a Universal Project Graph (UPG).
+        # Tool-specific hints
+        adapter_hint = ""
+        if tool_type == "lovable":
+            adapter_hint = """
+NOTE: This is a Lovable.dev export. It likely has a flat component structure and mixed logic. 
+YOUR TASK: Refactor this into a clean 'Feature-First' architecture. 
+"""
+        elif tool_type == "figma":
+            adapter_hint = """
+NOTE: This is a Figma design export (JSON nodes). 
+YOUR TASK: 
+1. Convert the visual hierarchy into responsive React + Tailwind CSS components.
+2. Interpret Auto-Layout (Flexbox) and map it to Tailwind classes (flex, gap, padding, etc.).
+3. Identify reusable UI patterns and extract them into a `src/components/ui` folder.
+4. If a node is named like a button or input, treat it as a functional component.
+"""
 
-A UPG is a standardized JSON tree that represents UI components, elements, and their relationships.
-Strictly follow this schema:
-- `rootComponentId`: The ID of the main entry point component.
-- `nodes`: A dictionary of nodes where the key is the node ID.
-- Each node must have: `id`, `type` ('component', 'element', 'text'), and `parent` (except root).
-- `component` nodes include: `name`, `props`, `state`, `imports`.
-- `element` nodes include: `tag` (e.g., 'div', 'button'), `className`, `props`.
-- `text` nodes include: `content`.
+
+        system_prompt = f"""
+# SYSTEM PROMPT: SHIFT AI STRUCTURAL REFACTOR
+
+You are a Staff Software Architect. Your task is to analyze the provided source code and refactor it into a clean, Universal Project Graph (UPG).
+
+## RULES FOR REFACTORING:
+1. **Output ONLY JSON**: No conversational text.
+2. **Architecture**: Convert the input (often messy or flat) into a clean, modular Next.js 14 App Router structure.
+3. **Styling**: Standardize on Tailwind CSS.
+4. **Project Mapping**:
+   - `project`: metadata including name, framework, and dependencies.
+   - `file_tree`: A recursive dictionary representing the NEW repository structure.
+   - `nodes`: For every entry in the `file_tree`, create a node with `type: "file"`.
+   - Each file node must have: `id`, `path`, and the FULL refactored `content` (source code).
+
+{adapter_hint}
 
 Project Name: {project_name}
 
-Analyze the following files and return the complete UPG JSON:
+Analyze these files and return the refactored Project-Level UPG JSON:
 """
 
         try:
-            print(f"[AI Blueprint] Analyzing {len(files)} files via Gemini 1.5 Pro...")
+            print(f"[AI Blueprint] Refactoring {len(files)} files via Gemini 1.5 Pro...")
             response = self.model.generate_content(f"{system_prompt}\n\n{context}")
             
             if not response.text:
@@ -56,17 +79,19 @@ Analyze the following files and return the complete UPG JSON:
 
             data = json.loads(response.text)
             
-            # Ensure the structure is valid by wrapping it in the Pydantic model
-            # Note: We generate a fresh ID for the graph itself
+            # Use the new ProjectMetadata and UniversalProjectGraph structure
+            from app.upg_models import ProjectMetadata
             return UniversalProjectGraph(
                 id=str(uuid.uuid4()),
-                rootComponentId=data.get("rootComponentId", "root"),
+                project=ProjectMetadata(**data.get("project", {})),
+                file_tree=data.get("file_tree", {}),
                 nodes=data.get("nodes", {})
             )
 
         except Exception as e:
-            print(f"[AI Blueprint] Error during AI generation: {e}")
+            print(f"[AI Blueprint] Error during structural refactor: {e}")
             raise e
+
 
     async def generate_fix(self, issue: str, current_upg: Dict[str, Any]) -> Dict[str, Any]:
         """

@@ -20,6 +20,8 @@ export default function ProjectDetailPage() {
     const [project, setProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(true);
     const [analyses, setAnalyses] = useState<any[]>([]);
+    const [deltas, setDeltas] = useState<any[]>([]);
+
     
     // File State
     const [files, setFiles] = useState<any[]>([]);
@@ -53,10 +55,12 @@ export default function ProjectDetailPage() {
         const loadData = async () => {
             if (!params.id) return;
             try {
-                const [projectData, analysesData] = await Promise.all([
+                const [projectData, analysesData, deltasData] = await Promise.all([
                     projectService.getProject(params.id as string),
                     analysisService.getAnalyses(params.id as string),
+                    analysisService.getDeltas(params.id as string)
                 ]);
+
 
                 if (!projectData) {
                     toast.error("Project not found");
@@ -66,6 +70,8 @@ export default function ProjectDetailPage() {
 
                 setProject(projectData);
                 setAnalyses(analysesData);
+                setDeltas(deltasData);
+
 
                 // Load real generated files
                 await loadFiles(projectData.id);
@@ -105,12 +111,17 @@ export default function ProjectDetailPage() {
         );
 
         try {
-            const analysisPromise = (async () => {
-                const result = await analysisService.analyze({
-                    projectId: project.id,
-                    source: project.platform || 'komposo',
-                    repo: project.source_url?.includes('github.com') ? project.source_url.split('github.com/')[1] : undefined
-                });
+                const analysisPromise = (async () => {
+                    // Parallel: Run standard analysis + architectural delta scan
+                    const [result, deltaJob] = await Promise.all([
+                        analysisService.analyze({
+                            projectId: project.id,
+                            source: project.platform || 'komposo',
+                            repo: project.source_url?.includes('github.com') ? project.source_url.split('github.com/')[1] : undefined
+                        }),
+                        analysisService.scanDeltas(project.id)
+                    ]);
+
 
                 // Refresh everything
                 const [updatedAnalyses] = await Promise.all([
@@ -298,13 +309,23 @@ export default function ProjectDetailPage() {
                     onRescan={handleRescan}
                     isRescanning={isRescanning}
                     onFix={handleFix}
-                    events={analyses.flatMap(analysis => (analysis.result_json.analysis?.issues || []).map((issue: any, index: number) => ({
-                        id: `${analysis.id}-${index}`,
-                        type: issue.type === 'error' || issue.type === 'warning' ? 'fix' : (issue.type === 'info' ? 'info' : 'optimization'),
-                        message: issue.message,
-                        detail: issue.detail,
-                        timestamp: new Date(analysis.created_at)
-                    })))}
+                    events={[
+                        ...analyses.flatMap(analysis => (analysis.result_json.analysis?.issues || []).map((issue: any, index: number) => ({
+                            id: `${analysis.id}-${index}`,
+                            type: issue.type === 'error' || issue.type === 'warning' ? 'fix' : (issue.type === 'info' ? 'info' : 'optimization'),
+                            message: issue.message,
+                            detail: issue.detail,
+                            timestamp: new Date(analysis.created_at)
+                        }))),
+                        ...deltas.map(delta => ({
+                            id: delta.id,
+                            type: 'optimization',
+                            message: delta.title,
+                            detail: delta.impact || delta.payload?.description || "Architectural improvement identified.",
+                            timestamp: new Date(delta.created_at)
+                        }))
+                    ]}
+
                 />
             </div>
 

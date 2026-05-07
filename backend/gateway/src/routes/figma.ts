@@ -37,12 +37,35 @@ export async function registerFigmaRoutes(server: FastifyInstance) {
             return reply.status(404).send({ error: "Figma file not found or access denied" });
         }
 
+        // Extract top-level frames for selection
+        const frames: any[] = [];
+        const findFrames = (node: any) => {
+            if (node.type === 'FRAME' || node.type === 'CANVAS') {
+                if (node.children) {
+                    node.children.forEach((child: any) => {
+                        if (child.type === 'FRAME') {
+                            frames.push({
+                                id: child.id,
+                                name: child.name,
+                                type: child.type
+                            });
+                        } else if (child.type === 'CANVAS') {
+                            findFrames(child);
+                        }
+                    });
+                }
+            }
+        };
+        findFrames(fileData.document);
+
         return {
             success: true,
             name: fileData.name,
             last_modified: fileData.lastModified,
-            thumbnail_url: fileData.thumbnailUrl
+            thumbnail_url: fileData.thumbnailUrl,
+            frames: frames.slice(0, 20) // Limit to top 20 frames for preview
         };
+
     });
 
     // Extract Blueprint from Figma Node

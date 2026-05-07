@@ -25,41 +25,24 @@ export const figmaService = {
     },
 
     /**
-     * Get file content and convert it to a Shift Blueprint
+     * Fetch Figma node data and return it for AI analysis
      */
     async getBlueprint(fileKey: string, nodeId: string, token: string): Promise<any> {
         try {
-            const response = await axios.get(`https://api.figma.com/v1/files/${fileKey}?ids=${nodeId}`, {
+            console.log(`[FigmaService] Fetching node ${nodeId} from ${fileKey}`);
+            const response = await axios.get(`https://api.figma.com/v1/files/${fileKey}/nodes?ids=${nodeId}`, {
                 headers: { 'X-Figma-Token': token }
             });
-
-            // Figma returns nodes in a map by ID
+            
+            // Return raw node data for AI processing
             const nodeData = response.data.nodes[nodeId];
-            if (!nodeData) return null;
-
-            const document = nodeData.document;
-            const blueprint = {
-                version: "1.0",
-                source: {
-                    type: "figma",
-                    id: nodeId,
-                    url: `https://www.figma.com/file/${fileKey}?node-id=${nodeId}`,
-                    fileName: response.data.name,
-                    lastModified: response.data.lastModified
-                },
-                root: this.convertToBlueprint(document),
-                theme: {
-                    colors: {}, // TODO: Extract from document styles
-                    spacing: {}
-                }
-            };
-
-            return blueprint;
-        } catch (error) {
-            console.error('Error fetching/converting Figma blueprint:', error);
+            return nodeData;
+        } catch (error: any) {
+            console.error('Error fetching Figma node:', error.response?.data || error.message);
             return null;
         }
     },
+
 
     /**
      * Recursive function to map Figma nodes to Blueprint nodes

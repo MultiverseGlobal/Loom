@@ -18,6 +18,7 @@ class BlueprintRequest(BaseModel):
     type: str # 'lovable', 'figma', 'komposo', 'repository'
     payload: Dict[str, Any]
     project_name: Optional[str] = "Loom App"
+    tool_type: Optional[str] = "general" # e.g. 'lovable', 'bubble'
 
 class ArchitectRequest(BaseModel):
     prompt: str
@@ -29,11 +30,25 @@ async def generate_blueprint(request: BlueprintRequest):
     """
     try:
         # If this is a repository scan or full project analysis, use AI.
-        if request.type in ['repository', 'full-scan', 'komposo']:
+        if request.type in ['repository', 'full-scan', 'komposo', 'figma']:
             files = request.payload.get("files", [])
+            
+            # Handle Figma specialized payload
+            if request.type == 'figma' and not files:
+                node_data = request.payload.get("node_data", {})
+                files = [{
+                    "path": "figma_node.json",
+                    "content": json.dumps(node_data, indent=2)
+                }]
+
             if files:
-                print(f"[Blueprint Router] Triggering AI Deep Scan for {len(files)} files...")
-                return await ai_service.generate_from_files(files, request.project_name or "Loom App")
+                print(f"[Blueprint Router] Triggering AI Structural Refactor for {request.type}...")
+                return await ai_service.generate_from_files(
+                    files, 
+                    request.project_name or "Loom App",
+                    tool_type=request.type # Pass 'figma' as tool_type
+                )
+
 
         # Fallback to Mock for proof-of-concept/testing if no files provided
         print(f"[Blueprint Router] Using Mock Generation for type: {request.type}")

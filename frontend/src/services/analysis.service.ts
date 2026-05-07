@@ -7,6 +7,7 @@ export interface AnalysisInput {
     repo?: string;
     url?: string; // For Figma
     prompt?: string; // For Prompt
+    toolType?: string; // For specialized refactoring (lovable, bubble, etc.)
 }
 
 export interface AnalysisResult {
@@ -49,6 +50,7 @@ export const analysisService = {
             body: JSON.stringify({
                 projectId: input.projectId || 'pending',
                 source: input.source,
+                toolType: input.toolType,
                 payload: {
                     repo: input.repo,
                     url: input.url,
@@ -91,6 +93,29 @@ export const analysisService = {
             headers: { 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ prompt })
         });
+    },
+
+    async getDeltas(projectId: string): Promise<any[]> {
+        const session = await authService.getSession();
+        const token = session?.access_token;
+        if (!token) throw new Error("No active session");
+
+        return fetchAPI<any[]>(`/deltas?projectId=${projectId}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+    },
+
+    async scanDeltas(projectId: string): Promise<{ jobId: string }> {
+        const session = await authService.getSession();
+        const token = session?.access_token;
+        if (!token) throw new Error("No active session");
+
+        return fetchAPI<{ jobId: string }>('/deltas/scan', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ projectId, direction: 'builder' })
+        });
     }
 };
+
 

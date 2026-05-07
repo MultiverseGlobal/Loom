@@ -132,20 +132,78 @@ if (process.env.RUN_WORKER === "true") {
     "delta-scan",
     async (job: Job<DeltaScanPayload>) => {
       job.updateProgress(5);
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      await createDelta({
-        projectId: job.data.projectId,
-        source: job.data.direction,
-        title: `Detected drift from ${job.data.direction}`,
-        impact: "config mismatch",
-        action: "Review changes",
-        payload: { files: ["src/app/page.tsx"] },
-      });
+      
+      const { aiEngine } = await import("./ai-engine.js");
+      const { supabase } = await import("../lib/supabase.js");
+
+      // 1. Fetch project files/data from Supabase
+      const { data: project, error: pError } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('id', job.data.projectId)
+        .single();
+
+      if (pError || !project) throw new Error("Project not found for delta scan");
+
+      job.updateProgress(20);
+
+      // 2. Fetch recent analysis or files
+      // For now, we'll look for project_files or the latest blueprint
+      const files = project.project_files || [];
+      
+      if (files.length === 0) {
+        // Fallback: check analyses table for blueprint
+        const { data: analysis } = await supabase
+          .from('analyses')
+          .select('result_json')
+          .eq('project_id', job.data.projectId)
+          .order('created_at', { ascending: False })
+          .limit(1)
+          .single();
+
+        if (analysis?.result_json?.blueprint?.nodes) {
+          // Convert UPG nodes back to virtual files for analysis
+          const nodes = analysis.result_json.blueprint.nodes;
+          Object.values(nodes).forEach((node: any) => {
+            if (node.path && node.content) {
+              files.push({ path: node.path, content: node.content });
+            }
+          });
+        }
+      }
+
+      if (files.length === 0) throw new Error("No files found to scan for deltas");
+
+      job.updateProgress(40);
+
+      // 3. Call AI Engine for Delta Analysis
+      console.log(`[Worker] Running architectural audit for project ${job.data.projectId}...`);
+      const report = await aiEngine.scanDeltas(job.data.projectId, files.slice(0, 50)); // Limit to first 50 files
+
+      job.updateProgress(80);
+
+      // 4. Create separate delta records for each proposed refactor
+      for (const delta of report.deltas) {
+        await createDelta({
+          projectId: job.data.projectId,
+          source: job.data.direction,
+          title: delta.title,
+          impact: delta.impact,
+          action: delta.type,
+          payload: {
+             description: delta.description,
+             file_path: delta.file_path,
+             diff: delta.diff
+          },
+        });
+      }
+
       job.updateProgress(100);
-      return { message: "Delta recorded" };
+      return { message: "Architectural audit complete", deltaCount: report.deltas.length };
     },
     connection,
   );
+
 
   new Worker<PatchJobPayload>(
     "patch-generate",

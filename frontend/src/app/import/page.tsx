@@ -67,8 +67,10 @@ export default function ImportPage() {
         const params = new URLSearchParams({
             source: selectedSourceId || 'github',
             repo: repo.full_name,
-            branch: 'main' // Default
+            branch: 'main', // Default
+            toolType: selectedSourceId === 'nocode' ? 'lovable' : 'general'
         });
+
         router.push(`/analysis?${params.toString()}`);
     };
 

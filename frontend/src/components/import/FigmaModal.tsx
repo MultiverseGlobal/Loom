@@ -15,8 +15,10 @@ export function FigmaModal({ isOpen, onClose, onSelect }: FigmaModalProps) {
     const [token, setToken] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [isValidating, setIsValidating] = useState(false);
+    const [frames, setFrames] = useState<any[]>([]);
+    const [selectedFrameId, setSelectedFrameId] = useState<string | null>(null);
 
-    const handleNext = async () => {
+    const handleAnalyze = async () => {
         if (!fileUrl || !token) return;
 
         setIsValidating(true);
@@ -36,13 +38,26 @@ export function FigmaModal({ isOpen, onClose, onSelect }: FigmaModalProps) {
                 body: JSON.stringify({ fileUrl, token })
             });
 
-            onSelect(fileUrl, token);
+            if (data.frames && data.frames.length > 0) {
+                setFrames(data.frames);
+            } else {
+                setError("No frames found in this file.");
+            }
         } catch (err: any) {
             setError(err.message || "Connection failed. Is the backend running?");
         } finally {
             setIsValidating(false);
         }
     };
+
+    const handleSelectFrame = () => {
+        if (selectedFrameId) {
+            // Include node-id in session storage for the analysis page to pick up
+            sessionStorage.setItem('figma_node_id', selectedFrameId);
+            onSelect(fileUrl, token);
+        }
+    };
+
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -70,22 +85,52 @@ export function FigmaModal({ isOpen, onClose, onSelect }: FigmaModalProps) {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-[#666] uppercase tracking-wider">Personal Access Token</label>
-                            <div className="relative">
-                                <Key size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666]" />
-                                <input
-                                    type="password"
-                                    value={token}
-                                    onChange={e => setToken(e.target.value)}
-                                    placeholder="figd_xxxxxxxxxxxx"
-                                    className="w-full bg-[#1C1C1C] border border-[#333] rounded-lg pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#F24E1E]/50 transition-colors"
-                                />
+                        {frames.length === 0 && (
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-[#666] uppercase tracking-wider">Personal Access Token</label>
+                                <div className="relative">
+                                    <Key size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666]" />
+                                    <input
+                                        type="password"
+                                        value={token}
+                                        onChange={e => setToken(e.target.value)}
+                                        placeholder="figd_xxxxxxxxxxxx"
+                                        className="w-full bg-[#1C1C1C] border border-[#333] rounded-lg pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#F24E1E]/50 transition-colors"
+                                    />
+                                </div>
+                                <p className="text-[11px] text-[#555]">
+                                    Create a token in Figma Settings {'>'} Personal access tokens.
+                                </p>
                             </div>
-                            <p className="text-[11px] text-[#555]">
-                                Create a token in Figma Settings {'>'} Personal access tokens.
-                            </p>
-                        </div>
+                        )}
+
+                        {frames.length > 0 && (
+                            <div className="space-y-2 animate-fadeIn">
+                                <label className="text-xs font-medium text-[#666] uppercase tracking-wider">Select a Frame to Import</label>
+                                <div className="grid grid-cols-1 gap-2 max-h-[200px] overflow-auto pr-2 custom-scrollbar">
+                                    {frames.map((frame) => (
+                                        <button
+                                            key={frame.id}
+                                            onClick={() => setSelectedFrameId(frame.id)}
+                                            className={clsx(
+                                                "w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between group",
+                                                selectedFrameId === frame.id 
+                                                    ? "bg-[#F24E1E]/10 border-[#F24E1E] text-white" 
+                                                    : "bg-[#1C1C1C] border-[#333] text-[#888] hover:border-[#444]"
+                                            )}
+                                        >
+                                            <span className="text-sm font-medium">{frame.name}</span>
+                                            <div className={clsx(
+                                                "w-4 h-4 rounded-full border flex items-center justify-center transition-all",
+                                                selectedFrameId === frame.id ? "border-[#F24E1E] bg-[#F24E1E]" : "border-[#444]"
+                                            )}>
+                                                {selectedFrameId === frame.id && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {error && (
@@ -99,14 +144,25 @@ export function FigmaModal({ isOpen, onClose, onSelect }: FigmaModalProps) {
                         <button onClick={onClose} className="px-4 py-2 text-sm text-[#888] hover:text-white transition-colors">
                             Cancel
                         </button>
-                        <button
-                            onClick={handleNext}
-                            disabled={!fileUrl || !token || isValidating}
-                            className="px-6 py-2 bg-[#F24E1E] hover:bg-[#ff5e30] text-white rounded-lg text-sm font-medium flex items-center gap-2 transition-all disabled:opacity-50"
-                        >
-                            {isValidating ? <Loader2 size={16} className="animate-spin" /> : "Analyze File"}
-                        </button>
+                        {frames.length === 0 ? (
+                            <button
+                                onClick={handleAnalyze}
+                                disabled={!fileUrl || !token || isValidating}
+                                className="px-6 py-2 bg-[#F24E1E] hover:bg-[#ff5e30] text-white rounded-lg text-sm font-medium flex items-center gap-2 transition-all disabled:opacity-50 shadow-lg shadow-[#F24E1E]/20"
+                            >
+                                {isValidating ? <Loader2 size={16} className="animate-spin" /> : "Analyze File"}
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleSelectFrame}
+                                disabled={!selectedFrameId}
+                                className="px-6 py-2 bg-[#F24E1E] hover:bg-[#ff5e30] text-white rounded-lg text-sm font-medium transition-all disabled:opacity-50 shadow-lg shadow-[#F24E1E]/20"
+                            >
+                                Import Selection
+                            </button>
+                        )}
                     </div>
+
                 </div>
             </DialogContent>
         </Dialog>

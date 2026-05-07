@@ -22,6 +22,8 @@ export default function AnalysisPage() {
     const source = searchParams?.get('source') || 'prompt';
     const repoName = searchParams?.get('repo');
     const figmaUrl = searchParams?.get('url');
+    const toolType = searchParams?.get('toolType') || 'general';
+
 
     const [phase, setPhase] = useState<'analyzing' | 'review' | 'deploying' | 'error'>('analyzing');
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -82,7 +84,9 @@ export default function AnalysisPage() {
                 if (source === 'figma') {
                     payload.url = figmaUrl;
                     payload.token = sessionStorage.getItem('figma_token');
+                    payload.nodeId = sessionStorage.getItem('figma_node_id') || undefined;
                 }
+
                 if (source === 'prompt') {
                     payload.prompt = sessionStorage.getItem('app_prompt') || undefined;
                 }
@@ -105,11 +109,13 @@ export default function AnalysisPage() {
                 } else {
                     result = await analysisService.analyze({
                         source,
+                        toolType,
                         repo: repoName || undefined,
                         url: figmaUrl || undefined,
                         prompt: payload.prompt
                     });
                 }
+
 
 
                 // Advance visual steps with technical delays

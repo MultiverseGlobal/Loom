@@ -410,43 +410,53 @@ Return a JSON object with:
     /**
      * Generate UPG Blueprint from source via Python Analyzer
      */
-    async generateBlueprint(type: string, payload: any, projectName: string, projectId?: string): Promise<any> {
+    async generateBlueprint(type: string, payload: any, projectName: string, projectId?: string, toolType?: string): Promise<any> {
         try {
             console.log(`[AI Engine] Requesting blueprint for ${projectName} (${type})`);
             
             // Broadcast start event for Live Terminal
             if (projectId) {
                 socketService.broadcast(projectId, 'analysis:status', {
-                    message: `Initializing Parallel Neural Scan for ${projectName}...`,
+                    message: `Initializing Neural Scan for ${projectName}...`,
                     step: 'start',
                     timestamp: new Date().toISOString()
                 });
             }
 
+            // 1. Data Ingestion: If source is Figma or No-Code, fetch the data first
+            let ingestionPayload = { ...payload };
+            if (type === 'figma' || toolType === 'lovable') {
+                const { adaptersRegistry } = await import('./adapters/AdaptersRegistry.js');
+                const url = payload.url || (payload.repo ? `https://github.com/${payload.repo}` : '');
+                
+                if (url) {
+                    console.log(`[AI Engine] Ingesting data from source: ${url}`);
+                    const sourceData = await adaptersRegistry.getBlueprint(url, payload);
+                    if (sourceData) {
+                        // Pass the extracted node_data to the analyzer
+                        ingestionPayload.node_data = sourceData;
+                    }
+                }
+            }
+
             // Call Python Service
-            // If the payload contains files, we pass them directly.
-            // If not, we might need a way to fetch them (but for now we assume they are passed if coming from a local sync or repo)
-            const files = payload.files || [];
+            const files = ingestionPayload.files || [];
             
             if (projectId) {
                 socketService.broadcast(projectId, 'analysis:status', {
-                    message: `Synthesizing architectural blueprint (Gemini 1.5 Flash)...`,
+                    message: `Refactoring ${type} structure into clean code (Gemini 1.5 Flash)...`,
                     step: 'blueprint',
-                    timestamp: new Date().toISOString()
-                });
-                
-                socketService.broadcast(projectId, 'analysis:status', {
-                    message: `Analyzing security heuristics and dependency graph...`,
-                    step: 'audit',
                     timestamp: new Date().toISOString()
                 });
             }
 
             const response = await axios.post(`${config.analyzerUrl}/analyzer/blueprint/generate`, {
                 type,
-                payload, // This now includes 'files' if provided
-                project_name: projectName
-            }, { timeout: 25000 }); // 25s timeout
+                payload: ingestionPayload, 
+                project_name: projectName,
+                tool_type: toolType || type || 'general'
+            }, { timeout: 45000 }); // 45s timeout
+
 
             if (projectId) {
                 socketService.broadcast(projectId, 'analysis:status', {
@@ -469,6 +479,14 @@ Return a JSON object with:
 
             console.error(`[AI Engine] Python analyzer failed: ${specificReason}`);
             
+            if (projectId) {
+                socketService.broadcast(projectId, 'analysis:status', {
+                    message: `Analysis failed: ${specificReason}`,
+                    step: 'error',
+                    timestamp: new Date().toISOString()
+                });
+            }
+
             // Return a safe mock blueprint instead of crashing the entire analysis flow
             const rootId = 'fallback-root';
             const containerId = 'fallback-container';
@@ -513,6 +531,7 @@ Return a JSON object with:
         }
     },
 
+
     /**
      * Architect a full project from a prompt via Python Analyzer
      */
@@ -528,6 +547,25 @@ Return a JSON object with:
             console.error("Failed to architect project via Analyzer:", error.message);
             throw error;
         }
+    },
+
+    /**
+     * Perform an architectural audit of an existing project and identify refactoring deltas.
+     */
+    async scanDeltas(projectId: string, files: Array<{ path: string; content: string }>): Promise<any> {
+        try {
+            console.log(`[AI Engine] Scanning for architectural deltas in project: ${projectId}`);
+            const response = await axios.post(`${config.analyzerUrl}/analyzer/deltas/scan`, {
+                project_id: projectId,
+                files
+            }, { timeout: 45000 });
+
+            return response.data;
+        } catch (error: any) {
+            console.error("Failed to scan deltas via Analyzer:", error.message);
+            throw error;
+        }
     }
 };
+
 

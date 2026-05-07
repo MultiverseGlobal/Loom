@@ -7,6 +7,7 @@ import { aiEngine, type AIModel } from "../services/ai-engine.js";
 const analyzeSchema = z.object({
     projectId: z.string().optional(),
     source: z.string(),
+    toolType: z.string().optional(), // 'lovable', 'bubble', etc.
     payload: z.object({
         repo: z.string().optional(),
         url: z.string().optional(),
@@ -19,6 +20,7 @@ const analyzeSchema = z.object({
     depth: z.enum(['quick', 'deep']).optional(),
     model: z.enum(['gpt-4o', 'gpt-4o-mini', 'claude-3-5-sonnet', 'gemini-1.5-pro', 'gemini-1.5-flash']).optional()
 });
+
 
 const fixSchema = z.object({
     issueDescription: z.string(),
@@ -44,7 +46,7 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
         async (request, reply) => {
             const authRequest = request as AuthenticatedRequest;
             const userId = authRequest.userId!;
-            const { projectId, source, payload, depth, model } = request.body as AnalyzeSchema;
+            const { projectId, source, toolType, payload, depth, model } = request.body as AnalyzeSchema;
 
             try {
                 // 1. Check/Create User in DB (Sync from Supabase Auth)
@@ -88,7 +90,7 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                     // We have raw files! Run both synthesis and audit in parallel
                     console.log(`[Analysis] Parallelizing scan for ${files.length} files...`);
                     const [bp, ar] = await Promise.all([
-                        aiEngine.generateBlueprint(source, payload, projectName, projectId),
+                        aiEngine.generateBlueprint(source, payload, projectName, projectId, toolType),
                         aiEngine.analyzeProject(files.map((f: any) => ({
                             name: f.path,
                             content: f.content
@@ -101,7 +103,7 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                     analysisResult = ar;
                 } else {
                     // Sequential fallback (used for Figma/Prompt where BP is the only source)
-                    blueprint = await aiEngine.generateBlueprint(source, payload, projectName, projectId);
+                    blueprint = await aiEngine.generateBlueprint(source, payload, projectName, projectId, toolType);
                     analysisResult = await aiEngine.analyzeProject([
                         { name: 'blueprint.json', content: JSON.stringify(blueprint) }
                     ], {
