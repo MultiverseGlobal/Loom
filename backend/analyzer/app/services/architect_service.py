@@ -71,23 +71,35 @@ You are a Staff Software Architect at Shift AI. Your goal is to convert a user's
 }
 """
 
-        try:
-            print(f"[Architect Service] Synthesizing architecture for: {prompt[:50]}...")
-            response = self.model.generate_content(f"{system_prompt}\n\nUser request: {prompt}")
-            
-            if not response.text:
-                raise Exception("Empty response from Gemini")
+        import asyncio
+        from google.api_core import exceptions
+        
+        retries = 3
+        delay = 2 # initial delay in seconds
+        
+        for attempt in range(retries):
+            try:
+                print(f"[Architect Service] Synthesizing architecture (Attempt {attempt + 1}/{retries})...")
+                response = self.model.generate_content(f"{system_prompt}\n\nUser request: {prompt}")
+                
+                if not response.text:
+                    raise Exception("Empty response from Gemini")
 
-            data = json.loads(response.text)
-            
-            # Ensure the structure is valid
-            return UniversalProjectGraph(
-                id=str(uuid.uuid4()),
-                project=ProjectMetadata(**data.get("project", {})),
-                file_tree=data.get("file_tree", {}),
-                nodes=data.get("nodes", {})
-            )
+                data = json.loads(response.text)
+                
+                return UniversalProjectGraph(
+                    id=str(uuid.uuid4()),
+                    project=ProjectMetadata(**data.get("project", {})),
+                    file_tree=data.get("file_tree", {}),
+                    nodes=data.get("nodes", {})
+                )
+            except Exception as e:
+                # Handle rate limiting (429) and server errors (500)
+                if attempt < retries - 1:
+                    print(f"[Architect Service] Attempt {attempt + 1} failed: {e}. Retrying in {delay}s...")
+                    await asyncio.sleep(delay)
+                    delay *= 2 # Exponential backoff
+                else:
+                    print(f"[Architect Service] ❌ Final synthesis failure: {e}")
+                    raise e
 
-        except Exception as e:
-            print(f"[Architect Service] Error during synthesis: {e}")
-            raise e

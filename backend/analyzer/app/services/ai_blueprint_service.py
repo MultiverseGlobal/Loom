@@ -70,27 +70,36 @@ Project Name: {project_name}
 Analyze these files and return the refactored Project-Level UPG JSON:
 """
 
-        try:
-            print(f"[AI Blueprint] Refactoring {len(files)} files via Gemini 1.5 Pro...")
-            response = self.model.generate_content(f"{system_prompt}\n\n{context}")
-            
-            if not response.text:
-                raise Exception("Empty response from Gemini")
+        import asyncio
+        retries = 3
+        delay = 2
 
-            data = json.loads(response.text)
-            
-            # Use the new ProjectMetadata and UniversalProjectGraph structure
-            from app.upg_models import ProjectMetadata
-            return UniversalProjectGraph(
-                id=str(uuid.uuid4()),
-                project=ProjectMetadata(**data.get("project", {})),
-                file_tree=data.get("file_tree", {}),
-                nodes=data.get("nodes", {})
-            )
+        for attempt in range(retries):
+            try:
+                print(f"[AI Blueprint] Structural Refactor (Attempt {attempt + 1}/{retries})...")
+                response = self.model.generate_content(f"{system_prompt}\n\n{context}")
+                
+                if not response.text:
+                    raise Exception("Empty response from Gemini")
 
-        except Exception as e:
-            print(f"[AI Blueprint] Error during structural refactor: {e}")
-            raise e
+                data = json.loads(response.text)
+                
+                from app.upg_models import ProjectMetadata
+                return UniversalProjectGraph(
+                    id=str(uuid.uuid4()),
+                    project=ProjectMetadata(**data.get("project", {})),
+                    file_tree=data.get("file_tree", {}),
+                    nodes=data.get("nodes", {})
+                )
+            except Exception as e:
+                if attempt < retries - 1:
+                    print(f"[AI Blueprint] Attempt {attempt + 1} failed: {e}. Retrying in {delay}s...")
+                    await asyncio.sleep(delay)
+                    delay *= 2
+                else:
+                    print(f"[AI Blueprint] ❌ Final refactor failure: {e}")
+                    raise e
+
 
 
     async def generate_fix(self, issue: str, current_upg: Dict[str, Any]) -> Dict[str, Any]:
