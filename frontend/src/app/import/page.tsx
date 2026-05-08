@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { RepositoryModal } from "@/components/import/RepositoryModal";
 import { FigmaModal } from "@/components/import/FigmaModal";
 import { PromptModal } from "@/components/import/PromptModal";
+import { NoCodeModal } from "@/components/import/NoCodeModal";
 
 export default function ImportPage() {
     const router = useRouter();
@@ -46,13 +47,16 @@ export default function ImportPage() {
     const [isRepoModalOpen, setIsRepoModalOpen] = useState(false);
     const [isFigmaModalOpen, setIsFigmaModalOpen] = useState(false);
     const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
+    const [isNoCodeModalOpen, setIsNoCodeModalOpen] = useState(false);
     const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
 
     const handleSelect = (id: string) => {
         setSelectedSourceId(id);
 
-        if (id === 'github' || id === 'nocode') {
+        if (id === 'github') {
             setIsRepoModalOpen(true);
+        } else if (id === 'nocode') {
+            setIsNoCodeModalOpen(true);
         } else if (id === 'figma') {
             setIsFigmaModalOpen(true);
         } else if (id === 'prompt') {
@@ -65,10 +69,22 @@ export default function ImportPage() {
         sessionStorage.setItem('gh_token', token);
 
         const params = new URLSearchParams({
-            source: selectedSourceId || 'github',
+            source: 'github',
             repo: repo.full_name,
-            branch: 'main', // Default
-            toolType: selectedSourceId === 'nocode' ? 'lovable' : 'general'
+            branch: 'main',
+            toolType: 'general'
+        });
+
+        router.push(`/analysis?${params.toString()}`);
+    };
+
+    const handleNoCodeSelect = (url: string, toolType: string) => {
+        setIsNoCodeModalOpen(false);
+        
+        const params = new URLSearchParams({
+            source: 'nocode',
+            url: url,
+            toolType: toolType
         });
 
         router.push(`/analysis?${params.toString()}`);
@@ -159,6 +175,12 @@ export default function ImportPage() {
                     isOpen={isPromptModalOpen}
                     onClose={() => setIsPromptModalOpen(false)}
                     onSelect={handlePromptSelect}
+                />
+
+                <NoCodeModal
+                    isOpen={isNoCodeModalOpen}
+                    onClose={() => setIsNoCodeModalOpen(false)}
+                    onSelect={handleNoCodeSelect}
                 />
             </div>
         </AppLayout>

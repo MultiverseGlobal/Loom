@@ -87,6 +87,10 @@ export default function AnalysisPage() {
                     payload.nodeId = sessionStorage.getItem('figma_node_id') || undefined;
                 }
 
+                if (source === 'nocode') {
+                    payload.url = figmaUrl;
+                }
+
                 if (source === 'prompt') {
                     payload.prompt = sessionStorage.getItem('app_prompt') || undefined;
                 }
@@ -100,7 +104,7 @@ export default function AnalysisPage() {
                     }));
                 };
 
-                runStep('import', `Accessing ${source}...`);
+                runStep('import', `Accessing ${source === 'nocode' ? toolType : source}...`);
 
                 let result;
                 if (source === 'prompt') {
@@ -111,7 +115,7 @@ export default function AnalysisPage() {
                         source,
                         toolType,
                         repo: repoName || undefined,
-                        url: figmaUrl || undefined,
+                        url: payload.url || undefined,
                         prompt: payload.prompt
                     });
                 }
