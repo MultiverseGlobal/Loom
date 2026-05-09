@@ -30,14 +30,15 @@ async def generate_blueprint(request: BlueprintRequest):
     """
     try:
         # If this is a repository scan or full project analysis, use AI.
-        if request.type in ['repository', 'full-scan', 'komposo', 'figma']:
+        if request.type in ['repository', 'full-scan', 'komposo', 'figma', 'nocode', 'lovable']:
             files = request.payload.get("files", [])
             
-            # Handle Figma specialized payload
-            if request.type == 'figma' and not files:
+            # Handle Figma or No-Code specialized payload
+            if (request.type in ['figma', 'nocode', 'lovable']) and not files:
                 node_data = request.payload.get("node_data", {})
+                import json
                 files = [{
-                    "path": "figma_node.json",
+                    "path": f"{request.type}_node.json",
                     "content": json.dumps(node_data, indent=2)
                 }]
 
@@ -46,7 +47,7 @@ async def generate_blueprint(request: BlueprintRequest):
                 return await ai_service.generate_from_files(
                     files, 
                     request.project_name or "Loom App",
-                    tool_type=request.type # Pass 'figma' as tool_type
+                    tool_type=request.type # Pass the type as tool_type
                 )
 
 

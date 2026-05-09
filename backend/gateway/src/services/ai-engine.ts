@@ -425,7 +425,7 @@ Return a JSON object with:
 
             // 1. Data Ingestion: If source is Figma or No-Code, fetch the data first
             let ingestionPayload = { ...payload };
-            if (type === 'figma' || toolType === 'lovable') {
+            if (type === 'figma' || type === 'nocode' || toolType === 'lovable') {
                 const { adaptersRegistry } = await import('./adapters/AdaptersRegistry.js');
                 const url = payload.url || (payload.repo ? `https://github.com/${payload.repo}` : '');
                 
