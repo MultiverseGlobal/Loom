@@ -62,7 +62,7 @@ export async function attemptAutoHeal(failureId: string) {
         files: [],
       });
 
-      if (analysis && analysis.structure) {
+      if (analysis && analysis.nodes) {
         await db`
           UPDATE job_failures
           SET auto_healed = true, healed_at = now()

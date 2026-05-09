@@ -13,7 +13,7 @@ export class ScraperService {
             try {
                 this.browser = await puppeteer.launch({
                     headless: true,
-                    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+                    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
                     pipe: true,
                     args: [
                         '--no-sandbox', 
@@ -25,7 +25,7 @@ export class ScraperService {
                     ]
                 });
                 console.log('[Scraper] Browser launched successfully.');
-            } catch (err) {
+            } catch (err: any) {
                 console.error('[Scraper] Failed to launch browser:', err);
                 throw err;
             }
@@ -63,8 +63,8 @@ export class ScraperService {
             if (result) {
                 return { tree: result, method: 'deep', fidelity: 1.0 };
             }
-        } catch (error) {
-            console.warn('[Scraper] Deep Scan failed or timed out, falling back to static scrape:', error.message);
+        } catch (error: any) {
+            console.warn('[Scraper] Deep Scan failed or timed out, falling back to static scrape:', error?.message || error);
         }
 
         // 3. Fallback to static scrape (Cheerio)
@@ -93,7 +93,7 @@ export class ScraperService {
             console.log('[Scraper] Extraction complete.');
 
             return result as BlueprintNode;
-        } catch (error) {
+        } catch (error: any) {
             console.error('[Scraper] Puppeteer error:', error);
             return null;
         } finally {
@@ -124,7 +124,7 @@ export class ScraperService {
             });
 
             return rootNode;
-        } catch (error) {
+        } catch (error: any) {
             console.error('[Scraper] Static scrape failed:', error);
             return null;
         }

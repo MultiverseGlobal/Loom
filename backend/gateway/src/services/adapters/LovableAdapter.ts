@@ -13,12 +13,14 @@ export class LovableAdapter implements BridgeAdapter {
         try {
             console.log(`[Lovable] Starting Neural Bridge for: ${url}`);
             
-            const rootNode = await ScraperService.getVisualTree(url);
+            const result = await ScraperService.getVisualTree(url);
             
-            if (!rootNode) {
+            if (!result) {
                 console.error(`[Lovable] Failed to extract visual tree from ${url}`);
                 return null;
             }
+
+            const { tree: rootNode } = result;
 
             return {
                 version: "1.0",

@@ -9,7 +9,9 @@ async function test() {
         const result = await ScraperService.getVisualTree(url);
         if (result) {
             console.log('SUCCESS: Extracted visual tree');
-            console.log(JSON.stringify(result, null, 2).substring(0, 1000) + '...');
+            console.log(`Scrape Method: ${result.scrape_method}`);
+            console.log(`Fidelity Score: ${result.fidelity_score}`);
+            console.log(JSON.stringify(result, null, 2).substring(0, 500) + '...');
         } else {
             console.log('FAILED: No result returned');
         }
