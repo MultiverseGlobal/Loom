@@ -43,7 +43,7 @@ export class ScraperService {
             // Try Puppeteer first for high-fidelity (JS support)
             const result = await Promise.race([
                 this.getPuppeteerTree(url),
-                new Promise<null>((_, reject) => setTimeout(() => reject(new Error('Puppeteer Timeout')), 45000))
+                new Promise<null>((_, reject) => setTimeout(() => reject(new Error('Puppeteer Timeout')), 15000))
             ]);
             
             if (result) return result;
