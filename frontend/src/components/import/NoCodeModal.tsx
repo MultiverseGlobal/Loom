@@ -78,8 +78,8 @@ export function NoCodeModal({ isOpen, onClose, onSelect }: NoCodeModalProps) {
                                         className={clsx(
                                             "flex flex-col items-center justify-center p-3 rounded-xl border transition-all gap-1 group",
                                             selectedToolId === tool.id 
-                                                ? "bg-[var(--bg-panel)] border-[var(--accent-primary)] text-white shadow-[0_0_15px_rgba(0,245,255,0.05)]" 
-                                                : "bg-[#1C1C1C] border-[#333] text-[#888] hover:border-[#444]"
+                                                ? "bg-[#1f1f1f] border-[var(--accent-primary)] text-[var(--accent-primary)] shadow-[0_0_15px_var(--accent-glow)]" 
+                                                : "bg-[#1C1C1C] border-[#333] text-[#666] hover:border-[#444]"
                                         )}
                                     >
                                         <div 
