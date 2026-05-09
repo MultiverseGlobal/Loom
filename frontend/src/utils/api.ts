@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000';
+// Use relative URLs - Next.js rewrites in next.config.ts proxy /api/* → gateway
+const API_URL = '';
 
 export async function fetchAPI<T>(
     endpoint: string,
