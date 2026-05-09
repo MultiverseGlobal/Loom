@@ -1,6 +1,6 @@
 
-import axios from 'axios';
 import { ShiftBlueprint, BridgeAdapter } from './types.js';
+import { ScraperService } from '../scraper.service.js';
 
 export class ScraperAdapter implements BridgeAdapter {
     id = 'scraper';
@@ -12,46 +12,34 @@ export class ScraperAdapter implements BridgeAdapter {
 
     async getBlueprint(url: string, _options: Record<string, any>): Promise<ShiftBlueprint | null> {
         try {
-            console.log(`[Scraper] Scraping URL: ${url}`);
-            const response = await axios.get(url);
-            const html = response.data;
-
-            // In a real implementation, we would use JSDOM or a similar parser here.
-            // For now, we'll return a placeholder blueprint that describes the page.
-            // This allows the AI to "see" the page via the prompt and recreate it.
+            console.log(`[Scraper] Starting Neural Bridge for generic site: ${url}`);
+            
+            const rootNode = await ScraperService.getVisualTree(url);
+            
+            if (!rootNode) {
+                console.error(`[Scraper] Failed to extract visual tree from ${url}`);
+                return null;
+            }
 
             return {
                 version: "1.0",
                 source: {
                     type: "scraper",
-                    id: "web-import",
+                    id: "web-bridge",
                     url: url,
                     fileName: url.split('/').pop() || 'Imported Site'
                 },
-                root: {
-                    id: "root",
-                    type: "view",
-                    name: "Body",
-                    layout: { flexDirection: "column" },
-                    style: { backgroundColor: "white" },
-                    children: [
-                        {
-                            id: "node-1",
-                            type: "text",
-                            name: "Page Content",
-                            content: `This is a placeholder for a scraped page. In a full implementation, we extract the DOM tree. URL: ${url}`,
-                            layout: {},
-                            style: { fontSize: 16 }
-                        }
-                    ]
-                },
+                root: rootNode,
                 theme: {
-                    colors: { background: "#ffffff", primary: "#000000" },
+                    colors: { 
+                        background: rootNode.style?.backgroundColor || "#ffffff", 
+                        primary: "#000000" 
+                    },
                     spacing: { default: "16px" }
                 }
             };
         } catch (error) {
-            console.error('[Scraper] Error:', error);
+            console.error('[Scraper] Error during web bridging:', error);
             return null;
         }
     }

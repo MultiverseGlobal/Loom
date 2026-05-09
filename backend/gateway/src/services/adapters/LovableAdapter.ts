@@ -1,51 +1,43 @@
 
-import axios from 'axios';
 import { BridgeAdapter, ShiftBlueprint, BlueprintNode } from './types.js';
+import { ScraperService } from '../scraper.service.js';
 
 export class LovableAdapter implements BridgeAdapter {
     id = 'lovable';
 
     canHandle(url: string): boolean {
-        return url.includes('lovable.dev/');
+        return url.includes('lovable.dev/') || url.includes('localhost:5173'); // Lovable often runs on 5173
     }
 
     async getBlueprint(url: string, _options: Record<string, any>): Promise<ShiftBlueprint | null> {
         try {
-            console.log(`[Lovable] Bridging Lovable project: ${url}`);
-            // In a real scenario, we might use a cookie-less fetch or a specialized API 
-            // if Lovable provides one for social previews (OpenGraph, etc.)
+            console.log(`[Lovable] Starting Neural Bridge for: ${url}`);
+            
+            const rootNode = await ScraperService.getVisualTree(url);
+            
+            if (!rootNode) {
+                console.error(`[Lovable] Failed to extract visual tree from ${url}`);
+                return null;
+            }
 
             return {
                 version: "1.0",
                 source: {
                     type: "lovable",
-                    id: "lovable-import",
+                    id: "lovable-bridge",
                     url: url,
                 },
-                root: {
-                    id: "lovable-root",
-                    type: "view",
-                    name: "Lovable Import",
-                    layout: { flexDirection: "column" },
-                    style: { backgroundColor: "#f9fafb" },
-                    children: [
-                        {
-                            id: "node-lovable-1",
-                            type: "text",
-                            name: "Lovable Content",
-                            content: `Bridged from Lovable: ${url}. The Blueprint is being generated from the source snapshot.`,
-                            layout: {},
-                            style: { fontSize: 18, textColor: "#111827" }
-                        }
-                    ]
-                },
+                root: rootNode,
                 theme: {
-                    colors: { background: "#ffffff", primary: "#7c3aed" },
+                    colors: { 
+                        background: rootNode.style?.backgroundColor || "#ffffff", 
+                        primary: "#7c3aed" // Default Lovable primary or extracted
+                    },
                     spacing: { default: "20px" }
                 }
             };
         } catch (error) {
-            console.error('[Lovable] Error:', error);
+            console.error('[Lovable] Error during bridging:', error);
             return null;
         }
     }
