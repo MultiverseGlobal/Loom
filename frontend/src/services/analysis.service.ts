@@ -60,6 +60,59 @@ export const analysisService = {
         });
     },
 
+    async *analyzeStream(input: AnalysisInput): AsyncGenerator<any> {
+        const session = await authService.getSession();
+        const token = session?.access_token;
+
+        if (!token) {
+            throw new Error("No active session");
+        }
+
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+        const response = await fetch(`${apiUrl}/api/analyze/stream`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                projectId: input.projectId || 'pending',
+                source: input.source,
+                toolType: input.toolType,
+                payload: {
+                    repo: input.repo,
+                    url: input.url,
+                    prompt: input.prompt
+                }
+            })
+        });
+
+        if (!response.body) throw new Error("No response body");
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+                if (line.trim()) {
+                    try {
+                        yield JSON.parse(line);
+                    } catch (e) {
+                        console.error("Failed to parse stream line:", line);
+                    }
+                }
+            }
+        }
+    },
+
     async getAnalyses(projectId?: string): Promise<any[]> {
         const session = await authService.getSession();
         const token = session?.access_token;

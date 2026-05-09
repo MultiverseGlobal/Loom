@@ -454,7 +454,9 @@ Return a JSON object with:
                 type,
                 payload: ingestionPayload, 
                 project_name: projectName,
-                tool_type: toolType || type || 'general'
+                tool_type: toolType || type || 'general',
+                scrape_method: ingestionPayload.node_data?.scrapeMethod,
+                fidelity_score: ingestionPayload.node_data?.fidelityScore
             }, { timeout: 45000 }); // 45s timeout
 
 
@@ -469,6 +471,7 @@ Return a JSON object with:
             return response.data;
 
         } catch (error: any) {
+            // ... (rest of error handling remains same)
             const isConnectionError = error.code === 'ECONNREFUSED' || error.message.includes('network');
             const isTimeout = error.code === 'ECONNABORTED';
             
@@ -531,6 +534,54 @@ Return a JSON object with:
         }
     },
 
+    /**
+     * Stream UPG Blueprint generation from source
+     */
+    async *generateBlueprintStream(type: string, payload: any, projectName: string, projectId?: string, toolType?: string): AsyncGenerator<any> {
+        try {
+            console.log(`[AI Engine] Initializing streaming blueprint for ${projectName}`);
+            
+            // 1. Data Ingestion
+            let ingestionPayload = { ...payload };
+            if (type === 'figma' || type === 'nocode' || toolType === 'lovable') {
+                const { adaptersRegistry } = await import('./adapters/AdaptersRegistry.js');
+                const url = payload.url || (payload.repo ? `https://github.com/${payload.repo}` : '');
+                
+                if (url) {
+                    const sourceData = await adaptersRegistry.getBlueprint(url, payload);
+                    if (sourceData) {
+                        ingestionPayload.node_data = sourceData;
+                    }
+                }
+            }
+
+            const { requestBlueprintStream } = await import('./analyzerClient.js');
+            const stream = requestBlueprintStream({
+                type,
+                payload: ingestionPayload, 
+                project_name: projectName,
+                tool_type: toolType || type || 'general',
+                scrape_method: ingestionPayload.node_data?.scrapeMethod,
+                fidelity_score: ingestionPayload.node_data?.fidelityScore
+            });
+
+            for await (const chunk of stream) {
+                // Broadcast to socket if projectId is provided
+                if (projectId && chunk.status === 'analyzing') {
+                    socketService.broadcast(projectId, 'analysis:status', {
+                        message: chunk.message || 'Analyzing structure...',
+                        step: 'blueprint',
+                        timestamp: new Date().toISOString()
+                    });
+                }
+                yield chunk;
+            }
+
+        } catch (error: any) {
+            console.error(`[AI Engine] Streaming blueprint failed: ${error.message}`);
+            yield { status: 'error', message: error.message };
+        }
+    },
 
     /**
      * Architect a full project from a prompt via Python Analyzer

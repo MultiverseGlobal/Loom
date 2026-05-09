@@ -23,7 +23,7 @@ class AIBlueprintService:
         else:
             self.model = None
 
-    async def generate_from_files(self, files: List[Dict[str, str]], project_name: str, tool_type: str = "general") -> UniversalProjectGraph:
+    async def generate_from_files(self, files: List[Dict[str, str]], project_name: str, tool_type: str = "general", scrape_method: str = None, fidelity_score: float = None) -> UniversalProjectGraph:
         if not self.model:
             raise Exception("Gemini API key not configured for AI Blueprint Service")
 
@@ -89,7 +89,9 @@ Analyze these files and return the refactored Project-Level UPG JSON:
                     id=str(uuid.uuid4()),
                     project=ProjectMetadata(**data.get("project", {})),
                     file_tree=data.get("file_tree", {}),
-                    nodes=data.get("nodes", {})
+                    nodes=data.get("nodes", {}),
+                    scrape_method=scrape_method,
+                    fidelity_score=fidelity_score
                 )
             except Exception as e:
                 if attempt < retries - 1:

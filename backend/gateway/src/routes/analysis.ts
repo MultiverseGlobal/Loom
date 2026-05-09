@@ -18,7 +18,8 @@ const analyzeSchema = z.object({
         })).optional()
     }).optional(),
     depth: z.enum(['quick', 'deep']).optional(),
-    model: z.enum(['gpt-4o', 'gpt-4o-mini', 'claude-3-5-sonnet', 'gemini-1.5-pro', 'gemini-1.5-flash']).optional()
+    model: z.enum(['gpt-4o', 'gpt-4o-mini', 'claude-3-5-sonnet', 'gemini-1.5-pro', 'gemini-1.5-flash']).optional(),
+    projectName: z.string().optional()
 });
 
 
@@ -149,6 +150,43 @@ export async function registerAnalysisRoutes(app: FastifyInstance) {
                     error: "Analysis failed",
                     details: error.message
                 });
+            }
+        }
+    );
+
+    // POST /api/analyze/stream - Stream analysis for Neural Bridge
+    app.withTypeProvider().post(
+        "/analyze/stream",
+        {
+            preHandler: [requireAuth],
+            schema: {
+                body: analyzeSchema
+            }
+        },
+        async (request, reply) => {
+            const authRequest = request as AuthenticatedRequest;
+            const userId = authRequest.userId!;
+            const { projectId, source, toolType, payload, projectName: customProjectName } = request.body as AnalyzeSchema;
+
+            const projectName = customProjectName || payload?.repo?.split('/')[1] || "New Project";
+            
+            // Set headers for SSE-like streaming
+            reply.raw.setHeader('Content-Type', 'application/x-ndjson');
+            reply.raw.setHeader('Cache-Control', 'no-cache');
+            reply.raw.setHeader('Connection', 'keep-alive');
+
+            try {
+                const stream = aiEngine.generateBlueprintStream(source, payload || {}, projectName, projectId, toolType);
+
+                for await (const chunk of stream) {
+                    reply.raw.write(JSON.stringify(chunk) + "\n");
+                }
+                
+                reply.raw.end();
+            } catch (error: any) {
+                console.error(`[Analysis Stream] Failed: ${error.message}`);
+                reply.raw.write(JSON.stringify({ status: 'error', message: error.message }) + "\n");
+                reply.raw.end();
             }
         }
     );

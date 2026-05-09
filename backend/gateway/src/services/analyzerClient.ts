@@ -17,7 +17,7 @@ export async function requestStructureAnalysis(payload: StructureRequest): Promi
 export async function* requestBlueprintStream(payload: any): AsyncGenerator<any> {
   const response = await axios.post(`${analyzerBaseUrl}/analyzer/blueprint/generate/stream`, payload, {
     responseType: 'stream',
-    timeout: 120_000,
+    timeout: 180_000, // 3 mins for deep analysis
   });
 
   for await (const chunk of response.data) {
