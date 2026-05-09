@@ -68,7 +68,7 @@ export const analysisService = {
             throw new Error("No active session");
         }
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+        const apiUrl = '';
         const response = await fetch(`${apiUrl}/api/analyze/stream`, {
             method: 'POST',
             headers: {
