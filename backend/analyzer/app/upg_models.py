@@ -74,4 +74,6 @@ class UniversalProjectGraph(BaseModel):
     file_tree: Optional[Dict[str, Any]] = Field(default_factory=dict)
     rootComponentId: Optional[str] = None
     nodes: Dict[str, Union[UPGComponent, UPGElement, UPGText, UPGFile, UPGNode]]
+    scrape_method: Optional[Literal['deep', 'static']] = None
+    fidelity_score: Optional[float] = Field(None, ge=0, le=1)
 

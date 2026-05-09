@@ -23,6 +23,8 @@ export interface ShiftBlueprint {
         colors: Record<string, string>;
         spacing: Record<string, string>;
     };
+    scrapeMethod?: 'deep' | 'static';
+    fidelityScore?: number;
 }
 
 export interface BridgeAdapter {

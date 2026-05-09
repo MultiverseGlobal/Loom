@@ -36,23 +36,44 @@ export class ScraperService {
     /**
      * Captures a visual tree from a live URL
      */
-    static async getVisualTree(url: string): Promise<BlueprintNode | null> {
+    static async getVisualTree(url: string): Promise<{ tree: BlueprintNode; method: 'deep' | 'static'; fidelity: number } | null> {
         console.log(`[Scraper] Starting visual capture for: ${url}`);
         
-        try {
-            // Try Puppeteer first for high-fidelity (JS support)
-            const result = await Promise.race([
-                this.getPuppeteerTree(url),
-                new Promise<null>((_, reject) => setTimeout(() => reject(new Error('Puppeteer Timeout')), 15000))
-            ]);
-            
-            if (result) return result;
-        } catch (error) {
-            console.warn('[Scraper] Puppeteer failed or timed out, falling back to static scrape:', error);
+        // 1. URL Fingerprinting - Skip Puppeteer for static-heavy platforms
+        const isStaticPlatform = url.includes('lovable.') || 
+                               url.includes('framer.') || 
+                               url.includes('v0.dev') ||
+                               url.includes('bubble.io');
+
+        if (isStaticPlatform) {
+            console.log(`[Scraper] Detected static-heavy platform, skipping Puppeteer for speed.`);
+            const tree = await this.getStaticTree(url);
+            if (tree) {
+                return { tree, method: 'static', fidelity: 0.9 };
+            }
         }
 
-        // Fallback to static scrape (Cheerio)
-        return this.getStaticTree(url);
+        // 2. High-fidelity scan with Puppeteer (Phase A)
+        try {
+            const result = await Promise.race([
+                this.getPuppeteerTree(url),
+                new Promise<null>((_, reject) => setTimeout(() => reject(new Error('Puppeteer Timeout')), 12000))
+            ]);
+            
+            if (result) {
+                return { tree: result, method: 'deep', fidelity: 1.0 };
+            }
+        } catch (error) {
+            console.warn('[Scraper] Deep Scan failed or timed out, falling back to static scrape:', error.message);
+        }
+
+        // 3. Fallback to static scrape (Cheerio)
+        const staticTree = await this.getStaticTree(url);
+        if (staticTree) {
+            return { tree: staticTree, method: 'static', fidelity: 0.7 };
+        }
+
+        return null;
     }
 
     private static async getPuppeteerTree(url: string): Promise<BlueprintNode | null> {

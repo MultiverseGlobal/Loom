@@ -14,12 +14,14 @@ export class ScraperAdapter implements BridgeAdapter {
         try {
             console.log(`[Scraper] Starting Neural Bridge for generic site: ${url}`);
             
-            const rootNode = await ScraperService.getVisualTree(url);
+            const result = await ScraperService.getVisualTree(url);
             
-            if (!rootNode) {
+            if (!result) {
                 console.error(`[Scraper] Failed to extract visual tree from ${url}`);
                 return null;
             }
+
+            const { tree, method, fidelity } = result;
 
             return {
                 version: "1.0",
@@ -29,14 +31,16 @@ export class ScraperAdapter implements BridgeAdapter {
                     url: url,
                     fileName: url.split('/').pop() || 'Imported Site'
                 },
-                root: rootNode,
+                root: tree,
                 theme: {
                     colors: { 
-                        background: rootNode.style?.backgroundColor || "#ffffff", 
+                        background: tree.style?.backgroundColor || "#ffffff", 
                         primary: "#000000" 
                     },
                     spacing: { default: "16px" }
-                }
+                },
+                scrapeMethod: method,
+                fidelityScore: fidelity
             };
         } catch (error) {
             console.error('[Scraper] Error during web bridging:', error);
