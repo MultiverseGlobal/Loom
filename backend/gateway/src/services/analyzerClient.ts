@@ -1,7 +1,7 @@
 import axios from "axios";
 import { UniversalProjectGraph } from "../schemas/upg.schema.js";
 
-const analyzerBaseUrl = process.env.ANALYZER_URL ?? "http://localhost:5000";
+const analyzerBaseUrl = process.env.ANALYZER_URL ?? "http://localhost:8000";
 
 type StructureRequest = {
   files: Array<{ path: string; content: string }>;

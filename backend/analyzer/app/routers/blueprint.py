@@ -1,3 +1,5 @@
+import json
+import asyncio
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -39,7 +41,6 @@ async def generate_blueprint(request: BlueprintRequest):
             # Handle Figma or No-Code specialized payload
             if (request.type in ['figma', 'nocode', 'lovable']) and not files:
                 node_data = request.payload.get("node_data", {})
-                import json
                 files = [{
                     "path": f"{request.type}_node.json",
                     "content": json.dumps(node_data, indent=2)
