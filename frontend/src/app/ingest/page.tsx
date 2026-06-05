@@ -35,21 +35,33 @@ export default function IngestPage() {
             if (sourceType === "zip" && zipFile) {
                 const formData = new FormData();
                 formData.append("file", zipFile);
-                
+
                 const analyzerUrl = process.env.NEXT_PUBLIC_ANALYZER_URL || "http://localhost:8000";
-                const res = await fetch(`${analyzerUrl}/analyzer/ingest/webflow`, {
-                    method: "POST",
-                    body: formData,
-                });
-                
-                if (!res.ok) throw new Error("Failed to parse zip");
+                // Pass project_id so the backend persists the blueprint to Supabase
+                const res = await fetch(
+                    `${analyzerUrl}/analyzer/ingest/webflow?project_id=${selectedProjectId}`,
+                    { method: "POST", body: formData }
+                );
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({ detail: "Failed to parse zip" }));
+                    throw new Error(err.detail || "Failed to parse zip");
+                }
+
                 const data = await res.json();
-                
-                // Store blueprint keyed by project ID
-                localStorage.setItem(`blueprint_${selectedProjectId}`, JSON.stringify(data.blueprint));
-                
+
+                // Store analysis_id so blueprint page can load without localStorage
+                if (data.analysis_id) {
+                    sessionStorage.setItem(`analysis_id_${selectedProjectId}`, data.analysis_id);
+                }
+
+                // Fallback: keep a localStorage copy in case Supabase was unavailable
+                if (data.blueprint) {
+                    localStorage.setItem(`blueprint_${selectedProjectId}`, JSON.stringify(data.blueprint));
+                }
+
                 setStatus({ type: "success", message: "Webflow project parsed! Redirecting to blueprint review..." });
-                router.push(`/projects/${selectedProjectId}/blueprint`);
+                setTimeout(() => router.push(`/projects/${selectedProjectId}/blueprint`), 800);
                 return;
             }
 
@@ -61,7 +73,10 @@ export default function IngestPage() {
             setStatus({ type: "success", message: "Ingestion job queued successfully" });
             setContent("");
         } catch (err) {
-            setStatus({ type: "error", message: err instanceof Error ? err.message : "Failed to process ingestion" });
+            setStatus({
+                type: "error",
+                message: err instanceof Error ? err.message : "Failed to process ingestion",
+            });
         } finally {
             setLoading(false);
         }
@@ -154,11 +169,11 @@ export default function IngestPage() {
 
                         {sourceType === "zip" && (
                             <label className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-[var(--border-default)] bg-[var(--bg-root)] p-8 text-center hover:bg-[var(--bg-hover)] transition-colors">
-                                <input 
-                                    type="file" 
-                                    accept=".zip" 
-                                    className="hidden" 
-                                    onChange={(e) => setZipFile(e.target.files?.[0] || null)} 
+                                <input
+                                    type="file"
+                                    accept=".zip"
+                                    className="hidden"
+                                    onChange={(e) => setZipFile(e.target.files?.[0] || null)}
                                 />
                                 <div className="space-y-2 text-[var(--text-secondary)]">
                                     <UploadCloud size={24} className="mx-auto" />
@@ -170,10 +185,12 @@ export default function IngestPage() {
 
                     {/* Status Message */}
                     {status && (
-                        <div className={clsx(
-                            "flex items-center gap-2 rounded-md px-3 py-2 text-[13px]",
-                            status.type === "success" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
-                        )}>
+                        <div
+                            className={clsx(
+                                "flex items-center gap-2 rounded-md px-3 py-2 text-[13px]",
+                                status.type === "success" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+                            )}
+                        >
                             {status.type === "success" ? <CheckCircle size={14} /> : <AlertCircle size={14} />}
                             {status.message}
                         </div>
@@ -183,7 +200,12 @@ export default function IngestPage() {
                     <div className="pt-4">
                         <button
                             type="submit"
-                            disabled={loading || sourceType === "github" || (sourceType === "clipboard" && !content) || (sourceType === "zip" && !zipFile)}
+                            disabled={
+                                loading ||
+                                sourceType === "github" ||
+                                (sourceType === "clipboard" && !content) ||
+                                (sourceType === "zip" && !zipFile)
+                            }
                             className="w-full rounded-md bg-[var(--accent-primary)] px-4 py-2.5 text-[13px] font-medium text-white shadow-[0_0_15px_var(--accent-glow)] hover:opacity-90 disabled:opacity-50 disabled:shadow-none transition-all"
                         >
                             {loading ? "Processing..." : "Start Ingestion"}

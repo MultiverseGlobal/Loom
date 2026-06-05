@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { projectService, Project } from "@/services/project.service";
 import { analysisService } from "@/services/analysis.service";
 import { toast } from "sonner";
@@ -10,7 +10,7 @@ import { CodePreview } from "@/components/workspace/CodePreview";
 import { HealingPanel } from "@/components/workspace/HealingPanel";
 import { LiveTerminal } from "@/components/workspace/LiveTerminal";
 import { FileBrowser } from "@/components/workspace/FileBrowser";
-import { ArrowLeft, Box, Loader2, Terminal, X, Copy, ChevronRight, Layout } from "lucide-react";
+import { ArrowLeft, Box, Loader2, Terminal, X, Copy, ChevronRight, Layout, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { socketService } from "@/services/socket";
 import Link from "next/link";
@@ -18,6 +18,8 @@ import Link from "next/link";
 export default function ProjectDetailPage() {
     const params = useParams();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const [showGenBanner, setShowGenBanner] = useState(false);
     const [project, setProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(true);
     const [analyses, setAnalyses] = useState<any[]>([]);
@@ -100,7 +102,11 @@ export default function ProjectDetailPage() {
             const bp = localStorage.getItem(`blueprint_${params.id}`);
             setHasBlueprint(!!bp);
         }
-    }, [params.id]);
+        // Show generation complete banner if redirected from generating page
+        if (searchParams.get("generated") === "true") {
+            setShowGenBanner(true);
+        }
+    }, [params.id, searchParams]);
 
     // Auto-Rescan if no analyses exist
     useEffect(() => {
@@ -241,6 +247,21 @@ export default function ProjectDetailPage() {
 
     return (
         <div className="flex flex-col h-screen bg-[var(--bg-root)] overflow-hidden">
+            {/* Generation Success Banner */}
+            {showGenBanner && (
+                <div className="flex items-center gap-3 px-4 py-2.5 bg-emerald-500/10 border-b border-emerald-500/20 text-emerald-400">
+                    <Sparkles size={14} className="shrink-0" />
+                    <span className="text-[13px] flex-1">
+                        <strong>Webflow import complete!</strong> — All components have been generated and saved to your project.
+                    </span>
+                    <button
+                        onClick={() => setShowGenBanner(false)}
+                        className="text-emerald-400/60 hover:text-emerald-400 transition-colors"
+                    >
+                        <X size={14} />
+                    </button>
+                </div>
+            )}
             {/* Top Navigation / Controls */}
             <WorkspaceControls 
                 projectId={project.id}
