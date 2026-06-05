@@ -49,25 +49,8 @@ export function Header() {
                 <span className="text-[var(--text-primary)] font-medium">Dashboard</span>
             </div>
 
-            {/* Center: AI Status Indicator */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
-                <div className="h-1.5 w-1.5 rounded-full bg-[var(--accent-primary)] animate-pulse" />
-                <span className="text-[12px] font-medium text-[var(--text-secondary)]">Shift Engine: <span className="text-[var(--text-primary)]">Idle</span></span>
-            </div>
-
             {/* Right: Actions */}
             <div className="flex items-center gap-3">
-                <button className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-                    <Search size={16} />
-                </button>
-                <button className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors relative">
-                    <Bell size={16} />
-                    <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
-                </button>
-                <button className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-                    <HelpCircle size={16} />
-                </button>
-
                 {/* User Dropdown */}
                 <div className="relative">
                     <button
