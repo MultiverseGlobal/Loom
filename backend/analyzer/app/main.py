@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.routers import structure, dependencies, refactor, generate, blueprint, deltas
+from app.routers import structure, dependencies, refactor, generate, blueprint, deltas, ingest
 
 app = FastAPI(
     title="Loom Analyzer",
@@ -26,5 +26,6 @@ app.include_router(refactor.router, prefix="/analyzer/refactor", tags=["refactor
 app.include_router(generate.router)
 app.include_router(blueprint.router, prefix="/analyzer/blueprint", tags=["blueprint"])
 app.include_router(deltas.router, prefix="/analyzer/deltas", tags=["deltas"])
+app.include_router(ingest.router)
 
 

@@ -13,6 +13,7 @@ import { FileBrowser } from "@/components/workspace/FileBrowser";
 import { ArrowLeft, Box, Loader2, Terminal, X, Copy, ChevronRight, Layout } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { socketService } from "@/services/socket";
+import Link from "next/link";
 
 export default function ProjectDetailPage() {
     const params = useParams();
@@ -33,6 +34,7 @@ export default function ProjectDetailPage() {
     const [isRescanning, setIsRescanning] = useState(false);
     const [showCliModal, setShowCliModal] = useState(false);
     const [cliToken, setCliToken] = useState("");
+    const [hasBlueprint, setHasBlueprint] = useState(false);
 
     const loadFiles = useCallback(async (projectId: string) => {
         try {
@@ -92,6 +94,13 @@ export default function ProjectDetailPage() {
 
         loadData();
     }, [params.id, router, loadFiles]); // Added loadFiles to deps since it is memoized
+
+    useEffect(() => {
+        if (params.id) {
+            const bp = localStorage.getItem(`blueprint_${params.id}`);
+            setHasBlueprint(!!bp);
+        }
+    }, [params.id]);
 
     // Auto-Rescan if no analyses exist
     useEffect(() => {
@@ -255,6 +264,15 @@ export default function ProjectDetailPage() {
                             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                             Back to Dashboard
                         </button>
+                        {hasBlueprint && (
+                            <Link
+                                href={`/projects/${project.id}/blueprint`}
+                                className="flex items-center gap-1.5 text-xs text-[var(--accent-primary)] hover:opacity-80 transition-opacity"
+                            >
+                                <Layout size={13} />
+                                Review Blueprint
+                            </Link>
+                        )}
 
                         {/* File Browser - Major addition for Option B */}
                         <div className="flex-1 flex flex-col min-h-0">
