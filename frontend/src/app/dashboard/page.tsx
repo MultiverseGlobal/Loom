@@ -153,7 +153,7 @@ export default function DashboardPage() {
             <div>
               <div className="flex flex-col mb-4">
                 <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--accent-primary)] mb-1 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]">
-                  System Dashboard
+                  System Projects
                 </span>
                 <h2 className="text-sm font-medium text-[var(--text-secondary)]">
                   Welcome back, <span className="text-[var(--text-primary)] font-bold">{user?.user_metadata?.full_name?.split(' ')[0] || 'Developer'}</span>

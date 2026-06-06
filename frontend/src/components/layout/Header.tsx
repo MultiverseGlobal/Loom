@@ -1,12 +1,42 @@
 "use client";
 
-import { Bell, Search, HelpCircle, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { authService } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export function Header() {
+    const pathname = usePathname();
+
+    const getBreadcrumbs = () => {
+        const segments = pathname.split('/').filter(Boolean);
+        const breadcrumbs = [{ label: "Shift", href: "/dashboard" }];
+
+        if (segments.length === 0 || pathname === "/dashboard") {
+            breadcrumbs.push({ label: "Projects", href: "/dashboard" });
+            return breadcrumbs;
+        }
+
+        let currentPath = "";
+        segments.forEach((segment) => {
+            currentPath += `/${segment}`;
+            
+            // Check if segment is an ID (UUID)
+            const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(segment) || segment.length > 20;
+            
+            let label = segment.charAt(0).toUpperCase() + segment.slice(1);
+            if (segment === "dashboard") {
+                label = "Projects";
+            } else if (isUUID) {
+                label = "Project Workspace";
+            }
+            
+            breadcrumbs.push({ label, href: currentPath });
+        });
+
+        return breadcrumbs;
+    };
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
@@ -42,11 +72,20 @@ export function Header() {
 
     return (
         <header className="glass-header sticky top-0 z-10 flex h-12 items-center justify-between px-4">
-            {/* Left: Breadcrumbs (Mock) */}
+            {/* Left: Dynamic Breadcrumbs */}
             <div className="flex items-center gap-2 text-[13px]">
-                <span className="text-[var(--text-secondary)]">Shift</span>
-                <span className="text-[var(--text-tertiary)]">/</span>
-                <span className="text-[var(--text-primary)] font-medium">Dashboard</span>
+                {getBreadcrumbs().map((bc, idx) => (
+                    <span key={bc.href} className="flex items-center gap-2">
+                        {idx > 0 && <span className="text-[var(--text-tertiary)]">/</span>}
+                        {idx === getBreadcrumbs().length - 1 ? (
+                            <span className="text-[var(--text-primary)] font-medium">{bc.label}</span>
+                        ) : (
+                            <Link href={bc.href} className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+                                {bc.label}
+                            </Link>
+                        )}
+                    </span>
+                ))}
             </div>
 
             {/* Right: Actions */}

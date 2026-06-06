@@ -6,6 +6,7 @@ app/routers/blueprint.py
 app/routers/deltas.py
 app/routers/dependencies.py
 app/routers/generate.py
+app/routers/generate_webflow.py
 app/routers/ingest.py
 app/routers/refactor.py
 app/routers/structure.py
