@@ -1,11 +1,5 @@
-
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -16,6 +10,10 @@ export async function GET(request: Request) {
     }
 
     try {
+        const supabaseAdmin = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
         const { data, error } = await supabaseAdmin
             .from('pairing_sessions')
             .select('status, extension_token, expires_at')

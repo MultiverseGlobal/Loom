@@ -1,14 +1,11 @@
 "use client";
 
 import { AppLayout } from "@/components/layout/AppLayout";
-import { Upload, ArrowRight, Code2, Figma, Github, Sparkles, FileArchive, Zap } from "lucide-react";
+import { ArrowRight, Github, FileArchive } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { RepositoryModal } from "@/components/import/RepositoryModal";
-import { FigmaModal } from "@/components/import/FigmaModal";
-import { PromptModal } from "@/components/import/PromptModal";
-import { NoCodeModal } from "@/components/import/NoCodeModal";
 import { WebflowIngestModal } from "@/components/import/WebflowIngestModal";
 
 export default function ImportPage() {
@@ -26,26 +23,6 @@ export default function ImportPage() {
             detail: "We'll parse your Webflow HTML, CSS, and assets — converting them into clean, maintainable React components with Tailwind."
         },
         {
-            id: "nocode",
-            name: "AI Builder / No-Code",
-            icon: Sparkles,
-            badge: "Live URL",
-            badgeColor: "bg-violet-500/10 text-violet-400 border-violet-500/20",
-            accentColor: "group-hover:text-violet-400",
-            description: "Import from Lovable, Bubble, Framer, or v0.",
-            detail: "Connect a live preview URL. We extract the DOM, infer component boundaries, and reconstruct the full architecture."
-        },
-        {
-            id: "figma",
-            name: "Figma Design",
-            icon: Figma,
-            badge: "Design → Code",
-            badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/20",
-            accentColor: "group-hover:text-pink-400",
-            description: "Import directly from Figma.",
-            detail: "We map Auto-Layout to Tailwind, identify reusable symbols, and generate typed component props from your design tokens."
-        },
-        {
             id: "github",
             name: "GitHub Repository",
             icon: Github,
@@ -55,36 +32,16 @@ export default function ImportPage() {
             description: "Import and refactor an existing repo.",
             detail: "We analyze dependencies, map the component graph, and prepare your codebase for IDE-native migration and AI healing."
         },
-        {
-            id: "prompt",
-            name: "Start from a Prompt",
-            icon: Code2,
-            badge: "AI Scaffold",
-            badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-            accentColor: "group-hover:text-amber-400",
-            description: "Describe your idea, we'll build the structure.",
-            detail: "Describe your app in plain language. Shift AI generates the architecture, file tree, and component scaffolding — ready to ship."
-        },
     ];
 
     const [isRepoModalOpen, setIsRepoModalOpen] = useState(false);
-    const [isFigmaModalOpen, setIsFigmaModalOpen] = useState(false);
-    const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
-    const [isNoCodeModalOpen, setIsNoCodeModalOpen] = useState(false);
     const [isWebflowModalOpen, setIsWebflowModalOpen] = useState(false);
     const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
 
     const handleSelect = (id: string) => {
         setSelectedSourceId(id);
-
         if (id === 'github') {
             setIsRepoModalOpen(true);
-        } else if (id === 'nocode') {
-            setIsNoCodeModalOpen(true);
-        } else if (id === 'figma') {
-            setIsFigmaModalOpen(true);
-        } else if (id === 'prompt') {
-            setIsPromptModalOpen(true);
         } else if (id === 'webflow') {
             setIsWebflowModalOpen(true);
         }
@@ -104,39 +61,6 @@ export default function ImportPage() {
         router.push(`/analysis?${params.toString()}`);
     };
 
-    const handleNoCodeSelect = (url: string, toolType: string) => {
-        setIsNoCodeModalOpen(false);
-        
-        const params = new URLSearchParams({
-            source: 'nocode',
-            url: url,
-            toolType: toolType
-        });
-
-        router.push(`/analysis?${params.toString()}`);
-    };
-
-    const handleFigmaSelect = (url: string, token: string) => {
-        setIsFigmaModalOpen(false);
-        sessionStorage.setItem('figma_token', token);
-
-        const params = new URLSearchParams({
-            source: 'figma',
-            url: url
-        });
-        router.push(`/analysis?${params.toString()}`);
-    };
-
-    const handlePromptSelect = (prompt: string) => {
-        setIsPromptModalOpen(false);
-        sessionStorage.setItem('app_prompt', prompt);
-
-        const params = new URLSearchParams({
-            source: 'prompt',
-            hasPrompt: 'true'
-        });
-        router.push(`/analysis?${params.toString()}`);
-    };
 
     return (
         <AppLayout>
@@ -222,24 +146,6 @@ export default function ImportPage() {
                     isOpen={isRepoModalOpen}
                     onClose={() => setIsRepoModalOpen(false)}
                     onSelect={handleRepoSelect}
-                />
-
-                <FigmaModal
-                    isOpen={isFigmaModalOpen}
-                    onClose={() => setIsFigmaModalOpen(false)}
-                    onSelect={handleFigmaSelect}
-                />
-
-                <PromptModal
-                    isOpen={isPromptModalOpen}
-                    onClose={() => setIsPromptModalOpen(false)}
-                    onSelect={handlePromptSelect}
-                />
-
-                <NoCodeModal
-                    isOpen={isNoCodeModalOpen}
-                    onClose={() => setIsNoCodeModalOpen(false)}
-                    onSelect={handleNoCodeSelect}
                 />
 
                 {isWebflowModalOpen && (
